@@ -23,10 +23,10 @@ header .header-title {font-size:1.5rem; text-transform:uppercase; text-align: ce
 header .header-title:after {display:inline-block; content:""; width: 0; height: 0; border-style: solid; border-width: 5px 5px 0 5px; border-color: black transparent transparent transparent; position:relative; top:-5px;}
 
 header .about-links {display:none; background-color:#f1f1f1; border:3px solid #444; border-radius:10px; width:200px; margin:0 auto; position:relative; padding:10px 0;
--moz-box-shadow: 0px 0px 10px 0px #656565;
--webkit-box-shadow: 0px 0px 10px 0px #656565;
--o-box-shadow: 0px 0px 10px 0px #656565;
-box-shadow: 0px 0px 10px 0px #656565;
+-moz-box-shadow: 0px 0px 5px 0px #656565;
+-webkit-box-shadow: 0px 0px 5px 0px #656565;
+-o-box-shadow: 0px 0px 5px 0px #656565;
+box-shadow: 0px 0px 5px 0px #656565;
 filter:progid:DXImageTransform.Microsoft.Shadow(color=#656565, Direction=NaN, Strength=10);}
 header .popover-open:before {content:""; position:absolute; left:80px; top:-15px; width: 0; height: 0; border-style: solid; border-width: 0 15px 15px 15px; border-color: transparent transparent #444 transparent;}
 header .popover-open.about-links {display:block;}
