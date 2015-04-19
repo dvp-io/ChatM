@@ -1,10 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+            <title>Chat DVP mobile</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+            <meta name="description" content="" />
+            <meta name="keywords" content="" />
+            <meta name="robots" content="index,follow" />
+            <link rel="stylesheet" href="css/mobile.css" media="screen" type="text/css" />
+            <link rel="stylesheet" href="icomoon/style.css" media="screen" type="text/css" />
+        </head>
+        <body>
+           <nav id="slide-nav-left" class="slide-nav">
+                <ul class="item-list">
+                    <li class="item item-divider">Channels</li>
+                    <li class="item">Dev. Web</li>
+                    <li class="item">Dev. App</li>
+                    <li class="item">BDD</li>
+                    <li class="item new">Taverne</li>
+                    <li class="item">Jeux</li>
+                    <li class="item item-divider">Privates messages</li>
+                    <li class="item new">Loceka</li>
+                    <li class="item">Gecko</li>
+                    <li class="item">Shiva Skunk</li>
+                </ul>
+            </nav>
 
-</body>
-</html>
+            <nav id="slide-nav-right" class="slide-nav">
+               <h2 class="nav-title">Liste des connectés</h2>
+                <ul class="item-list">
+                    <!-- style="color:#******" = color user -->
+                    <li class="item item-divider" onclick="slideDown(this);">Dev. Web</li>
+                    <li class="item admin" style="color:red;">Anomaly</li>
+                    <li class="item modo" style="color:#459042;">Gecko</li>
+                    <li class="item bot" style="color:#0080FF;">Audrey</li>
+                    <li class="item" style="color:#8800CC;">User</li>
+                    <li class="item" style="color:#4422CC;">User</li>
+                    <li class="item" style="color:#43A8DC;">User</li>
+                    <li class="item" style="color:#45F2E8;">User</li>
+                </ul>
+                <ul class="item-list">
+                    <li class="item item-divider" onclick="slideDown(this);">Dev. App</li>
+                    <li class="item admin" style="color:red;">Anomaly</li>
+                    <li class="item modo" style="color:#459042;">Gecko</li>
+                    <li class="item bot" style="color:#0080FF;">Audrey</li>
+                    <li class="item" style="color:#8800CC;">User</li>
+                    <li class="item" style="color:#4422CC;">User</li>
+                    <li class="item" style="color:#43A8DC;">User</li>
+                    <li class="item" style="color:#45F2E8;">User</li>
+                </ul>
+                <ul class="item-list">
+                    <li class="item item-divider" onclick="slideDown(this);">BDD</li>
+                    <li class="item admin" style="color:red;">Anomaly</li>
+                    <li class="item modo" style="color:#459042;">Gecko</li>
+                    <li class="item bot" style="color:#0080FF;">Audrey</li>
+                    <li class="item" style="color:#8800CC;">User</li>
+                    <li class="item" style="color:#4422CC;">User</li>
+                    <li class="item" style="color:#43A8DC;">User</li>
+                    <li class="item" style="color:#45F2E8;">User</li>
+                </ul>
+                <ul class="item-list dropdown-open">
+                    <li class="item item-divider" onclick="slideDown(this);">Taverne</li>
+                    <li class="item admin" style="color:red;">Anomaly</li>
+                    <li class="item modo" style="color:#459042;">Gecko</li>
+                    <li class="item bot" style="color:#0080FF;">Audrey</li>
+                    <li class="item" style="color:#8800CC;">User</li>
+                    <li class="item" style="color:#4422CC;">User</li>
+                    <li class="item" style="color:#43A8DC;">User</li>
+                    <li class="item" style="color:#45F2E8;">User</li>
+                </ul>
+                <ul class="item-list">
+                    <li class="item item-divider" onclick="slideDown(this);">Jeux</li>
+                    <li class="item admin" style="color:red;">Anomaly</li>
+                    <li class="item modo" style="color:#459042;">Gecko</li>
+                    <li class="item bot" style="color:#0080FF;">Audrey</li>
+                    <li class="item" style="color:#8800CC;">User</li>
+                    <li class="item" style="color:#4422CC;">User</li>
+                    <li class="item" style="color:#43A8DC;">User</li>
+                    <li class="item" style="color:#45F2E8;">User</li>
+                </ul>
+            </nav>
+            <div id="wrapper">
+                <header>
+                    <button class="header-nav" onclick="slideNav('left')">
+                        <i class="icon icon-menu"></i>
+                    </button>
+
+                    <h1 class="header-title" onclick="popover();">
+                        Taverne
+                    </h1>
+                    <ul id="about-links" class="about-links">
+                        <li class="item">Envoyer un fichier</li>
+                        <li class="item">Voir le profil</li>
+                    </ul>
+
+                    <button class="header-group" onclick="slideNav('right')">
+                        <i class="icon icon-users"></i>
+                    </button>
+                </header>
+
+                <section>
+                    <div class="line">
+                        <span class="line-arrow">
+                            <i class="icon icon-arrow-up"></i>
+                        </span>
+                        <span class="line-hours">16:53</span>
+                        <span class="line-pseudo" style="color: #FF0000">[Mell] : </span>
+                        <p class="line-message" style="color: #FF0000">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                    </div>
+                    <div class="line">
+                        <span class="line-arrow">
+                            <i class="icon icon-arrow-down"></i>
+                        </span>
+                        <span class="line-hours">16:53</span>
+                        <span class="line-pseudo" style="color: #FF0000">[Mell] : </span>
+                        <p class="line-message" style="color: #FF0000">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                    </div>
+                    <div class="line">
+                        <span class="line-arrow">
+                            <i class="icon"></i>
+                        </span>
+                        <span class="line-hours">16:53</span>
+                        <span class="line-pseudo" style="color: #FF0000">[Mell] : </span>
+                        <p class="line-message" style="color: #FF0000">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                    </div>
+                    <div class="line">
+                        <span class="line-arrow">
+                            <i class="icon icon-arrow-up"></i>
+                        </span>
+                        <span class="line-hours">16:53</span>
+                        <span class="line-pseudo" style="color: #FF0000">[Mell] : </span>
+                        <p class="line-message" style="color: #FF0000">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    </div>
+                    <div class="line">
+                        <span class="line-arrow">
+                            <i class="icon icon-arrow-up"></i>
+                        </span>
+                        <span class="line-hours">16:53</span>
+                        <span class="line-pseudo" style="color: #FF0000">[Mell] : </span>
+                        <p class="line-message" style="color: #FF0000">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    </div>
+                    <div class="line">
+                        <span class="line-arrow">
+                            <i class="icon"></i>
+                        </span>
+                        <span class="line-hours">16:53</span>
+                        <span class="line-pseudo" style="color:#008080">[Overcrash] : </span>
+                        <p class="line-message" style="color:#008080">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    </div>
+                    <div class="line">
+                        <span class="line-arrow">
+                            <i class="icon"></i>
+                        </span>
+                        <span class="line-hours">16:53</span>
+                        <span class="line-pseudo" style="color:#4B0082">[Loceka] : </span>
+                        <p class="line-message" style="color:#4B0082">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    </div>
+                    <div class="line">
+                        <span class="line-arrow">
+                            <i class="icon"></i>
+                        </span>
+                        <span class="line-hours">16:53</span>
+                        <span class="line-pseudo" style="color: #FF0000">[Mell] : </span>
+                        <p class="line-message" style="color: #FF0000">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    </div>
+                </section>
+
+                <footer>
+                    <form action="" method="POST">
+                        <input type="text" placeholder="Message.." value="" class="msg-input" />
+                        <button class="msg-smiley">
+                            <i class="icon icon-smile"></i>
+                        </button>
+                    </form>
+                </footer>
+            </div>
+            <script type="text/javascript" src="js/mobile.js"></script>
+        </body>
+    </html>

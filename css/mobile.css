@@ -75,5 +75,6 @@ section .line .line-arrow .icon-arrow-down {font-size:1rem; color:darkorange;}
 
 footer {position:fixed; bottom:0; height:30px; width:100%;}
 footer .msg-input {width:100%; height:30px; border-radius:3px; border:1px solid #ddd; padding:0 5px;}
+footer .msg-smiley {position:absolute; top:5px; right:10px; border:0; background-color:transparent; color:#888;}
 
 
