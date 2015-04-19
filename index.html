@@ -86,7 +86,7 @@
                         <i class="icon icon-menu"></i>
                     </button>
 
-                    <h1 class="header-title" onclick="popover();">
+                    <h1 class="header-title" onclick="popover('about-links');">
                         Taverne
                     </h1>
                     <ul id="about-links" class="about-links">
@@ -113,8 +113,8 @@
                             <i class="icon icon-arrow-down"></i>
                         </span>
                         <span class="line-hours">16:53</span>
-                        <span class="line-pseudo" style="color: #FF0000">[Mell] : </span>
-                        <p class="line-message" style="color: #FF0000">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                        <span class="line-pseudo" style="color: #4B0082">[Loceka] : </span>
+                        <p class="line-message" style="color: #4B0082">Mell> Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
                     </div>
                     <div class="line">
                         <span class="line-arrow">
@@ -164,15 +164,30 @@
                         <span class="line-pseudo" style="color: #FF0000">[Mell] : </span>
                         <p class="line-message" style="color: #FF0000">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                     </div>
+
+                    <div id="popover-smileys" class="popover-smileys">
+                        <h2 class="popover-title">Mes smileys favoris</h2>
+                        <div class="smileys-list">
+                            <a class="add-link" title=":chuper:" href="#"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
+                            <a class="add-link" title=":chuper:" href="#"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
+                            <a class="add-link" title=":chuper:" href="#"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
+                            <a class="add-link" title=":chuper:" href="#"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
+                            <a class="add-link" title=":chuper:" href="#"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
+                            <a class="add-link" title=":chuper:" href="#"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
+                            <a class="add-link" title=":chuper:" href="#"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
+                            <a class="add-link" title=":chuper:" href="#"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
+                            <a class="add-link" title=":chuper:" href="#"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
+                            <a class="add-link" title=":chuper:" href="#"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
+                            <a class="add-link" title=":chuper:" href="#"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
+                        </div>
+                    </div>
                 </section>
 
                 <footer>
-                    <form action="" method="POST">
-                        <input type="text" placeholder="Message.." value="" class="msg-input" />
-                        <button class="msg-smiley">
-                            <i class="icon icon-smile"></i>
-                        </button>
-                    </form>
+                    <input type="text" placeholder="Message.." value="" class="msg-input" />
+                    <button type="text" class="msg-smiley" onclick="popover('popover-smileys');">
+                        <i class="icon icon-smile"></i>
+                    </button>
                 </footer>
             </div>
             <script type="text/javascript" src="js/mobile.js"></script>

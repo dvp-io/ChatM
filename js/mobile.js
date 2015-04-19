@@ -20,9 +20,9 @@ var slideDown = function( param ) {
     }
 }
 
-var popover = function( ) {
+var popover = function( param ) {
     var cls = "popover-open";
-    var element = document.getElementById("about-links");
+    var element = document.getElementById(param + '');
     if ( !hasClass(element, cls) ) {
         element.classList.add(cls);
     } else {
