@@ -4,6 +4,44 @@
 		{
 			"icon": {
 				"paths": [
+					"M847.277 131.841c0 0-222.658-31.25-187.5 158.204 0 0 21.483 121.093 146.486 214.845l-48.828 91.797c0 0-203.126-115.236-240.234-259.766 0 0-58.594-136.719 82.031-207.033 0 0 126.953-39.064 248.047 1.952z",
+					"M898.059 653.33l29.297-66.407c0 0 156.25 82.031 232.422 58.594 0 0-37.109 62.5-261.721 7.813z",
+					"M345.322 6.842c0 0 175.782 60.547 253.908 105.469l42.969-9.765c0 0-279.297-101.563-296.876-95.704z",
+					"M696.888 182.624c0 0 232.422 162.111 95.704 404.297 0 0-56.641 179.688-500.003 421.878 0 0 390.627-128.905 548.831-320.314 0 0 160.156-156.25 74.22-341.798 0 0-66.407-128.905-183.594-189.453l-35.157 25.391z"
+				],
+				"attrs": [
+					{},
+					{},
+					{},
+					{}
+				],
+				"isMulticolor": false,
+				"width": 1448,
+				"grid": 16,
+				"tags": [
+					"dvp-logo"
+				]
+			},
+			"attrs": [
+				{},
+				{},
+				{},
+				{}
+			],
+			"properties": {
+				"order": 32,
+				"id": 0,
+				"prevSize": 32,
+				"code": 58880,
+				"name": "dvp-logo"
+			},
+			"setIdx": 0,
+			"setId": 4,
+			"iconIdx": 0
+		},
+		{
+			"icon": {
+				"paths": [
 					"M512 192c-54.932 0-107.988 8.662-157.694 25.742-46.712 16.054-88.306 38.744-123.628 67.444-66.214 53.798-102.678 122.984-102.678 194.814 0 40.298 11.188 79.378 33.252 116.152 22.752 37.92 56.982 72.586 98.988 100.252 30.356 19.992 50.78 51.948 56.176 87.894 1.8 11.984 2.928 24.088 3.37 36.124 7.47-6.194 14.75-12.846 21.88-19.976 24.154-24.152 56.78-37.49 90.502-37.49 5.368 0 10.762 0.336 16.156 1.024 20.974 2.666 42.398 4.020 63.676 4.020 54.934 0 107.988-8.66 157.694-25.742 46.712-16.054 88.306-38.744 123.628-67.444 66.214-53.796 102.678-122.984 102.678-194.814s-36.464-141.016-102.678-194.814c-35.322-28.698-76.916-51.39-123.628-67.444-49.706-17.080-102.76-25.742-157.694-25.742zM512 64v0c282.77 0 512 186.25 512 416 0 229.752-229.23 416-512 416-27.156 0-53.81-1.734-79.824-5.044-109.978 109.978-241.25 129.7-368.176 132.596v-26.916c68.536-33.578 128-94.74 128-164.636 0-9.754-0.758-19.33-2.164-28.696-115.796-76.264-189.836-192.754-189.836-323.304 0-229.75 229.23-416 512-416z"
 				],
 				"attrs": [],
@@ -26,7 +64,7 @@
 				"ligatures": "bubble2, comment2",
 				"name": "bubble2"
 			},
-			"setIdx": 0,
+			"setIdx": 1,
 			"setId": 3,
 			"iconIdx": 0
 		},
@@ -56,7 +94,7 @@
 				"ligatures": "bubbles3, comments3",
 				"name": "bubbles3"
 			},
-			"setIdx": 0,
+			"setIdx": 1,
 			"setId": 3,
 			"iconIdx": 1
 		},
@@ -86,7 +124,7 @@
 				"ligatures": "user, profile2",
 				"name": "user"
 			},
-			"setIdx": 0,
+			"setIdx": 1,
 			"setId": 3,
 			"iconIdx": 2
 		},
@@ -119,7 +157,7 @@
 				"ligatures": "users, group",
 				"name": "users"
 			},
-			"setIdx": 0,
+			"setIdx": 1,
 			"setId": 3,
 			"iconIdx": 3
 		},
@@ -153,7 +191,7 @@
 				"ligatures": "user-minus, user3",
 				"name": "user-minus"
 			},
-			"setIdx": 0,
+			"setIdx": 1,
 			"setId": 3,
 			"iconIdx": 4
 		},
@@ -183,7 +221,7 @@
 				"ligatures": "menu, list3",
 				"name": "menu"
 			},
-			"setIdx": 0,
+			"setIdx": 1,
 			"setId": 3,
 			"iconIdx": 5
 		},
@@ -211,7 +249,7 @@
 				"ligatures": "upload2, load2",
 				"name": "upload2"
 			},
-			"setIdx": 0,
+			"setIdx": 1,
 			"setId": 3,
 			"iconIdx": 6
 		},
@@ -240,7 +278,7 @@
 				"ligatures": "smile, emoticon3",
 				"name": "smile"
 			},
-			"setIdx": 0,
+			"setIdx": 1,
 			"setId": 3,
 			"iconIdx": 7
 		},
@@ -270,7 +308,7 @@
 				"ligatures": "cross, cancel",
 				"name": "cross"
 			},
-			"setIdx": 0,
+			"setIdx": 1,
 			"setId": 3,
 			"iconIdx": 8
 		},
@@ -299,7 +337,7 @@
 				"ligatures": "arrow-up, up",
 				"name": "arrow-up"
 			},
-			"setIdx": 0,
+			"setIdx": 1,
 			"setId": 3,
 			"iconIdx": 9
 		},
@@ -328,7 +366,7 @@
 				"ligatures": "arrow-down, down",
 				"name": "arrow-down"
 			},
-			"setIdx": 0,
+			"setIdx": 1,
 			"setId": 3,
 			"iconIdx": 10
 		},
@@ -355,7 +393,7 @@
 				"ligatures": "radio-checked2, radio-button2",
 				"name": "radio-checked2"
 			},
-			"setIdx": 0,
+			"setIdx": 1,
 			"setId": 3,
 			"iconIdx": 11
 		},
@@ -386,7 +424,7 @@
 				"ligatures": "image, picture",
 				"name": "image"
 			},
-			"setIdx": 1,
+			"setIdx": 2,
 			"setId": 2,
 			"iconIdx": 0
 		},
@@ -416,7 +454,7 @@
 				"ligatures": "music, song",
 				"name": "music"
 			},
-			"setIdx": 1,
+			"setIdx": 2,
 			"setId": 2,
 			"iconIdx": 1
 		},
@@ -446,7 +484,7 @@
 				"ligatures": "bullhorn, megaphone",
 				"name": "global"
 			},
-			"setIdx": 1,
+			"setIdx": 2,
 			"setId": 2,
 			"iconIdx": 2
 		},
@@ -475,7 +513,7 @@
 				"ligatures": "book, read",
 				"name": "rules"
 			},
-			"setIdx": 1,
+			"setIdx": 2,
 			"setId": 2,
 			"iconIdx": 3
 		},
@@ -504,7 +542,7 @@
 				"ligatures": "binoculars, lookup",
 				"name": "moddir"
 			},
-			"setIdx": 1,
+			"setIdx": 2,
 			"setId": 2,
 			"iconIdx": 4
 		},
@@ -533,7 +571,7 @@
 				"ligatures": "lock, secure",
 				"name": "jail"
 			},
-			"setIdx": 1,
+			"setIdx": 2,
 			"setId": 2,
 			"iconIdx": 5
 		},
@@ -560,7 +598,7 @@
 				"ligatures": "unlocked, lock-open",
 				"name": "free"
 			},
-			"setIdx": 1,
+			"setIdx": 2,
 			"setId": 2,
 			"iconIdx": 6
 		},
@@ -592,7 +630,7 @@
 				"ligatures": "earth, globe2",
 				"name": "status"
 			},
-			"setIdx": 1,
+			"setIdx": 2,
 			"setId": 2,
 			"iconIdx": 7
 		},
@@ -621,7 +659,7 @@
 				"ligatures": "info, information",
 				"name": "about"
 			},
-			"setIdx": 1,
+			"setIdx": 2,
 			"setId": 2,
 			"iconIdx": 8
 		},
@@ -652,7 +690,7 @@
 				"ligatures": "volume-low, volume3",
 				"name": "unmute"
 			},
-			"setIdx": 1,
+			"setIdx": 2,
 			"setId": 2,
 			"iconIdx": 9
 		},
@@ -682,7 +720,7 @@
 				"ligatures": "volume-mute2, volume5",
 				"name": "mute"
 			},
-			"setIdx": 1,
+			"setIdx": 2,
 			"setId": 2,
 			"iconIdx": 10
 		},
@@ -711,7 +749,7 @@
 				"ligatures": "github, brand40",
 				"name": "github"
 			},
-			"setIdx": 1,
+			"setIdx": 2,
 			"setId": 2,
 			"iconIdx": 11
 		},
@@ -738,7 +776,7 @@
 				"ligatures": "enter, signin",
 				"name": "enter"
 			},
-			"setIdx": 2,
+			"setIdx": 3,
 			"setId": 0,
 			"iconIdx": 275
 		},
@@ -767,7 +805,7 @@
 				"ligatures": "exit, signout",
 				"name": "exit"
 			},
-			"setIdx": 2,
+			"setIdx": 3,
 			"setId": 0,
 			"iconIdx": 276
 		}
@@ -800,6 +838,8 @@
 			"bgColor": 16777215
 		},
 		"historySize": 100,
-		"showCodes": true
+		"showCodes": true,
+		"gridSize": 16,
+		"showGrid": true
 	}
 }

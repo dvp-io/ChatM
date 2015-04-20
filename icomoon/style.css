@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'icomoon';
-	src:url('fonts/icomoon.eot?-at0eg2');
-	src:url('fonts/icomoon.eot?#iefix-at0eg2') format('embedded-opentype'),
-		url('fonts/icomoon.woff?-at0eg2') format('woff'),
-		url('fonts/icomoon.ttf?-at0eg2') format('truetype'),
-		url('fonts/icomoon.svg?-at0eg2#icomoon') format('svg');
+	src:url('fonts/icomoon.eot?-vem8t0');
+	src:url('fonts/icomoon.eot?#iefix-vem8t0') format('embedded-opentype'),
+		url('fonts/icomoon.woff?-vem8t0') format('woff'),
+		url('fonts/icomoon.ttf?-vem8t0') format('truetype'),
+		url('fonts/icomoon.svg?-vem8t0#icomoon') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -21,6 +21,10 @@
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-dvp-logo:before {
+	content: "\e600";
 }
 
 .icon-bubble2:before {

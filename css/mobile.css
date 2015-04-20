@@ -84,7 +84,7 @@ section .line [class^="line-"]
 section .line .line-arrow .icon-arrow-up {font-size:1rem; color:dodgerblue;}
 section .line .line-arrow .icon-arrow-down {font-size:1rem; color:darkorange;}
 
-section .popover-smileys {display:none; width:98%; height:70%; background-color:#f1f1f1; border:2px solid #444; border-radius:10px; position:absolute; top:60px; margin:0 auto;}
+section .popover-smileys {display:none; width:98%; height:70%; background-color:#f1f1f1; border:2px solid #444; border-radius:10px; position:absolute; bottom:60px; margin:0 auto;}
 section .popover-smileys .popover-title {font-size:1.25rem; text-transform:uppercase; height:40px; line-height:40px; padding:0 10px; border-bottom:1px solid #999;}
 section .popover-smileys .smileys-list {padding:10px 0;}
 section .popover-smileys .smileys-list .add-link {display:inline-block; padding:5px 10px;}
