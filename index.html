@@ -11,6 +11,23 @@
             <link rel="stylesheet" href="icomoon/style.css" media="screen" type="text/css" />
         </head>
         <body>
+          <div id="login" class="popover-open">
+              <h3 class="login-title">Connectez-vous</h3>
+              <form action="">
+                  <input type="text" placeholder="Identifiant" />
+                  <input type="password" placeholder="Mot de passe" />
+                  <select name="" id="">
+                      <option value="">Choisir un salon</option>
+                      <option value="">Dev. Web</option>
+                      <option value="">Dev. App</option>
+                      <option value="">Base de données</option>
+                      <option value="">Taverne</option>
+                      <option value="">Jeux</option>
+                  </select>
+                  <input type="button" value="Se connecter" onclick="popover('login');" />
+              </form>
+          </div>
+
            <nav id="slide-nav-left" class="slide-nav">
                 <ul class="item-list">
                     <li class="item item-divider">Salons</li>
