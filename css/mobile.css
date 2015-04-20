@@ -97,7 +97,7 @@ section .popover-smileys.popover-open {display:block;}
 #about-user .item-list .item .icon {margin:0 10px;}
 
 footer {position:fixed; bottom:0; left:0; height:30px; width:100%;}
-footer .msg-input {width:100%; height:30px; border-radius:3px; border:1px solid #ddd; padding:0 5px;}
+footer .msg-input {width:100%; height:30px; border-radius:3px; border:1px solid #ddd; padding:0 5px; box-shadow:none;}
 footer .msg-smiley {position:absolute; top:5px; right:10px; border:0; background-color:transparent; color:#888;}
 
 
