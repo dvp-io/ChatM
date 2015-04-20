@@ -1,2 +1,2 @@
 # ChatM
-Client mobile pour le chat  
+Client mobile pour le chat utilisant HTML5 / CSS3 / VanillaJS
