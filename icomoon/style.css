@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'icomoon';
-	src:url('fonts/icomoon.eot?1wn09f');
-	src:url('fonts/icomoon.eot?#iefix1wn09f') format('embedded-opentype'),
-		url('fonts/icomoon.woff?1wn09f') format('woff'),
-		url('fonts/icomoon.ttf?1wn09f') format('truetype'),
-		url('fonts/icomoon.svg?1wn09f#icomoon') format('svg');
+	src:url('fonts/icomoon.eot?-c9355s');
+	src:url('fonts/icomoon.eot?#iefix-c9355s') format('embedded-opentype'),
+		url('fonts/icomoon.woff?-c9355s') format('woff'),
+		url('fonts/icomoon.ttf?-c9355s') format('truetype'),
+		url('fonts/icomoon.svg?-c9355s#icomoon') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -69,5 +69,53 @@
 
 .icon-radio-checked2:before {
 	content: "\ea55";
+}
+
+.icon-image:before {
+	content: "\e90d";
+}
+
+.icon-music:before {
+	content: "\e911";
+}
+
+.icon-global:before {
+	content: "\e91a";
+}
+
+.icon-rules:before {
+	content: "\e91f";
+}
+
+.icon-moddir:before {
+	content: "\e985";
+}
+
+.icon-jail:before {
+	content: "\e98f";
+}
+
+.icon-free:before {
+	content: "\e990";
+}
+
+.icon-status:before {
+	content: "\e9ca";
+}
+
+.icon-about:before {
+	content: "\ea0c";
+}
+
+.icon-unmute:before {
+	content: "\ea28";
+}
+
+.icon-mute:before {
+	content: "\ea2a";
+}
+
+.icon-github:before {
+	content: "\eab1";
 }
 
