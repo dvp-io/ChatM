@@ -57,8 +57,9 @@ box-shadow: inset 5px 0px 10px 0px #ddd;
 filter:progid:DXImageTransform.Microsoft.Shadow(color=#ddd, Direction=180, Strength=10);}
 #slide-nav-left.open-nav-left {transition: 1s; left: 0;}
 #slide-nav-right.open-nav-right {transition: 1s; right: 0;}
-.slide-nav .item-list .item {height:30px; line-height:30px; color:#999; font-size:0.875rem; padding:0 5px 0 15px; font-weight:100; font-size:0.75rem;}
-#slide-nav-right .item-list .item {padding:0 25px 0 15px;}
+.slide-nav .item-list .item {color:#999; font-size:0.875rem; padding:0 5px 0 15px; font-weight:100; font-size:0.75rem;}
+#slide-nav-left .item-list .item {height:30px; line-height:30px;}
+#slide-nav-right .item-list .item {padding:5px 25px 5px 15px;}
 .slide-nav .item-list .item.admin:before {content:"●"; margin-right:5px; color:red; font-size:1rem;}
 .slide-nav .item-list .item.modo:before {content:"●"; margin-right:5px; color:green; font-size:1rem;}
 .slide-nav .item-list .item.bot:before {content:"●"; margin-right:5px; color:skyblue; font-size:1rem;}
