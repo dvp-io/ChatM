@@ -40,7 +40,6 @@ var changeName = function( param ) {
     var children = param.getElementsByTagName('span');
     var child = null;
     for(var i = 0; i < children.length; i++) {
-        console.log(children[i]);
         if ( children[i].className == "pseudo" ) {
             child = children[i];
             break;
