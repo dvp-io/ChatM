@@ -36,6 +36,22 @@ var smileToMsg = function( param ) {
     document.getElementById('popover-smileys').classList.remove('popover-open');
 }
 
+var changeName = function( param ) {
+    var children = param.getElementsByTagName('span');
+    var child = null;
+    for(var i = 0; i < children.length; i++) {
+        console.log(children[i]);
+        if ( children[i].className == "pseudo" ) {
+            child = children[i];
+            break;
+        }
+    }
+
+    if ( child != null ) {
+        document.getElementById('user-pseudo').innerHTML = child.innerHTML;
+    }
+}
+
 var removeClass = function( param, cls ) {
     var element = document.getElementById(param);
     element.classList.remove(cls);
