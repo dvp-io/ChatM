@@ -1,5 +1,5 @@
 html, body {width:100%; height:100%; font-size:1rem; font-family:Arial,Verdana,sans-serif;}
-body {position:relative;}
+body {position:relative; overflow:hidden;}
 * {margin:0; padding:0; box-sizing: border-box; outline:0;}
 ul {list-style:none;}
 
@@ -41,7 +41,7 @@ header .about-links .item {padding:0 10px; height:30px; line-height:30px; font-s
 -o-box-shadow: inset -5px 0px 10px 0px #454545;
 box-shadow: inset -5px 0px 10px 0px #454545;
 filter:progid:DXImageTransform.Microsoft.Shadow(color=#454545, Direction=180, Strength=10);}
-#slide-nav-right {right: -225px; text-align: right; background-color:#f1f1f1;
+#slide-nav-right {right: -225px; background-color:#f1f1f1;
 -moz-box-shadow: inset 5px 0px 10px 0px #ddd;
 -webkit-box-shadow: inset 5px 0px 10px 0px #ddd;
 -o-box-shadow: inset 5px 0px 10px 0px #ddd;
@@ -51,9 +51,9 @@ filter:progid:DXImageTransform.Microsoft.Shadow(color=#ddd, Direction=180, Stren
 #slide-nav-right.open-nav-right {transition: 1s; right: 0;}
 .slide-nav .item-list .item {height:30px; line-height:30px; color:#999; font-size:0.875rem; padding:0 5px 0 15px; font-weight:100; font-size:0.75rem;}
 #slide-nav-right .item-list .item {padding:0 25px 0 15px;}
-.slide-nav .item-list .item.admin:after {content:"●"; margin-left:5px; color:red; font-size:1rem;}
-.slide-nav .item-list .item.modo:after {content:"●"; margin-left:5px; color:green; font-size:1rem;}
-.slide-nav .item-list .item.bot:after {content:"●"; margin-left:5px; color:skyblue; font-size:1rem;}
+.slide-nav .item-list .item.admin:before {content:"●"; margin-right:5px; color:red; font-size:1rem;}
+.slide-nav .item-list .item.modo:before {content:"●"; margin-right:5px; color:green; font-size:1rem;}
+.slide-nav .item-list .item.bot:before {content:"●"; margin-right:5px; color:skyblue; font-size:1rem;}
 #slide-nav-left .item-list .item:before {content:"\2022"; margin-right:5px; opacity:0.3;}
 #slide-nav-left .item-list .new.item:before {opacity:1;}
 .slide-nav .item-list .new {font-weight:600; color:white;}
@@ -66,7 +66,7 @@ filter:progid:DXImageTransform.Microsoft.Shadow(color=#ddd, Direction=180, Stren
 #slide-nav-right .item-list .item-divider:after {display:inline-block; content:""; width: 0; height: 0; border-style: solid; border-width: 5px 0 5px 5px; border-color: transparent transparent transparent black; position:relative; top:0px; margin-left:5px;}
 #slide-nav-right .dropdown-open .item-divider:after {display:inline-block; content:""; width: 0; height: 0; border-style: solid; border-width: 5px 5px 0 5px; border-color: black transparent transparent transparent; position:relative; top:-2px; margin-left:5px;}
 
-section {height:100%; width:100%; overflow:hidden; padding:55px 5px 40px; position:relative;}
+section {height:100%; width:100%; overflow:scroll; padding:55px 5px 40px; position:relative;}
 section .line {font-size:0.875rem;}
 section .line [class^="line-"]
     , section .line [class*="line-"] {display:inline-block;}
@@ -78,6 +78,15 @@ section .popover-smileys .popover-title {font-size:1.25rem; text-transform:upper
 section .popover-smileys .smileys-list {padding:10px 0;}
 section .popover-smileys .smileys-list .add-link {display:inline-block; padding:5px 10px;}
 section .popover-smileys.popover-open {display:block;}
+
+#about-user {width:100%; height:100%; position:absolute; top:100%; left:0; transition:1s; background-color:#f1f1f1; z-index:3;}
+#about-user.popover-open {top:0; transition:1s;}
+#about-user .user-name {height:50px; line-height:50px; text-align:center; position:relative; width:100%;}
+#about-user .user-name .user-close-btn {height:100%; position:absolute; top:0; left:10px; background-color:transparent; border:0;}
+#about-user .item-list {margin-top:20px;}
+#about-user .item-list .item {height:40px; line-height:40px; background-color:white; border-bottom:1px solid #d3d3d3; padding:0 5px;}
+#about-user .item-list .item:first-child {border-top:1px solid #d3d3d3;}
+#about-user .item-list .item .icon {margin:0 10px;}
 
 footer {position:fixed; bottom:0; left:0; height:30px; width:100%;}
 footer .msg-input {width:100%; height:30px; border-radius:3px; border:1px solid #ddd; padding:0 5px;}

@@ -31,7 +31,7 @@
                 <ul class="item-list">
                     <!-- style="color:#******" = color user -->
                     <li class="item item-divider" onclick="slideDown(this);">Dev. Web</li>
-                    <li class="item admin" style="color:red;">Anomaly</li>
+                    <li class="item admin" style="color:red;" onclick="popover('about-user');">Anomaly</li>
                     <li class="item modo" style="color:#459042;">Gecko</li>
                     <li class="item bot" style="color:#0080FF;">Audrey</li>
                     <li class="item" style="color:#8800CC;">User</li>
@@ -61,13 +61,13 @@
                 </ul>
                 <ul class="item-list dropdown-open">
                     <li class="item item-divider" onclick="slideDown(this);">Taverne</li>
-                    <li class="item admin" style="color:red;">Anomaly</li>
-                    <li class="item modo" style="color:#459042;">Gecko</li>
-                    <li class="item bot" style="color:#0080FF;">Audrey</li>
-                    <li class="item" style="color:#8800CC;">User</li>
-                    <li class="item" style="color:#4422CC;">User</li>
-                    <li class="item" style="color:#43A8DC;">User</li>
-                    <li class="item" style="color:#45F2E8;">User</li>
+                    <li class="item admin" style="color:red;" onclick="popover('about-user'); slideNav('right');">Anomaly</li>
+                    <li class="item modo" style="color:#459042;" onclick="popover('about-user'); slideNav('right');">Gecko</li>
+                    <li class="item bot" style="color:#0080FF;" onclick="popover('about-user'); slideNav('right');">Audrey</li>
+                    <li class="item" style="color:#8800CC;" onclick="popover('about-user'); slideNav('right');">User</li>
+                    <li class="item" style="color:#4422CC;" onclick="popover('about-user'); slideNav('right');">User</li>
+                    <li class="item" style="color:#43A8DC;" onclick="popover('about-user'); slideNav('right');">User</li>
+                    <li class="item" style="color:#45F2E8;" onclick="popover('about-user'); slideNav('right');">User</li>
                 </ul>
                 <ul class="item-list">
                     <li class="item item-divider" onclick="slideDown(this);">Jeux</li>
@@ -189,6 +189,31 @@
                         <i class="icon icon-smile"></i>
                     </button>
                 </footer>
+            </div>
+
+            <div id="about-user">
+                <h3 class="user-name">
+                   <button class="user-close-btn" onclick="removeClass('about-user', 'popover-open')">Fermer</button>
+                    Anomaly
+                </h3>
+                <ul class="item-list">
+                    <li class="item">
+                       <i class="icon icon-user"></i>
+                        Voir le profil
+                    </li>
+                    <li class="item">
+                       <i class="icon icon-bubble2"></i>
+                        Discuter en privé
+                    </li>
+                    <li class="item">
+                       <i class="icon icon-bubbles3"></i>
+                        Parler en public
+                    </li>
+                    <li class="item">
+                       <i class="icon icon-user-minus"></i>
+                        Bannir
+                    </li>
+                </ul>
             </div>
             <script type="text/javascript" src="js/mobile.js"></script>
         </body>

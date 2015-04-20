@@ -30,6 +30,11 @@ var popover = function( param ) {
     }
 }
 
+var removeClass = function( param, cls ) {
+    var element = document.getElementById(param);
+    element.classList.remove(cls);
+}
+
 var hasClass = function(element, cls) {
     return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
 }
