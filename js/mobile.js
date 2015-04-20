@@ -30,6 +30,11 @@ var popover = function( param ) {
     }
 }
 
+var smileToMsg = function( param ) {
+    var input = document.getElementById('msg-input');
+    input.value = input.value + '' + param.title;
+}
+
 var removeClass = function( param, cls ) {
     var element = document.getElementById(param);
     element.classList.remove(cls);
