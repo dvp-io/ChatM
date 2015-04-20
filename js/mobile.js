@@ -33,6 +33,7 @@ var popover = function( param ) {
 var smileToMsg = function( param ) {
     var input = document.getElementById('msg-input');
     input.value = input.value + '' + param.title;
+    document.getElementById('popover-smileys').classList.remove('popover-open');
 }
 
 var removeClass = function( param, cls ) {
