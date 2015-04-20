@@ -75,6 +75,7 @@ filter:progid:DXImageTransform.Microsoft.Shadow(color=#ddd, Direction=180, Stren
     , #slide-nav-right .dropdown-open .item {display:block;}
 #slide-nav-right .item-list .item-divider:after {display:inline-block; content:""; width: 0; height: 0; border-style: solid; border-width: 5px 0 5px 5px; border-color: transparent transparent transparent black; position:relative; top:0px; margin-left:5px;}
 #slide-nav-right .dropdown-open .item-divider:after {display:inline-block; content:""; width: 0; height: 0; border-style: solid; border-width: 5px 5px 0 5px; border-color: black transparent transparent transparent; position:relative; top:-2px; margin-left:5px;}
+#slide-nav-left .logout {background-color:#f1f1f1; border-top:1px solid #ddd; border-bottom:1px solid #ddd; height:40px; line-height:40px; width:100%; font-size:1rem; margin-top:20px; text-align:left; padding:0 5px;}
 
 section {height:100%; width:100%; overflow:scroll; padding:55px 5px 50px; position:relative;}
 section .line {font-size:0.875rem;}

@@ -714,6 +714,62 @@
 			"setIdx": 1,
 			"setId": 2,
 			"iconIdx": 11
+		},
+		{
+			"icon": {
+				"paths": [
+					"M384 512h-320v-128h320v-128l192 192-192 192zM1024 0v832l-384 192v-192h-384v-256h64v192h320v-576l256-128h-576v256h-64v-320z"
+				],
+				"attrs": [],
+				"tags": [
+					"enter",
+					"signin",
+					"login"
+				],
+				"defaultCode": 58237,
+				"grid": 16
+			},
+			"attrs": [],
+			"properties": {
+				"id": 993,
+				"order": 30,
+				"prevSize": 32,
+				"code": 59923,
+				"ligatures": "enter, signin",
+				"name": "enter"
+			},
+			"setIdx": 2,
+			"setId": 0,
+			"iconIdx": 275
+		},
+		{
+			"icon": {
+				"paths": [
+					"M768 640v-128h-320v-128h320v-128l192 192zM704 576v256h-320v192l-384-192v-832h704v320h-64v-256h-512l256 128v576h256v-192z"
+				],
+				"attrs": [],
+				"tags": [
+					"exit",
+					"signout",
+					"logout",
+					"quit",
+					"close"
+				],
+				"defaultCode": 58238,
+				"grid": 16
+			},
+			"attrs": [],
+			"properties": {
+				"order": 31,
+				"id": 1568,
+				"prevSize": 32,
+				"code": 59924,
+				"ligatures": "exit, signout",
+				"name": "exit"
+			},
+			"setIdx": 2,
+			"setId": 0,
+			"iconIdx": 276
 		}
 	],
 	"height": 1024,
