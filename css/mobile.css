@@ -80,6 +80,7 @@ filter:progid:DXImageTransform.Microsoft.Shadow(color=#ddd, Direction=180, Stren
 #slide-nav-left .logout {background-color:#f1f1f1; border:0; border-top:1px solid #ddd; border-bottom:1px solid #ddd; height:40px; line-height:40px; width:100%; font-size:1rem; margin-top:20px; text-align:left; padding:0 5px;}
 
 section {height:100%; width:100%; overflow:scroll; padding:55px 5px 50px; position:relative;}
+section .msg-channel {color:skyblue; font-style: italic; font-size:0.75rem; margin-bottom:10px;}
 section .line {font-size:0.875rem;}
 section .line [class^="line-"]
     , section .line [class*="line-"] {display:inline-block;}
