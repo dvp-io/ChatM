@@ -31,17 +31,17 @@
 
            <nav id="slide-nav-left" class="slide-nav">
                <div class="overflow-nav">
+                   <h3>Salons</h3>
                     <ul class="item-list">
-                        <li class="item item-divider">Salons</li>
                         <li class="item">Dev. Web</li>
                         <li class="item">Dev. App</li>
                         <li class="item">BDD</li>
                         <li class="item new">Taverne</li>
                         <li class="item">Jeux</li>
-                        <li class="item item-divider">Messages privés</li>
-                        <li class="item new">Loceka</li>
-                        <li class="item">Gecko</li>
-                        <li class="item">Shiva Skunk</li>
+                    </ul>
+                    <h3>Messages privés</h3>
+                    <ul id="msg-private-list" class="item-list" ng-repeat="pv in data.pvs">
+                        <li id="{{pv.id}}" class="item">{{pv.pseudo}}</li>
                     </ul>
                     <button class="logout">
                        <i class="icon icon-exit"></i>
@@ -191,6 +191,7 @@
                 </ul>
             </div>
             <script type="text/javascript" src="js/angular.min.js"></script>
+            <script type="text/javascript" src="js/angular.ngStorage.min.js"></script>
             <script type="text/javascript" src="js/mobile.js"></script>
             <script type="text/javascript" src="js/app.js"></script>
         </body>
