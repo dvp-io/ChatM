@@ -38,17 +38,12 @@ var smileToMsg = function( param ) {
 
 var changeName = function( param ) {
     var children = param.getElementsByTagName('span');
-    var child = null;
-    for(var i = 0; i < children.length; i++) {
-        if ( children[i].className == "pseudo" ) {
-            child = children[i];
-            break;
-        }
+    var child = children[children.length-1];
+    var pseudo = child.innerHTML;
+    if ( child.innerHTML.indexOf("(") != -1 ) {
+        pseudo = child.innerHTML.substring(0, child.innerHTML.indexOf("("));
     }
-
-    if ( child != null ) {
-        document.getElementById('user-pseudo').innerHTML = child.innerHTML;
-    }
+    document.getElementById('user-pseudo').innerHTML = pseudo;
 }
 
 var removeClass = function( param, cls ) {
