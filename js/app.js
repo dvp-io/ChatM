@@ -38,6 +38,7 @@ var getJSON = function($scope, $http) {
                 {
                     var item = document.createElement("li");
                     item.setAttribute("class", "item");
+                    item.setAttribute("id", key.id);
                     item.appendChild(document.createTextNode(key.pseudo));
                     mpList.appendChild(item);
                 }
