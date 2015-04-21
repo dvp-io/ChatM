@@ -9,6 +9,7 @@ angular.module('chatApp', [])
 
     $http.get('../ajax.json').
     success(function (data, status, headers, config) {
+        console.log(data);
         $scope.data = data;
     }).
     error(function (data, status, headers, config) {
