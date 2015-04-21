@@ -65,7 +65,7 @@
                         <i class="icon icon-dvp-logo"></i>
                     </button>
 
-                    <h1 class="header-title" onclick="popover('about-links');">Taverne</h1>
+                    <h1 class="header-title" onclick="popover('about-links');" ng-bind-html="toTrustedHTML(data.nomSalon)"></h1>
                     <ul id="about-links" class="about-links">
                         <li class="item">Envoyer un fichier</li>
                         <li class="item">Voir le profil</li>
@@ -146,19 +146,7 @@
 
                     <div id="popover-smileys" class="popover-smileys">
                         <h2 class="popover-title">Mes smileys favoris</h2>
-                        <div class="smileys-list">
-                            <a class="add-link" title=":chuper:" href="#" onclick="smileToMsg(this);"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
-                            <a class="add-link" title=":lorem:" href="#" onclick="smileToMsg(this);"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
-                            <a class="add-link" title=":ipsum:" href="#" onclick="smileToMsg(this);"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
-                            <a class="add-link" title=":test:" href="#" onclick="smileToMsg(this);"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
-                            <a class="add-link" title=":other:" href="#" onclick="smileToMsg(this);"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
-                            <a class="add-link" title=":smile:" href="#" onclick="smileToMsg(this);"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
-                            <a class="add-link" title=":chuper:" href="#" onclick="smileToMsg(this);"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
-                            <a class="add-link" title=":chuper:" href="#" onclick="smileToMsg(this);"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
-                            <a class="add-link" title=":chuper:" href="#" onclick="smileToMsg(this);"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
-                            <a class="add-link" title=":chuper:" href="#" onclick="smileToMsg(this);"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
-                            <a class="add-link" title=":chuper:" href="#" onclick="smileToMsg(this);"><img src="http://media.dvp.io/smileys/chuper.gif" alt=":chuper:" /></a>
-                        </div>
+                        <div class="smileys-list" ng-bind-html="toTrustedHTML(data.smileys)"></div>
                     </div>
                 </section>
 

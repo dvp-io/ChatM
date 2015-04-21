@@ -71,7 +71,7 @@ filter:progid:DXImageTransform.Microsoft.Shadow(color=#ddd, Direction=180, Stren
 #slide-nav-right.open-nav-right {transition: 1s; right: 0;}
 
 #slide-nav-right .users-list a {display:block; text-decoration:none; padding:5px 25px 5px 15px; color:#999; font-size:0.875rem; font-weight:100; font-size:0.75rem;}
-#slide-nav-right .users-list a.nomSalon {color:black; text-align: center;text-transform: uppercase; font-size:0.75rem; padding:0 5px; margin-top:20px; border-bottom:1px solid #ddd;}
+#slide-nav-right .users-list a.nomSalon {color:black; text-align: center;text-transform: uppercase; font-size:0.75rem; padding:5px; margin-top:20px; border-bottom:1px solid #ddd;}
 #slide-nav-right .users-list a .icone-niv4:before {content:"●"; margin-right:5px; color:red; font-size:1rem;}
 #slide-nav-right .users-list a .icone-niv3:before {content:"●"; margin-right:5px; color:green; font-size:1rem;}
 #slide-nav-right .users-list a .icone-niv2:before {content:"●"; margin-right:5px; color:skyblue; font-size:1rem;}
