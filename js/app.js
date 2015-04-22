@@ -28,27 +28,38 @@ var getJSON = function($scope, $http) {
     success(function (data, status, headers, config) {
         $scope.data = data;
 
-        addEventListener('load', load, false);
-
-        function load(){
-            var mpList = document.getElementById('msg-private-list');
-            var listChild = mpList.children;
-            angular.forEach(data.pvs, function(key, value) {
-                if ( inArray(key.id, listChild)  )
-                {
-                    var item = document.createElement("li");
-                    item.setAttribute("class", "item");
-                    item.setAttribute("id", key.id);
-                    item.appendChild(document.createTextNode(key.pseudo));
-                    mpList.appendChild(item);
-                }
-            });
-        }
+        addEventListener('load', function() {
+            createPvsElement(data.pvs);
+            listChannels(data.connectes);
+        }, false);
     }).
     error(function (data, status, headers, config) {
 
     });
 }
+
+var createPvsElement = function(pvs) {
+    var mpList = document.getElementById('msg-private-list');
+    var listChild = mpList.children;
+    angular.forEach(pvs, function(key, value) {
+        var item = document.createElement("li");
+        if ( inArray(key.id, listChild)  )
+        {
+            item.setAttribute("class", "item new");
+            item.setAttribute("id", key.id);
+            item.appendChild(document.createTextNode(key.pseudo));
+            mpList.appendChild(item);
+        } else {
+            item.setAttribute("class", "new");
+        }
+    });
+}
+
+var listChannels = function( users ) {
+    console.log(users);
+}
+
+
 
 var inArray = function (needle, haystack) {
     var length = haystack.length;
