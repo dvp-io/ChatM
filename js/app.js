@@ -31,6 +31,7 @@ var getJSON = function($scope, $http) {
         addEventListener('load', function() {
             createPvsElement(data.pvs);
             listChannels(data.connectes);
+            alert("<span>toto</span>");
         }, false);
     }).
     error(function (data, status, headers, config) {
