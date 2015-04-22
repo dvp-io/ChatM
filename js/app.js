@@ -57,4 +57,5 @@ var createPvsElement = function(pvs) {
 
 var listChannels = function( users ) {
     console.log(users);
+    alert("<span>toto</span>");
 }
