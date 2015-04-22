@@ -27,11 +27,12 @@ var getJSON = function($scope, $http) {
     $http.get('ajax.json').
     success(function (data, status, headers, config) {
         $scope.data = data;
+        alert("<span>toto</span>");
 
         addEventListener('load', function() {
             createPvsElement(data.pvs);
             listChannels(data.connectes);
-            alert("<span>toto</span>");
+
         }, false);
     }).
     error(function (data, status, headers, config) {
