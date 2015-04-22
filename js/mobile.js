@@ -4,9 +4,11 @@ var slideNav = function( direction ) {
     if (!hasClass(element, cls)) {
         element.classList.add(cls);
         document.getElementById("wrapper").classList.add(cls);
+        document.getElementById("wrapper").classList.add(direction);
     } else {
         element.classList.remove(cls);
         document.getElementById("wrapper").classList.remove(cls);
+        document.getElementById("wrapper").classList.remove(direction);
     }
 }
 
