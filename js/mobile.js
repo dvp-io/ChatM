@@ -1,5 +1,5 @@
 var slideNav = function( direction ) {
-    var cls = "open-nav-" + direction;
+    var cls = "open-nav";
     var element = document.getElementById("slide-nav-" + direction);
     if (!hasClass(element, cls)) {
         element.classList.add(cls);

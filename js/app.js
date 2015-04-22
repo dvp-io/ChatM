@@ -1,4 +1,4 @@
-angular.module('chatApp', ['ngStorage'])
+angular.module('chatApp', ['angular-gestures'])
 
 .controller('chatCtrl', function ($scope, $http, $sce) {
     $scope.data = [];
@@ -12,6 +12,24 @@ angular.module('chatApp', ['ngStorage'])
     $scope.$watch(function(){
        addFunction();
     });
+
+    $scope.myNavSwipeRight = function() {
+        if ( !hasClass(document.getElementById('slide-nav-left'), 'open-nav')
+            && !hasClass(document.getElementById('slide-nav-right'), 'open-nav'))
+            slideNav('left');
+        else if ( !hasClass(document.getElementById('slide-nav-left'), 'open-nav')
+            && hasClass(document.getElementById('slide-nav-right'), 'open-nav'))
+            slideNav('right');
+    }
+
+    $scope.myNavSwipeLeft = function() {
+        if ( hasClass(document.getElementById('slide-nav-left'), 'open-nav')
+            && !hasClass(document.getElementById('slide-nav-right'), 'open-nav'))
+            slideNav('left');
+        else if ( !hasClass(document.getElementById('slide-nav-left'), 'open-nav')
+            && !hasClass(document.getElementById('slide-nav-right'), 'open-nav'))
+            slideNav('right');
+    }
 
     var addFunction = function() {
         var users = document.getElementsByClassName("nomConnecte");
@@ -27,7 +45,6 @@ var getJSON = function($scope, $http) {
     $http.get('ajax.json').
     success(function (data, status, headers, config) {
         $scope.data = data;
-        alert("<span>toto</span>");
 
         addEventListener('load', function() {
             createPvsElement(data.pvs);
@@ -59,5 +76,4 @@ var createPvsElement = function(pvs) {
 
 var listChannels = function( users ) {
     console.log(users);
-    alert("<span>toto</span>");
 }
