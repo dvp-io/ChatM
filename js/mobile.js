@@ -24,7 +24,7 @@ var slideDown = function( param ) {
 
 var popover = function( param ) {
     var cls = "popover-open";
-    var element = document.getElementById(param + '');
+    var element = document.getElementById(param);
     if ( !hasClass(element, cls) ) {
         element.classList.add(cls);
     } else {

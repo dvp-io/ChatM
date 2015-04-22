@@ -31,6 +31,10 @@ angular.module('chatApp', ['angular-gestures'])
             slideNav('right');
     }
 
+    $scope.myPopoverSwipeDown = function( ) {
+        popover('about-user');
+    }
+
     var addFunction = function() {
         var users = document.getElementsByClassName("nomConnecte");
         for (user in users) {
