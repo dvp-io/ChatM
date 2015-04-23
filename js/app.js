@@ -50,6 +50,9 @@ var addFunction = function() {
 }
 
 var getJSON = function($scope, $http, i) {
+
+    console.log("json " + i);
+
     $http.get('json/ajax' + i + '.json').
     success(function (data, status, headers, config) {
         if ( data.nomSalon != undefined )
