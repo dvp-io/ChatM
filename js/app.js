@@ -142,8 +142,13 @@ var switchConv = function (id, pseudo) {
     document.getElementById('header-title').innerHTML = pseudo;
 
     // on lui enlève la classe new puisqu'on a switché sur la conv
-    var pvs = document.getElementById("pvs-" + id);
-    pvs.classList.remove("new");
+    if (id !== 0) {
+        var pvs = document.getElementById("pvs-" + id);
+        pvs.classList.remove("new");
+    } else {
+        var chan = document.getElementById("chan-0");
+        chan.classList.remove("new");
+    }
 
     checkNewPvs();
     slideNav('left');
