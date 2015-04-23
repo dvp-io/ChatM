@@ -1,120 +1,149 @@
-angular.module('chatApp', ['angular-gestures'])
+var app = angular.module('chatApp', ['angular-gestures']);
 
-.controller('chatCtrl', function ($scope, $http, $sce, $interval) {
+app.controller('chatCtrl', function ($scope, $http, $sce, $interval) {
     $scope.data = [];
 
-    $scope.toTrustedHTML = function( html ){
-        return $sce.trustAsHtml( html );
-    }
+    $scope.toTrustedHTML = function (html) {
+        return $sce.trustAsHtml(html);
+    };
 
     var i = 1;
     getJSON($scope, $http, i);
-    $interval(function() {
+    $interval(function () {
         i++;
         getJSON($scope, $http, i);
     }, 1000, 10);
 
-    $scope.myNavSwipeRight = function() {
-        if ( !hasClass(document.getElementById('slide-nav-left'), 'open-nav')
-            && !hasClass(document.getElementById('slide-nav-right'), 'open-nav'))
+    $scope.myNavSwipeRight = function () {
+        if (!hasClass(document.getElementById('slide-nav-left'), 'open-nav') && !hasClass(document.getElementById('slide-nav-right'), 'open-nav')) {
             slideNav('left');
-        else if ( !hasClass(document.getElementById('slide-nav-left'), 'open-nav')
-            && hasClass(document.getElementById('slide-nav-right'), 'open-nav'))
+        } else if (!hasClass(document.getElementById('slide-nav-left'), 'open-nav') && hasClass(document.getElementById('slide-nav-right'), 'open-nav')) {
             slideNav('right');
-    }
+        }
+    };
 
-    $scope.myNavSwipeLeft = function() {
-        if ( hasClass(document.getElementById('slide-nav-left'), 'open-nav')
-            && !hasClass(document.getElementById('slide-nav-right'), 'open-nav'))
+    $scope.myNavSwipeLeft = function () {
+        if (hasClass(document.getElementById('slide-nav-left'), 'open-nav') && !hasClass(document.getElementById('slide-nav-right'), 'open-nav')) {
             slideNav('left');
-        else if ( !hasClass(document.getElementById('slide-nav-left'), 'open-nav')
-            && !hasClass(document.getElementById('slide-nav-right'), 'open-nav'))
+        } else if (!hasClass(document.getElementById('slide-nav-left'), 'open-nav') && !hasClass(document.getElementById('slide-nav-right'), 'open-nav')) {
             slideNav('right');
-    }
+        }
+    };
 
-    $scope.myPopoverSwipeDown = function( ) {
+    $scope.myPopoverSwipeDown = function () {
         popover('about-user');
-    }
+    };
 });
 
-var addFunction = function() {
+var addFunction = function () {
     var users = document.getElementsByClassName("nomConnecte");
     for (user in users) {
-        if ( users.item(user) != null )
+        if (users.item(user) !== null) {
             users.item(user).setAttribute("onclick", "changeName(this); popover('about-user'); slideNav('right');");
+        }
     }
-}
+};
 
-var getJSON = function($scope, $http, i) {
+var getJSON = function ($scope, $http, i) {
 
     //console.log("json " + i);
 
-    $http.get('json/ajax' + i + '.json').
-    success(function (data, status, headers, config) {
-        if ( data.nomSalon != undefined )
+    $http.get('json/ajax' + i + '.json').success(function (data, status, headers, config) {
+        if (data.nomSalon !== undefined) {
             $scope.data.nomSalon = data.nomSalon;
+        }
 
-        if ( data.connectes != "" )
-                createUsersList(data.connectes);
+        if (data.connectes !== "") {
+            createUsersList(data.connectes);
+        }
 
-        $scope.$watch('$viewContentLoaded', function(event) {
+        $scope.$watch('$viewContentLoaded', function (event) {
             createLineChannel(data.salon);
-            if ( data.pvs.length > 0 )
-                createPvsElement(data.pvs);
+            if (data.pvs.length > 0) {
+                createPvsElement(data.pvs, $scope);
+            }
 
             checkNewPvs();
         });
 
-    }).
-    error(function (data, status, headers, config) {
+    }).error(function (data, status, headers, config) { });
+};
 
-    });
-}
-
-var createUsersList = function(users) {
+var createUsersList = function (users) {
     var list = document.getElementById('users-list');
     list.innerHTML = users;
 
     addFunction();
-}
+};
 
-var createLineChannel = function(channel) {
-    var conv = document.getElementById('conversation');
+var createLineChannel = function (channel) {
+    var conv = document.getElementById('conv-0');
     var item = document.createElement('div');
     item.setAttribute('class', 'line');
     item.innerHTML = channel;
     conv.appendChild(item);
-}
+};
 
-var createPvsElement = function(pvs) {
+var createPvsElement = function (pvs, $scope) {
     var mpList = document.getElementById('msg-private-list');
     var listChild = mpList.children;
     //console.log(listChild);
-    angular.forEach(pvs, function(key, value) {
+    angular.forEach(pvs, function (key, value) {
         var item = document.createElement("li");
-        if ( !inArray(key.id, listChild)  )
-        {
+        if (!inArray("pvs-" + key.id, listChild)) {
+            // ici on crée l'onglet de la conv dans le menu de gauche
             item.setAttribute("class", "item new");
-            item.setAttribute("id", key.id);
+            item.setAttribute("id", "pvs-" + key.id);
+            item.setAttribute("onclick", "switchConv(" + key.id + ", '" + key.pseudo + "');");
             item.appendChild(document.createTextNode(key.pseudo));
             mpList.appendChild(item);
+
+            // ici on crée la div qui va accueillir la conv pvs
+            var parent = document.getElementById('conversations');
+            var conv = document.createElement("div");
+            conv.setAttribute("id", "conv-" + key.id);
+            conv.setAttribute("class", "conv");
+            parent.appendChild(conv);
         } else {
             item.setAttribute("class", "new");
         }
-    });
-}
 
-var checkNewPvs = function( ) {
+        addMsgPvs(key.id, key.html);
+    });
+};
+
+var checkNewPvs = function () {
     var mpList = document.getElementById('msg-private-list');
     var listChild = mpList.getElementsByClassName('new');
+    var pellet = document.getElementById('pellet-pvs');
 
-    if ( listChild.length > 0 ) {
-        var pellet = document.getElementById('pellet-pvs');
+    if (listChild.length > 0) {
         pellet.classList.add("new-pvs");
         pellet.textContent = listChild.length;
+    } else {
+        pellet.classList.remove("new-pvs");
     }
-}
+};
 
-var listChannels = function( users ) {
-    //console.log(users);
-}
+var addMsgPvs = function (id, html) {
+    var conv = document.getElementById('conv-' + id);
+    var item = document.createElement('div');
+    item.setAttribute('class', 'line');
+    item.innerHTML = html;
+    conv.appendChild(item);
+};
+
+var switchConv = function (id, pseudo) {
+    var parent = document.getElementById("conversations");
+    var convActive = parent.getElementsByClassName("open-conv");
+    convActive[0].classList.remove("open-conv");
+
+    document.getElementById("conv-" + id).classList.add("open-conv");
+    document.getElementById('header-title').innerHTML = pseudo;
+
+    // on lui enlève la classe new puisqu'on a switché sur la conv
+    var pvs = document.getElementById("pvs-" + id);
+    pvs.classList.remove("new");
+
+    checkNewPvs();
+};

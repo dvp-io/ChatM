@@ -37,7 +37,7 @@
                         <li class="item">Dev. Web</li>
                         <li class="item">Dev. App</li>
                         <li class="item">BDD</li>
-                        <li class="item new">Taverne</li>
+                        <li class="item active" onclick="switchConv(0, 'Taverne');">Taverne</li>
                         <li class="item">Jeux</li>
                     </ul>
                     <h3>Messages privés</h3>
@@ -50,7 +50,7 @@
                 </div>
             </nav>
 
-            <nav id="slide-nav-right" class="slide-nav open-nav">
+            <nav id="slide-nav-right" class="slide-nav">
               <div class="overflow-nav">
                    <h2 class="nav-title">Liste des connectés</h2>
 
@@ -64,7 +64,7 @@
                         <i class="icon icon-dvp-logo"></i>
                     </button>
 
-                    <h1 class="header-title" onclick="popover('about-links');" ng-bind-html="toTrustedHTML(data.nomSalon)"></h1>
+                    <h1 id="header-title" class="header-title" onclick="popover('about-links');" ng-bind-html="toTrustedHTML(data.nomSalon)"></h1>
                     <ul id="about-links" class="about-links">
                         <li class="item">Envoyer un fichier</li>
                         <li class="item">Voir le profil</li>
@@ -76,7 +76,9 @@
                     </button>
                 </header>
 
-                <section id="conversation" hm-Swipe-Right="myNavSwipeRight();" hm-Swipe-Left="myNavSwipeLeft();"></section>
+                <section id="conversations" hm-Swipe-Right="myNavSwipeRight();" hm-Swipe-Left="myNavSwipeLeft();">
+                    <div id="conv-0" class="conv open-conv"></div>
+                </section>
 
                 <footer>
                     <input type="text" placeholder="Message.." value="" class="msg-input" id="msg-input" />
