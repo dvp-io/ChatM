@@ -14,10 +14,6 @@ angular.module('chatApp', ['angular-gestures'])
         getJSON($scope, $http, i);
     }, 1000, 10);
 
-    /*$scope.$watch(function(){
-        addFunction();
-    });*/
-
     $scope.myNavSwipeRight = function() {
         if ( !hasClass(document.getElementById('slide-nav-left'), 'open-nav')
             && !hasClass(document.getElementById('slide-nav-right'), 'open-nav'))
