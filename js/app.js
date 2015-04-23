@@ -51,7 +51,7 @@ var addFunction = function() {
 
 var getJSON = function($scope, $http, i) {
 
-    console.log("json " + i);
+    //console.log("json " + i);
 
     $http.get('json/ajax' + i + '.json').
     success(function (data, status, headers, config) {
@@ -65,6 +65,8 @@ var getJSON = function($scope, $http, i) {
             createLineChannel(data.salon);
             if ( data.pvs.length > 0 )
                 createPvsElement(data.pvs);
+
+            checkNewPvs();
         });
 
     }).
@@ -104,6 +106,17 @@ var createPvsElement = function(pvs) {
             item.setAttribute("class", "new");
         }
     });
+}
+
+var checkNewPvs = function( ) {
+    var mpList = document.getElementById('msg-private-list');
+    var listChild = mpList.getElementsByClassName('new');
+
+    if ( listChild.length > 0 ) {
+        var pellet = document.getElementById('pellet-pvs');
+        pellet.classList.add("new-pvs");
+        pellet.textContent = listChild.length;
+    }
 }
 
 var listChannels = function( users ) {
