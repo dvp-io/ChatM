@@ -8,9 +8,10 @@ angular.module('chatApp', ['angular-gestures'])
     }
 
     var i = 1;
+    getJSON($scope, $http, i);
     $interval(function() {
-        getJSON($scope, $http, i);
         i++;
+        getJSON($scope, $http, i);
     }, 1000, 10);
 
     /*$scope.$watch(function(){
@@ -51,14 +52,13 @@ var addFunction = function() {
 var getJSON = function($scope, $http, i) {
     $http.get('json/ajax' + i + '.json').
     success(function (data, status, headers, config) {
-        $scope.data.salon = data.salon;
-        $scope.data.nomSalon = data.nomSalon;
-        $scope.data.connectes = data.connectes;
-        $scope.data.pvs = data.pvs;
+        if ( data.nomSalon != undefined )
+            $scope.data.nomSalon = data.nomSalon;
+
+        if ( data.connectes != "" )
+                createUsersList(data.connectes);
 
         $scope.$watch('$viewContentLoaded', function(event) {
-            if ( data.connectes != "" )
-                createUsersList(data.connectes);
             createLineChannel(data.salon);
             if ( data.pvs.length > 0 )
                 createPvsElement(data.pvs);
