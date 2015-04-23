@@ -146,4 +146,5 @@ var switchConv = function (id, pseudo) {
     pvs.classList.remove("new");
 
     checkNewPvs();
+    slideNav('left');
 };
