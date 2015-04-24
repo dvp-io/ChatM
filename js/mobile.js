@@ -47,7 +47,6 @@ var setConnect = function (pseudo, password, mode, channel, $http) {
 };
 
 var setMessage = function (donnees, $http) {
-    console.log(donnees);
     $http({
         method: 'POST',
         cache: false,
