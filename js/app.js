@@ -66,7 +66,7 @@ var addFunction = function () {
 
 var getJSON = function ($scope, $http) {
 
-    $http.get('http://chat.dvp.io/ajax.php').success(function (data, status, headers, config) {
+    $http.get('http://www.chat.dvp.io/ajax.php').success(function (data, status, headers, config) {
         if (data.nomSalon !== undefined) {
             $scope.data.nomSalon = data.nomSalon;
         }
