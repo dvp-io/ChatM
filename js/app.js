@@ -1,18 +1,38 @@
-var app = angular.module('chatApp', ['angular-gestures']);
+var app = angular.module('chatApp', ['angular-gestures', 'ngRoute']);
 
-app.controller('chatCtrl', function ($scope, $http, $sce, $interval) {
+var version = "2.1.0";
+var optionsChat = "";
+
+app.config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/login', {
+        templateUrl: 'login.html',
+        controller: 'LoginCtrl'
+    }).when('/chat', {
+        templateUrl: 'chat.html',
+        controller: 'ChatCtrl'
+    }).otherwise({
+        redirectTo: '/login'
+    });
+}]);
+
+app.controller('LoginCtrl', function ($scope, $http, $location) {
+    $scope.ngUserConnect = function () {
+        var ret = userConnect();
+        if (ret) {
+            popover('login');
+            $location.path('/chat');
+        }
+    };
+});
+
+app.controller('ChatCtrl', function ($scope, $http, $sce, $interval) {
     $scope.data = [];
+
+    getJSON($scope, $http);
 
     $scope.toTrustedHTML = function (html) {
         return $sce.trustAsHtml(html);
     };
-
-    var i = 1;
-    getJSON($scope, $http, i);
-    $interval(function () {
-        i++;
-        getJSON($scope, $http, i);
-    }, 1000, 10);
 
     $scope.myNavSwipeRight = function () {
         if (!hasClass(document.getElementById('slide-nav-left'), 'open-nav') && !hasClass(document.getElementById('slide-nav-right'), 'open-nav')) {
@@ -44,11 +64,9 @@ var addFunction = function () {
     }
 };
 
-var getJSON = function ($scope, $http, i) {
+var getJSON = function ($scope, $http) {
 
-    //console.log("json " + i);
-
-    $http.get('json/ajax' + i + '.json').success(function (data, status, headers, config) {
+    $http.get('http://chat.developpez.com/ajax.php').success(function (data, status, headers, config) {
         if (data.nomSalon !== undefined) {
             $scope.data.nomSalon = data.nomSalon;
         }
@@ -66,7 +84,7 @@ var getJSON = function ($scope, $http, i) {
             checkNewPvs();
         });
 
-    }).error(function (data, status, headers, config) { });
+    }).error(function (data, status, headers, config) {});
 };
 
 var createUsersList = function (users) {
