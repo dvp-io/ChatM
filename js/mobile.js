@@ -49,8 +49,8 @@ var setConnect = function (pseudo, password, mode, channel) {
 var setMessage = function (donnees) {
     var xhr = getXDomainRequest();
 
-    xhr.open("POST", "http://www.chat.dvp.io/ajax.php", true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.open("POST", "http://chat.dvp.io/ajax.php", true);
+    xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
     xhr.send(donnees);
     xhr.onreadystatechange = function(){
       if (xhr.readyState == 0) {
