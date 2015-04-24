@@ -50,7 +50,7 @@ var setMessage = function (donnees) {
     var xhr = getXDomainRequest();
 
     xhr.open("POST", "http://chat.dvp.io/ajax.php", true);
-    xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+    xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(donnees);
     xhr.onreadystatechange = function(){
       if (xhr.readyState == 0) {
