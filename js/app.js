@@ -17,7 +17,8 @@ app.config(['$routeProvider', function ($routeProvider) {
 
 app.controller('LoginCtrl', function ($scope, $http, $location) {
     $scope.ngUserConnect = function () {
-        var ret = userConnect();
+        var ret = userConnect($http);
+        console.log(ret);
         if (ret) {
             popover('login');
             $location.path('/chat');

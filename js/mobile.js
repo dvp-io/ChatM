@@ -1,7 +1,7 @@
 var version = "2.1.0";
 var optionsChat = "";
 
-var userConnect = function () {
+var userConnect = function ( $http ) {
     var pseudo = readCookie("anochat_pseudo");
     var password = readCookie('anochat_motdepasse');
     var mode = 1;
@@ -38,27 +38,24 @@ var userConnect = function () {
     document.getElementById('identMessage').innerHTML = "Connexion en cours...";
     document.getElementById('login_send').setAttribute("disabled", true);
 
-    return setConnect(pseudo, password, mode, channel);
+    return setConnect(pseudo, password, mode, channel, $http);
 };
 
-var setConnect = function (pseudo, password, mode, channel) {
+var setConnect = function (pseudo, password, mode, channel, $http) {
     return setMessage({ q: "conn", v: version, identifiant: pseudo, motdepasse: password, mode: mode,
-        decalageHoraire: new Date().getTimezoneOffset(), options: optionsChat, salon: channel });
+        decalageHoraire: new Date().getTimezoneOffset(), options: optionsChat, salon: channel }, $http);
 };
 
-var setMessage = function (donnees) {
-    var xhr = getXDomainRequest();
-
-    xhr.open("POST", "http://chat.dvp.io/ajax.php", true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(JSON.stringify(donnees));
-    xhr.onreadystatechange = function(){
-      if (xhr.readyState == 0) {
-        if (xhr.status == 200) {
-            return true;
-        } else { return false; }
-      }
-    }
+var setMessage = function (donnees, $http) {
+    console.log(donnees);
+    $http({
+        method: 'POST',
+        cache: false,
+        url: 'http://chat.dvp.io/ajax.php',
+        data: donnees
+    }).success(function (data, status, headers, config) {
+        return data;
+    }).error(function (data, status, headers, config) {});
 };
 
 var readCookie = function (nom) {
