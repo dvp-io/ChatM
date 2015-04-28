@@ -119,6 +119,9 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
 
         doStatus : function (data) {
             sharedProperties.setData(data);
+            if (data.etat === -1) {
+                $location.path('/login');
+            }
             if (data.etat === 2) {
                 sharedProperties.setSession(data.session);
             }
