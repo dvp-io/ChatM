@@ -110,7 +110,7 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             sharedProperties.setData(json);
             return $http({
                 method: 'POST',
-                url: 'http://chat.developpez.com/ajax.php',
+                url: 'http://chat.dvp.io/ajax.php',
                 data: json
             }).success(function (data, status, headers, config) {
                 return data;
@@ -180,7 +180,7 @@ app.factory('loadData', function (sharedProperties) {
         var users = document.getElementsByClassName("nomConnecte");
         for (user in users) {
             if (users.item(user) !== null) {
-                users.item(user).setAttribute("onclick", "changeName(this); popover('about-user'); slideNav('right'); return false;");
+                users.item(user).setAttribute("ng-click", "changeName(this); popover('about-user'); slideNav('right'); return false;");
             }
         }
     };
@@ -249,27 +249,6 @@ app.factory('loadData', function (sharedProperties) {
         conv.appendChild(item);
     };
 
-    var switchConv = function (id, pseudo) {
-        var parent = document.getElementById("conversations");
-        var convActive = parent.getElementsByClassName("open-conv");
-        convActive[0].classList.remove("open-conv");
-
-        document.getElementById("conv-" + id).classList.add("open-conv");
-        document.getElementById('header-title').innerHTML = pseudo;
-
-        // on lui enlève la classe new puisqu'on a switché sur la conv
-        if (id !== 0) {
-            var pvs = document.getElementById("pvs-" + id);
-            pvs.classList.remove("new");
-        } else {
-            var chan = document.getElementById("chan-0");
-            chan.classList.remove("new");
-        }
-
-        checkNewPvs();
-        slideNav('left');
-    };
-
     var loadData = {
         getData: function ($scope) {
             if (sharedProperties.getData() !== undefined) {
@@ -329,6 +308,27 @@ app.controller('ChatCtrl', function (sharedProperties, setMessage, loadData, $sc
             $scope.data = loadData.getData($scope);
         });
     }, 3000);
+
+    $scope.switchConv = function (id, pseudo) {
+        var parent = document.getElementById("conversations");
+        var convActive = parent.getElementsByClassName("open-conv");
+        convActive[0].classList.remove("open-conv");
+
+        document.getElementById("conv-" + id).classList.add("open-conv");
+        document.getElementById('header-title').innerHTML = pseudo;
+
+        // on lui enlève la classe new puisqu'on a switché sur la conv
+        if (id !== 0) {
+            var pvs = document.getElementById("pvs-" + id);
+            pvs.classList.remove("new");
+        } else {
+            var chan = document.getElementById("chan-0");
+            chan.classList.remove("new");
+        }
+
+        checkNewPvs();
+        slideNav('left');
+    };
 
     $scope.toTrustedHTML = function (html) {
         return $sce.trustAsHtml(html);
