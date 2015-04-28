@@ -110,7 +110,7 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             sharedProperties.setData(json);
             return $http({
                 method: 'POST',
-                url: 'http://chat.dvp.io/ajax.php',
+                url: 'http://chat.developpez.com/ajax.php',
                 data: json
             }).success(function (data, status, headers, config) {
                 return data;
@@ -122,7 +122,7 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             if (data.etat === -1) {
                 $location.path('/login');
             }
-            if (data.etat === 2) {
+            else if (data.etat === 2) {
                 sharedProperties.setSession(data.session);
             }
             if (firstConnexion === 0) {
