@@ -110,7 +110,7 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             sharedProperties.setData(json);
             return $http({
                 method: 'POST',
-                url: 'http://chatm.dvp.io/ajax.php',
+                url: 'http://chat.dvp.io/ajax.php',
                 data: json
             }).success(function (data, status, headers, config) {
                 return data;
@@ -175,7 +175,7 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
     return setMessage;
 });
 
-app.factory('loadData', function (sharedProperties) {
+app.factory('loadData', function (sharedProperties, $timeout) {
     var addFunction = function () {
         var users = document.getElementsByClassName("nomConnecte");
         for (user in users) {
@@ -270,15 +270,24 @@ app.factory('loadData', function (sharedProperties) {
                     createUsersList(sharedProperties.getData().connectes);
                 }
 
-                console.log(sharedProperties.getData());
-                if (sharedProperties.getData().smileys !== "") {
+                if (sharedProperties.getData().smileys !== undefined) {
                     $scope.data.smileys = sharedProperties.getData().smileys;
                 }
 
-                $scope.$watch('$viewContentLoaded', function (event) {
+                $timeout(function () {
                     createLineChannel(sharedProperties.getData().salon);
                     if (sharedProperties.getData().pvs.length > 0) {
                         createPvsElement(sharedProperties.getData().pvs);
+                    }
+
+                    if (sharedProperties.getData().smileys !== undefined) {
+                        var div = document.getElementById('list-smileys-perso');
+                        var list = div.getElementsByTagName("a");
+                        for (i = 0; i < list.length; i++) {
+                            list[i].setAttribute("onclick", "return false;");
+                            var link = list[i].getElementsByTagName('img')[0].getAttribute("src");
+                            list[i].getElementsByTagName('img')[0].setAttribute("src", "http://chat.developpez.com/" + link);
+                        }
                     }
 
                     checkNewPvs();
