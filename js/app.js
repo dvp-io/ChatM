@@ -110,7 +110,7 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             sharedProperties.setData(json);
             return $http({
                 method: 'POST',
-                url: 'http://chat.dvp.io/ajax.php',
+                url: 'http://chat.developpez.com/ajax.php',
                 data: json
             }).success(function (data, status, headers, config) {
                 return data;
