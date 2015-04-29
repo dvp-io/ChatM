@@ -1,6 +1,6 @@
 var app = angular.module('chatApp', ['angular-gestures', 'ngRoute'], setPostHeader),
     firstConnexion = 0,
-    proxyURI = 'http://chatp.dvp.io/',
+    proxyURI = 'http://chat.dvp.io/',
     anoSmileys = {
       'smile.gif': ':)',
       'sad.gif': ':(',
@@ -74,16 +74,19 @@ var app = angular.module('chatApp', ['angular-gestures', 'ngRoute'], setPostHead
     version = "2.1.0",
     optionsChat = "",
     session,
-    lastData;
+    lastData,
+    a = 0;
 
-/* Populate smileys *
-var smiley = document.createElement('img');
-var smileysList = document.getElementById('list-smileys-chat');
-for (var img in anoSmileys) {
-  smiley.src = proxyURI.concat(img);
-  smiley.alt = anoSmileys[img];
-  smileysList.appendChild(smiley);
-}*/
+/* Populate smileys */
+var populateSmileys = function() {
+  var smileysList = document.getElementById('list-smileys-chat');
+  for (var img in anoSmileys) {
+    var smiley = document.createElement('img');
+    smiley.src = proxyURI.concat('images/smileys/',img);
+    smiley.alt = anoSmileys[img];
+    smileysList.appendChild(smiley);
+  }
+}
 
 function setPostHeader($httpProvider) {
     // Use x-www-form-urlencoded Content-Type
@@ -196,7 +199,7 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             sharedProperties.setData(json);
             return $http({
                 method: 'POST',
-                url: proxyURI,
+                url: proxyURI.concat('ajax.php'),
                 cache: false,
                 data: json
             }).success(function (data, status, headers, config) {
@@ -400,6 +403,9 @@ app.controller('LoginCtrl', function (sharedProperties, setMessage, loadData, $s
 });
 
 app.controller('ChatCtrl', function (sharedProperties, setMessage, loadData, $scope, $sce, $interval) {
+
+    populateSmileys();
+
     $scope.data = [];
 
     $scope.data = loadData.getData($scope);
@@ -408,7 +414,7 @@ app.controller('ChatCtrl', function (sharedProperties, setMessage, loadData, $sc
         if (sharedProperties.getEtat() < 1) {
             stopInterval();
         } else {
-            setMessage.getData({q: "act", v: sharedProperties.getVersion(), s: sharedProperties.getSession(), a: 0}).then(function (response) {
+            setMessage.getData({q: "act", v: sharedProperties.getVersion(), s: sharedProperties.getSession(), a: a++}).then(function (response) {
                 setMessage.doStatus(response.data);
                 $scope.data = loadData.getData($scope);
             });
