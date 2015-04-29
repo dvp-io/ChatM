@@ -1,6 +1,85 @@
-var app = angular.module('chatApp', ['angular-gestures', 'ngRoute'], setPostHeader);
+var app = angular.module('chatApp', ['angular-gestures', 'ngRoute'], setPostHeader),
+    firstConnexion = 0,
+    proxyURI = 'http://chatp.dvp.io/',
+    anoSmileys = {
+      'smile.gif': ':)',
+      'sad.gif': ':(',
+      'wink.gif': ';)',
+      'bigsmile.gif': ':D',
+      'lol.gif': ':lol:',
+      'mouarf.gif': ':mouarf:',
+      'haha.gif': ':haha:',
+      'ptdr.gif': ':ptdr:',
+      'mrgreen.gif': ':mrgreen:',
+      'aie.gif': ':aie:',
+      'weird.gif': ':weird:',
+      'lun1.gif': '8-)',
+      'lun2.gif': ':lun:',
+      'red.gif': ':oops:',
+      'roll.gif': ':roll:',
+      'no.gif': ':no:',
+      'tongue.gif': ':P',
+      'langue.gif': ':langue:',
+      'langue2.gif': ':langue2:',
+      'confused.gif': ':?',
+      'eek.gif': '8O',
+      'calim2.gif': ':calim2:',
+      'cry.gif': ':cry:',
+      'salut.gif': ':salut:',
+      'awe.gif': ':hola:',
+      'zzz.gif': ':zzz:',
+      'cfou.gif': ':cfou:',
+      'mur.gif': ':mur:',
+      'evil.gif': ':evil:',
+      'twisted.gif': ':twisted:',
+      'whistle.gif': ':whistle:',
+      'whistle2.gif': ':whistle2:',
+      'chin.gif': ':chin:',
+      'ccool.gif': ':ccool:',
+      'koi.gif': ':koi:',
+      'zen.gif': ':zen:',
+      'roi.gif': ':roi:',
+      'nono.gif': ':nono:',
+      'ange.gif': ':ange:',
+      'calin.gif': ':calin:',
+      'kiss.gif': ':kiss:',
+      'kiss2.gif': ':kiss2:',
+      'zoubi.gif': ':zoubi:',
+      'rose.gif': ':rose:',
+      'rose2.gif': ':rose2:',
+      'fleur.gif': ':fleur:',
+      'fleur2.gif': ':fleur2:',
+      'heart.gif': ':heart:',
+      'java.gif': ':java:',
+      'br.gif': ':arrow:',
+      'triste.gif': ':triste:',
+      'vomi.gif': ':vomi:',
+      'alerte.gif': ':alerte:',
+      'yeah.gif': ':yeah:',
+      'bravo.gif': ':bravo:',
+      'fume.gif': ':fume:',
+      'salive.gif': ':salive:',
+      'toutcasse.gif': ':toutcasse:',
+      'fessee.gif': ':fessee:',
+      'sm.gif': ':sm:',
+      'scarymovie.gif': ':scarymov:',
+      'massacre.gif': ':massacre:',
+      'rouleau.gif': ':rouleau:',
+      'pastaper.gif': ':pastaper:',
+      'boulet.gif': ':boulet:',
+      'dehors.gif': ':dehors:',
+      'google.gif': ':google:',
+      'dvp.png': ':dvp:'
+    };
 
-var firstConnexion = 0;
+/* Populate smileys */
+var smiley = document.createElement('img');
+var smileysList = document.getElementById('list-smileys-chat');
+for (var img in anoSmileys) {
+  smiley.src = proxyURI.concat(img);
+  smiley.alt = anoSmileys[img];
+  smileysList.appendChild(smiley);
+}
 
 function setPostHeader($httpProvider) {
     // Use x-www-form-urlencoded Content-Type
@@ -110,7 +189,7 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             sharedProperties.setData(json);
             return $http({
                 method: 'POST',
-                url: 'http://chat.dvp.io/ajax.php',
+                url: proxyURI,
                 data: json
             }).success(function (data, status, headers, config) {
                 return data;
@@ -286,7 +365,7 @@ app.factory('loadData', function (sharedProperties, $timeout) {
                         for (i = 0; i < list.length; i++) {
                             list[i].setAttribute("onclick", "return false;");
                             var link = list[i].getElementsByTagName('img')[0].getAttribute("src");
-                            list[i].getElementsByTagName('img')[0].setAttribute("src", "http://chat.developpez.com/" + link);
+                            list[i].getElementsByTagName('img')[0].setAttribute("src", proxyURI + link);
                         }
                     }
 
