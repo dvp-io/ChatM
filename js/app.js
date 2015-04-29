@@ -72,14 +72,14 @@ var app = angular.module('chatApp', ['angular-gestures', 'ngRoute'], setPostHead
       'dvp.png': ':dvp:'
     };
 
-/* Populate smileys */
+/* Populate smileys *
 var smiley = document.createElement('img');
 var smileysList = document.getElementById('list-smileys-chat');
 for (var img in anoSmileys) {
   smiley.src = proxyURI.concat(img);
   smiley.alt = anoSmileys[img];
   smileysList.appendChild(smiley);
-}
+}*/
 
 function setPostHeader($httpProvider) {
     // Use x-www-form-urlencoded Content-Type
