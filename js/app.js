@@ -1,6 +1,9 @@
 var app = angular.module('chatApp', ['angular-gestures', 'ngRoute'], setPostHeader);
 
 var firstConnexion = 0;
+var version = "2.1.0";
+var optionsChat = "";
+var session, lastData;
 
 function setPostHeader($httpProvider) {
     // Use x-www-form-urlencoded Content-Type
@@ -45,10 +48,6 @@ function setPostHeader($httpProvider) {
         return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
     }];
 }
-
-var version = "2.1.0";
-var optionsChat = "";
-var session, lastData;
 
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/login', {
