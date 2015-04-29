@@ -70,7 +70,11 @@ var app = angular.module('chatApp', ['angular-gestures', 'ngRoute'], setPostHead
       'dehors.gif': ':dehors:',
       'google.gif': ':google:',
       'dvp.png': ':dvp:'
-    };
+    },
+    version = "2.1.0",
+    optionsChat = "",
+    session,
+    lastData;
 
 /* Populate smileys *
 var smiley = document.createElement('img');
@@ -125,10 +129,6 @@ function setPostHeader($httpProvider) {
     }];
 }
 
-var version = "2.1.0";
-var optionsChat = "";
-var session, lastData;
-
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/login', {
         templateUrl: 'login.html',
@@ -145,6 +145,7 @@ app.service('sharedProperties', function () {
     var data = [];
     var session = [];
     var version = "2.1.0";
+    var etat = 0;
 
     return {
         getData: function () {
@@ -161,6 +162,12 @@ app.service('sharedProperties', function () {
         },
         getVersion: function () {
             return version;
+        },
+        getEtat: function () {
+            return etat;
+        },
+        setEtat: function (value) {
+            etat = value;
         }
     };
 });
@@ -189,7 +196,12 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             sharedProperties.setData(json);
             return $http({
                 method: 'POST',
+<<<<<<< HEAD
                 url: proxyURI,
+=======
+                cache: false,
+                url: 'http://chat.dvp.io/ajax.php',
+>>>>>>> 1217e54ca8dcaac3545bec17939f43d1497dc183
                 data: json
             }).success(function (data, status, headers, config) {
                 return data;
@@ -198,6 +210,7 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
 
         doStatus : function (data) {
             sharedProperties.setData(data);
+            sharedProperties.setEtat(data.etat);
             if (data.etat === -1) {
                 $location.path('/login');
             }
@@ -395,12 +408,20 @@ app.controller('ChatCtrl', function (sharedProperties, setMessage, loadData, $sc
 
     $scope.data = loadData.getData($scope);
 
-    $interval(function () {
-        setMessage.getData({q: "act", v: sharedProperties.getVersion(), s: sharedProperties.getSession(), a: 0}).then(function (response) {
-            setMessage.doStatus(response.data);
-            $scope.data = loadData.getData($scope);
-        });
+    var interval = $interval(function () {
+        if (sharedProperties.getEtat() < 1) {
+            stopInterval();
+        } else {
+            setMessage.getData({q: "act", v: sharedProperties.getVersion(), s: sharedProperties.getSession(), a: 0}).then(function (response) {
+                setMessage.doStatus(response.data);
+                $scope.data = loadData.getData($scope);
+            });
+        }
     }, 3000);
+
+    var stopInterval = function() {
+        $interval.cancel(interval);
+    };
 
     $scope.switchConv = function (id, pseudo) {
         var parent = document.getElementById("conversations");
