@@ -110,7 +110,7 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             sharedProperties.setData(json);
             return $http({
                 method: 'POST',
-                url: 'http://chat.developpez.com/ajax.php',
+                url: 'http://chatm.dvp.io/ajax.php',
                 data: json
             }).success(function (data, status, headers, config) {
                 return data;
@@ -268,6 +268,11 @@ app.factory('loadData', function (sharedProperties) {
 
                 if (sharedProperties.getData().connectes !== "") {
                     createUsersList(sharedProperties.getData().connectes);
+                }
+
+                console.log(sharedProperties.getData());
+                if (sharedProperties.getData().smileys !== "") {
+                    $scope.data.smileys = sharedProperties.getData().smileys;
                 }
 
                 $scope.$watch('$viewContentLoaded', function (event) {
