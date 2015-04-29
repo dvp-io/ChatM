@@ -196,12 +196,8 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             sharedProperties.setData(json);
             return $http({
                 method: 'POST',
-<<<<<<< HEAD
                 url: proxyURI,
-=======
                 cache: false,
-                url: 'http://chat.dvp.io/ajax.php',
->>>>>>> 1217e54ca8dcaac3545bec17939f43d1497dc183
                 data: json
             }).success(function (data, status, headers, config) {
                 return data;
