@@ -1,3 +1,37 @@
+var switchConv = function (id, pseudo) {
+    var parent = document.getElementById("conversations");
+    var convActive = parent.getElementsByClassName("open-conv");
+    convActive[0].classList.remove("open-conv");
+
+    document.getElementById("conv-" + id).classList.add("open-conv");
+    document.getElementById('header-title').innerHTML = pseudo;
+
+    // on lui enlève la classe new puisqu'on a switché sur la conv
+    if (id !== 0) {
+        var pvs = document.getElementById("pvs-" + id);
+        pvs.classList.remove("new");
+    } else {
+        var chan = document.getElementById("chan-0");
+        chan.classList.remove("new");
+    }
+
+    checkNewPvs();
+    slideNav('left');
+};
+
+var checkNewPvs = function () {
+    var mpList = document.getElementById('msg-private-list');
+    var listChild = mpList.getElementsByClassName('new');
+    var pellet = document.getElementById('pellet-pvs');
+
+    if (listChild.length > 0) {
+        pellet.classList.add("new-pvs");
+        pellet.textContent = listChild.length;
+    } else {
+        pellet.classList.remove("new-pvs");
+    }
+};
+
 var slideNav = function (direction) {
     var cls = "open-nav";
     var element = document.getElementById("slide-nav-" + direction);

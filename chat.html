@@ -3,15 +3,15 @@
         <div class="overflow-nav">
             <h3>Salons</h3>
             <ul class="item-list">
-                <li class="item">Dev. Web</li>
-                <li class="item">Dev. App</li>
-                <li class="item">BDD</li>
-                <li id="chan-0" class="item new active" onclick="switchConv(0, 'Taverne');">Taverne</li>
-                <li class="item">Jeux</li>
+                <li class="item item-10" ng-click="switchChannel('/JOIN', 'Développement_Web', $event);">Dev. Web</li>
+                <li class="item item-20" ng-click="switchChannel('/JOIN', 'Développement_Applicatif', $event);">Dev. App</li>
+                <li class="item item-30" ng-click="switchChannel('/JOIN', 'Base_de_données', $event);">BDD</li>
+                <li class="item item-40" ng-click="switchChannel('/JOIN', 'Taverne', $event);">Taverne</li>
+                <li class="item item-50" ng-click="switchChannel('/JOIN', 'Jeux', $event);">Jeux</li>
             </ul>
             <h3>Messages privés</h3>
             <ul id="msg-private-list" class="item-list"></ul>
-            <button class="logout">
+            <button class="logout" ng-click="logout();">
                 <i class="icon icon-exit"></i>
             Se déconnecter
 
@@ -44,8 +44,8 @@
             <div id="conv-0" class="conv open-conv"></div>
         </section>
         <footer>
-            <input type="text" placeholder="Message.." value="" class="msg-input" id="msg-input" />
-            <button class="msg-send">
+            <input type="text" placeholder="Message.." value="" class="msg-input" id="msg-input" ng-keyup="keyEnter($event.keyCode)" />
+            <button class="msg-send" ng-click="send();">
                 <i class="icon icon-share"></i>
             </button>
             <nav class="footer-toolbar">
@@ -101,7 +101,11 @@
 <div id="popover-smileys" class="popover-smileys">
     <h2 class="popover-title">Mes smileys favoris</h2>
     <div class="smileys-container">
-        <div id="list-smileys-chat"></div>
-        <div id="list-smileys-perso" class="list-smileys-perso" ng-bind-html="toTrustedHTML(data.smileys)"></div>
+        <div id="list-smileys-chat" class="list-smileys">
+            <a href="#" onclick="return false" ng-repeat="(key, value) in data.anoSmileys">
+                <img src="{{data.proxyURI}}images/smileys/{{key}}" alt="{{value}}" />
+            </a>
+        </div>
+        <div id="list-smileys-perso" class="list-smileys" ng-bind-html="toTrustedHTML(data.smileys)"></div>
     </div>
 </div>

@@ -77,17 +77,6 @@ var app = angular.module('chatApp', ['angular-gestures', 'ngRoute'], setPostHead
     lastData,
     a = 0;
 
-/* Populate smileys */
-var populateSmileys = function() {
-  var smileysList = document.getElementById('list-smileys-chat');
-  for (var img in anoSmileys) {
-    var smiley = document.createElement('img');
-    smiley.src = proxyURI.concat('images/smileys/',img);
-    smiley.alt = anoSmileys[img];
-    smileysList.appendChild(smiley);
-  }
-}
-
 function setPostHeader($httpProvider) {
     // Use x-www-form-urlencoded Content-Type
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -146,9 +135,8 @@ app.config(['$routeProvider', function ($routeProvider) {
 
 app.service('sharedProperties', function () {
     var data = [];
-    var session = [];
-    var version = "2.1.0";
     var etat = 0;
+    var channel = "";
 
     return {
         getData: function () {
@@ -171,6 +159,12 @@ app.service('sharedProperties', function () {
         },
         setEtat: function (value) {
             etat = value;
+        },
+        getChannelActive: function () {
+            return channel;
+        },
+        setChannelActive: function (value) {
+            channel = value;
         }
     };
 });
@@ -213,6 +207,11 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             if (data.etat === -1) {
                 $location.path('/login');
             }
+            else if (data.etat === 0) {
+                $location.path('/login');
+                document.getElementById("identMessage").classList.add("active");
+                document.getElementById("identMessage").innerHTML = data.message;
+            }
             else if (data.etat === 2) {
                 sharedProperties.setSession(data.session);
             }
@@ -234,11 +233,13 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
                 password = document.getElementById("login_password").value;
 
                 if (pseudo == "") {
+                    document.getElementById('identMessage').classList.add("active");
                     document.getElementById('identMessage').innerHTML = "Vous devez entrer votre identifiant.";
                     return;
                 }
 
                 if (password == "") {
+                    document.getElementById('identMessage').classList.add("active");
                     document.getElementById('identMessage').innerHTML = "Vous devez entrer votre mot de passe.";
                     return;
                 }
@@ -247,15 +248,19 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             var channel = document.getElementById("login_channel").value;
 
             if (channel == -1) {
+                document.getElementById('identMessage').classList.add("active");
                 document.getElementById('identMessage').innerHTML = "Vous devez choisir un salon.";
                 return;
             }
+
+            sharedProperties.setChannelActive(channel);
 
             if (mode == 0) {
                 document.getElementById("login_pseudo").value = "";
                 document.getElementById("login_password").value = "";
             }
 
+            document.getElementById('identMessage').classList.add("active");
             document.getElementById('identMessage').innerHTML = "Connexion en cours...";
             document.getElementById('login_send').setAttribute("disabled", true);
 
@@ -271,7 +276,7 @@ app.factory('loadData', function (sharedProperties, $timeout) {
         var users = document.getElementsByClassName("nomConnecte");
         for (user in users) {
             if (users.item(user) !== null) {
-                users.item(user).setAttribute("ng-click", "changeName(this); popover('about-user'); slideNav('right'); return false;");
+                users.item(user).setAttribute("onclick", "changeName(this); popover('about-user'); slideNav('right'); return false;");
             }
         }
     };
@@ -289,6 +294,9 @@ app.factory('loadData', function (sharedProperties, $timeout) {
         item.setAttribute('class', 'line');
         item.innerHTML = channel;
         conv.appendChild(item);
+        console.log(conv.offsetHeight);
+        conv.scrollTo = conv.offsetHeight;
+        console.log(conv.scrollTop);
     };
 
     var createPvsElement = function (pvs) {
@@ -296,8 +304,8 @@ app.factory('loadData', function (sharedProperties, $timeout) {
         var listChild = mpList.children;
         //console.log(listChild);
         angular.forEach(pvs, function (key, value) {
-            var item = document.createElement("li");
             if (!inArray("pvs-" + key.id, listChild)) {
+                var item = document.createElement("li");
                 // ici on crée l'onglet de la conv dans le menu de gauche
                 item.setAttribute("class", "item new");
                 item.setAttribute("id", "pvs-" + key.id);
@@ -312,24 +320,13 @@ app.factory('loadData', function (sharedProperties, $timeout) {
                 conv.setAttribute("class", "conv");
                 parent.appendChild(conv);
             } else {
-                item.setAttribute("class", "new");
+                if (!hasClass(document.getElementById("conv-" + key.id), "open-conv")) {
+                    document.getElementById("pvs-" + key.id).setAttribute("class", "item new");
+                }
             }
 
             addMsgPvs(key.id, key.html);
         });
-    };
-
-    var checkNewPvs = function () {
-        var mpList = document.getElementById('msg-private-list');
-        var listChild = mpList.getElementsByClassName('new');
-        var pellet = document.getElementById('pellet-pvs');
-
-        if (listChild.length > 0) {
-            pellet.classList.add("new-pvs");
-            pellet.textContent = listChild.length;
-        } else {
-            pellet.classList.remove("new-pvs");
-        }
     };
 
     var addMsgPvs = function (id, html) {
@@ -338,13 +335,15 @@ app.factory('loadData', function (sharedProperties, $timeout) {
         item.setAttribute('class', 'line');
         item.innerHTML = html;
         conv.appendChild(item);
+        //conv.scroll(0, conv.style.height);
     };
 
     var loadData = {
         getData: function ($scope) {
             if (sharedProperties.getData() !== undefined) {
-                if (sharedProperties.getData().nomSalon !== undefined) {
-                    switch (sharedProperties.getData().nomSalon) {
+                var chanActive = sharedProperties.getData().nomSalon;
+                if (chanActive !== undefined) {
+                    switch (chanActive) {
                         case "Développement Applicatif" :
                             $scope.data.nomSalon = "Dev. App.";
                             break;
@@ -352,7 +351,7 @@ app.factory('loadData', function (sharedProperties, $timeout) {
                             $scope.data.nomSalon = "Dev. Web";
                             break;
                         default :
-                            $scope.data.nomSalon = sharedProperties.getData().nomSalon;
+                            $scope.data.nomSalon = chanActive;
                             break;
                     }
                 }
@@ -385,6 +384,17 @@ app.factory('loadData', function (sharedProperties, $timeout) {
                 });
             }
             return $scope.data;
+        },
+
+        getChannel: function () {
+            var chanActive = sharedProperties.getData().nomSalon.replace(" ", "_");
+            var element = document.getElementById('slide-nav-left').getElementsByClassName('item-' + sharedProperties.getChannelActive())[0];
+            element.removeAttribute("ng-click");
+            element.classList.add("active");
+            element.classList.add("new");
+            element.setAttribute("id", "chan-0");
+            element.setAttribute("name", chanActive);
+            element.setAttribute("onclick", "switchConv(0, '" + element.innerHTML + "')");
         }
     };
     return loadData;
@@ -402,13 +412,15 @@ app.controller('LoginCtrl', function (sharedProperties, setMessage, loadData, $s
     };
 });
 
-app.controller('ChatCtrl', function (sharedProperties, setMessage, loadData, $scope, $sce, $interval) {
-
-    populateSmileys();
+app.controller('ChatCtrl', function (sharedProperties, setMessage, loadData, $scope, $sce, $interval, $location) {
 
     $scope.data = [];
 
     $scope.data = loadData.getData($scope);
+    $scope.data.anoSmileys = anoSmileys;
+    $scope.data.proxyURI = proxyURI;
+
+    loadData.getChannel();
 
     var interval = $interval(function () {
         if (sharedProperties.getEtat() < 1) {
@@ -425,29 +437,54 @@ app.controller('ChatCtrl', function (sharedProperties, setMessage, loadData, $sc
         $interval.cancel(interval);
     };
 
-    $scope.switchConv = function (id, pseudo) {
-        var parent = document.getElementById("conversations");
-        var convActive = parent.getElementsByClassName("open-conv");
-        convActive[0].classList.remove("open-conv");
-
-        document.getElementById("conv-" + id).classList.add("open-conv");
-        document.getElementById('header-title').innerHTML = pseudo;
-
-        // on lui enlève la classe new puisqu'on a switché sur la conv
-        if (id !== 0) {
-            var pvs = document.getElementById("pvs-" + id);
-            pvs.classList.remove("new");
-        } else {
-            var chan = document.getElementById("chan-0");
-            chan.classList.remove("new");
-        }
-
-        checkNewPvs();
-        slideNav('left');
-    };
-
     $scope.toTrustedHTML = function (html) {
         return $sce.trustAsHtml(html);
+    };
+
+    $scope.logout = function () {
+        stopInterval();
+        setMessage.getData({ q: "cmd", v: version, s: session, c: "/QUIT", a: a++});
+        $location.path("/login");
+    };
+
+    $scope.send = function () {
+        var texte = document.getElementById("msg-input").value;
+        setMessage.getData({ q: "cmd", v: version, s: session, c: texte, a: a++ }).then(function (response) {
+            document.getElementById("msg-input").value = "";
+            setMessage.doStatus(response.data);
+            $scope.data = loadData.getData($scope);
+        });
+    };
+
+    $scope.keyEnter = function (keyCode) {
+        if (keyCode === 13) {
+            $scope.send();
+        }
+    };
+
+    $scope.switchChannel = function (cmd, channel, $event) {
+        var chanActive = document.getElementById("chan-0");
+        var nameChanActive = chanActive.getAttribute("name");
+        chanActive.removeAttribute("onclick");
+        chanActive.removeAttribute("name");
+        chanActive.removeAttribute("id");
+        chanActive.classList.remove("active");
+        chanActive.classList.remove("new");
+        chanActive.setAttribute("ng-click", "switchChannel('/JOIN', '" + nameChanActive + "', $event);");
+
+        var element = $event.target;
+        element.removeAttribute("ng-click");
+        element.classList.add("active");
+        element.classList.add("new");
+        element.setAttribute("id", "chan-0");
+        element.setAttribute("name", channel);
+        element.setAttribute("onclick", "switchConv(0, '" + element.innerHTML + "')");
+
+        setMessage.getData({ q: "cmd", v: version, s: session, c: cmd + " " + channel, a: a++}).then(function (response) {
+            document.getElementById("msg-input").value = "";
+            setMessage.doStatus(response.data);
+            $scope.data = loadData.getData($scope);
+        });
     };
 
     $scope.myNavSwipeRight = function () {
