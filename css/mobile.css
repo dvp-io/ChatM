@@ -3,6 +3,9 @@ body {position:fixed; overflow:hidden;}
 * {margin:0; padding:0; box-sizing: border-box; outline:0;}
 ul {list-style:none;}
 
+pre {white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; width:99%;overflow:auto;margin: 5px 0; padding: 5px 5px 5px 10px; color: #3f3b36; border: 1px solid #f5d995; border-left: 1rem solid #f5d995; font: lighter 12px Monaco,'MonacoRegular',monospace;}
+pre > span {display: block; background:transparent url(../img/bg-pre.jpg) repeat; padding:0 5px;}
+
 .icon {font-size:1.25rem;}
 
 .ng-scope {height:100%; width:100%;}
@@ -101,6 +104,8 @@ section .line [class^="line-"]
     , section .line [class*="line-"] {display:inline-block;}
 section .line .line-arrow .icon-arrow-up {font-size:1rem; color:dodgerblue;}
 section .line .line-arrow .icon-arrow-down {font-size:1rem; color:darkorange;}
+section .line .citation {font-family: Georgia, serif; font-size: 12px; font-style: italic; width: 99%; margin: 0.25em 0; padding: 0.25em 40px; line-height: 1.45; position: relative; color: #383838; border: 1px solid #f2f2f2;}
+section .line .citation:before {display: block; content: "\201C"; font-size: 60px; position: absolute; left: 0px; top: -15px; color: #7a7a7a;}
 
 .popover-smileys {display:none; width:98%; height:70%; overflow:scroll; background-color:#f1f1f1; border:2px solid #444; border-radius:10px; position:absolute; bottom:90px; margin:0 auto;}
 .popover-smileys .popover-title {font-size:1.25rem; text-transform:uppercase; height:40px; line-height:40px; padding:0 10px; border-bottom:1px solid #999;}

@@ -206,18 +206,20 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             sharedProperties.setEtat(data.etat);
             if (data.etat === -1) {
                 $location.path('/login');
+                document.getElementById('login_send').removeAttribute("disabled");
             }
             else if (data.etat === 0) {
                 $location.path('/login');
                 document.getElementById("identMessage").classList.add("active");
                 document.getElementById("identMessage").innerHTML = data.message;
+                document.getElementById('login_send').removeAttribute("disabled");
             }
             else if (data.etat === 2) {
                 sharedProperties.setSession(data.session);
-            }
-            if (firstConnexion === 0) {
-                popover('login');
-                $location.path('/chat');
+                if (firstConnexion === 0) {
+                    popover('login');
+                    $location.path('/chat');
+                }
             }
         },
 
@@ -294,9 +296,7 @@ app.factory('loadData', function (sharedProperties, $timeout) {
         item.setAttribute('class', 'line');
         item.innerHTML = channel;
         conv.appendChild(item);
-        console.log(conv.offsetHeight);
         conv.scrollTo = conv.offsetHeight;
-        console.log(conv.scrollTop);
     };
 
     var createPvsElement = function (pvs) {
@@ -394,7 +394,8 @@ app.factory('loadData', function (sharedProperties, $timeout) {
             element.classList.add("new");
             element.setAttribute("id", "chan-0");
             element.setAttribute("name", chanActive);
-            element.setAttribute("onclick", "switchConv(0, '" + element.innerHTML + "')");
+            element.onclick = switchConv(0, element.innerHTML);
+            //element.setAttribute("onclick", "switchConv(0, '" + element.innerHTML + "')");
         }
     };
     return loadData;
@@ -406,7 +407,9 @@ app.controller('LoginCtrl', function (sharedProperties, setMessage, loadData, $s
         if (json !== undefined) {
             setMessage.getData(json).then(function (response) {
                 setMessage.doStatus(response.data);
-                firstConnexion = 1;
+                if (sharedProperties.getEtat() === 2) {
+                    firstConnexion = 1;
+                }
             });
         }
     };
@@ -478,7 +481,8 @@ app.controller('ChatCtrl', function (sharedProperties, setMessage, loadData, $sc
         element.classList.add("new");
         element.setAttribute("id", "chan-0");
         element.setAttribute("name", channel);
-        element.setAttribute("onclick", "switchConv(0, '" + element.innerHTML + "')");
+        element.onclick = switchConv(0, element.innerHTML);
+        //element.setAttribute("onclick", "switchConv(0, '" + element.innerHTML + "');");
 
         setMessage.getData({ q: "cmd", v: version, s: session, c: cmd + " " + channel, a: a++}).then(function (response) {
             document.getElementById("msg-input").value = "";
