@@ -572,6 +572,7 @@ app.controller('ChatCtrl', function (sharedProperties, setMessage, UserOpt, load
         stopInterval();
         setMessage.getData({ q: "cmd", v: version, s: session, c: "/QUIT", a: a++});
         $location.path("/login");
+        firstConnexion = 0;
     };
 
     $scope.send = function () {
