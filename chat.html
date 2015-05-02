@@ -54,44 +54,6 @@
             </nav>
         </footer>
     </div>
-    <div id="about-user" hm-Swipe-Down="myPopoverSwipeDown();">
-        <h3 class="user-name">
-            <button class="user-close-btn" onclick="removeClass('about-user', 'popover-open')">Fermer</button>
-            <span id="user-pseudo">Anomaly</span>
-        </h3>
-        <ul class="item-list">
-            <li class="item">
-                <i class="icon icon-bubbles3"></i>
-            Parler en public
-
-            </li>
-            <li class="item">
-                <i class="icon icon-bubble2"></i>
-            Dialoguer en privé
-
-            </li>
-            <li class="item">
-                <i class="icon icon-upload2"></i>
-            Envoyer un fichier
-
-            </li>
-            <li class="item">
-                <i class="icon icon-cross"></i>
-            Bloquer/Ignorer
-
-            </li>
-            <li class="item">
-                <i class="icon icon-user-minus"></i>
-            Bannir
-
-            </li>
-            <li class="item">
-                <i class="icon icon-user"></i>
-            Voir le profil
-
-            </li>
-        </ul>
-    </div>
 </div>
 
 <div id="popover-smileys" class="popover-smileys">
@@ -104,4 +66,43 @@
         </div>
         <div id="list-smileys-perso" class="list-smileys" ng-bind-html="toTrustedHTML(data.smileys)"></div>
     </div>
+</div>
+
+<div id="about-user" hm-Swipe-Down="myPopoverSwipeDown();">
+    <h3 class="user-name">
+        <button class="user-close-btn" onclick="removeClass('about-user', 'popover-open')">Fermer</button>
+        <span id="user-pseudo">Anomaly</span>
+    </h3>
+    <ul id="popOpt" class="item-list">
+        <!--<li class="item">
+            <i class="icon icon-bubbles3"></i>
+        Parler en public
+
+        </li>
+        <li class="item">
+            <i class="icon icon-bubble2"></i>
+        Dialoguer en privé
+
+        </li>
+        <li class="item">
+            <i class="icon icon-upload2"></i>
+        Envoyer un fichier
+
+        </li>
+        <li class="item">
+            <i class="icon icon-cross"></i>
+        Bloquer/Ignorer
+
+        </li>
+        <li class="item">
+            <i class="icon icon-user-minus"></i>
+        Bannir
+
+        </li>
+        <li class="item">
+            <i class="icon icon-user"></i>
+        Voir le profil
+
+        </li>-->
+    </ul>
 </div>

@@ -138,6 +138,7 @@ app.service('sharedProperties', function () {
     var etat = 0;
     var channel = "";
     var idConvActive = 0;
+    var channelConnexion = "";
 
     return {
         getData: function () {
@@ -172,6 +173,32 @@ app.service('sharedProperties', function () {
         },
         setIdConvActive: function (value) {
             idConvActive = value;
+        },
+        getChannelConnexion: function () {
+            return channelConnexion;
+        },
+        setChannelconnexion: function (value) {
+            channelConnexion = value;
+        }
+    };
+});
+
+app.service('options', function () {
+    return {
+        public: function () {
+
+        },
+        private: function () {
+
+        },
+        uploadFile: function () {
+
+        },
+        ignore: function () {
+
+        },
+        profil: function (id) {
+
         }
     };
 });
@@ -280,15 +307,24 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
     return setMessage;
 });
 
-app.factory('loadData', function (sharedProperties, $timeout, $compile) {
+app.factory('loadData', function (sharedProperties, UserOpt, $timeout, $compile) {
     var addFunction = function () {
         var users = document.getElementById("slide-nav-right").getElementsByClassName("nomConnecte");
         var channels = document.getElementById("slide-nav-right").getElementsByClassName("nomSalon");
+        var i = 0;
 
-        for (user in users) {
-            if (users.item(user) !== null) {
-                users.item(user).onclick = function () {
+        for (i = 0; i < users.length; i++) {
+            if (users[i] !== null) {
+
+                users[i].onclick = function () {
+                    var regex_users = /<a[^>]+?ouvrirMenuUtilisateur\((\d+),&quot;(.+?)&quot;,.+?(?: \(([^<]+?)\)(?:<\/span>)?)?<\/a>/g;
+                    var usersObj = {};
+                    var res = regex_users.exec(this.outerHTML);
+                    var id = res[1];
+                    var pseudo = res[2];
+
                     changeName(this);
+                    UserOpt.aboutUser(id, "'" + pseudo + "'");
                     popover('about-user');
                     slideNav('right');
                     return false;
@@ -363,6 +399,7 @@ app.factory('loadData', function (sharedProperties, $timeout, $compile) {
             if (sharedProperties.getData() !== undefined) {
                 var chanActive = sharedProperties.getData().nomSalon;
                 if (chanActive !== undefined) {
+                    sharedProperties.setChannelconnexion(sharedProperties.getData().nomSalon);
                     switch (chanActive) {
                         case "Développement Applicatif" :
                             $scope.data.nomSalon = "Dev. App.";
@@ -408,7 +445,12 @@ app.factory('loadData', function (sharedProperties, $timeout, $compile) {
         },
 
         getChannel: function () {
-            var chanActive = sharedProperties.getData().nomSalon.replace(" ", "_");
+            var chanActive = "";
+            if (sharedProperties.getData().nomSalon === undefined) {
+                chanActive = sharedProperties.getChannelConnexion().replace(" ", "_");
+            } else {
+                chanActive = sharedProperties.getData().nomSalon.replace(" ", "_");
+            }
             var element = document.getElementById('slide-nav-left').getElementsByClassName('item-' + sharedProperties.getChannelActive())[0];
             element.removeAttribute("ng-click");
             element.classList.add("active");
@@ -457,6 +499,32 @@ app.factory('loadData', function (sharedProperties, $timeout, $compile) {
     return loadData;
 });
 
+app.factory('UserOpt', function (options, $compile) {
+    var userOpt = {
+        aboutUser: function (id, pseudo) {
+            var config = {"public": {"title":"Parler en public", "icon":"icon-bubbles3", "function":"Options.public(" + pseudo + ")"}
+                , "private": {"title":"Dialoguer en privé", "icon":"icon-bubble2", "function":"Options.private(" + id + ", " + pseudo + ")"}
+                , "uploadFile": {"title":"Envoyer un fichier", "icon":"icon-upload2", "function":"Options.uploadFile(" + id + ")"}
+                , "ignore": {"title":"Bloquer/Ignorer", "icon":"icon-cross", "function":"Options.ignore(" + id + ")"}
+                , "profil": {"title":"Voir le profil", "icon":"icon-user", "function":"Options.profil(" + id + ")"}
+            };
+            var div = document.getElementById("popOpt");
+            div.innerHTML = "";
+            for (opt in config) {
+                var li = document.createElement("li");
+                li.classList.add("item");
+                var icon = document.createElement("i");
+                icon.classList.add("icon");
+                icon.classList.add(config[opt].icon);
+                li.innerHTML = icon.outerHTML + config[opt].title;
+                li.setAttribute("onclick", config[opt].function);
+                div.appendChild(li);
+            }
+        }
+    };
+    return userOpt;
+});
+
 app.controller('LoginCtrl', function (sharedProperties, setMessage, loadData, $scope) {
     $scope.ngUserConnect = function () {
         var json = setMessage.userConnect();
@@ -471,13 +539,15 @@ app.controller('LoginCtrl', function (sharedProperties, setMessage, loadData, $s
     };
 });
 
-app.controller('ChatCtrl', function (sharedProperties, setMessage, loadData, $scope, $sce, $interval, $location) {
+app.controller('ChatCtrl', function (sharedProperties, setMessage, UserOpt, loadData, $scope, $sce, $interval, $location) {
 
     $scope.data = [];
 
     $scope.data = loadData.getData($scope);
     $scope.data.anoSmileys = anoSmileys;
     $scope.data.proxyURI = proxyURI;
+
+    document.getElementById("msg-input").focus();
 
     var interval = $interval(function () {
         if (sharedProperties.getEtat() < 1) {
@@ -515,6 +585,7 @@ app.controller('ChatCtrl', function (sharedProperties, setMessage, loadData, $sc
 
         setMessage.getData({ q: "cmd", v: version, s: session, c: texte, a: a++ }).then(function (response) {
             document.getElementById("msg-input").value = "";
+            document.getElementById("msg-input").focus();
             setMessage.doStatus(response.data);
             $scope.data = loadData.getData($scope);
         });
