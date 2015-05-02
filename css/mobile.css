@@ -57,7 +57,7 @@ header .about-links .item {padding:0 10px; height:30px; line-height:30px; font-s
 .slide-nav .item-list .new {font-weight:600; color:white;}
 .slide-nav .item-list .item-divider {color:white; text-transform: uppercase; font-size:0.75rem; padding:0 5px; margin-top:20px; border-bottom:1px solid #ddd;}
 .slide-nav .item-list .item-divider:before {content:"";}
-.slide-nav .item-list .item {color:#999; font-size:0.875rem; padding:0 5px 0 15px; font-weight:100; font-size:0.75rem;}
+.slide-nav .item-list .item {color:#999; font-size:0.875rem; padding:0 5px 0 15px; font-weight:100; font-size:0.75rem; height:30px; line-height:30px;}
 
 #slide-nav-left {left: -225px; background-color:#666;
 -moz-box-shadow: inset -5px 0px 10px 0px #454545;
@@ -67,7 +67,6 @@ box-shadow: inset -5px 0px 10px 0px #454545;
 filter:progid:DXImageTransform.Microsoft.Shadow(color=#454545, Direction=180, Strength=10);}
 #slide-nav-left h3 {color:white; text-transform: uppercase; font-size:0.75rem; padding:0 5px; margin-top:20px; border-bottom:1px solid #ddd;}
 #slide-nav-left.open-nav {transition: 0.5s; left: 0;}
-#slide-nav-left .item-list .item {height:30px; line-height:30px;}
 #slide-nav-left .item-list .item:before {content:"\2022"; margin-right:5px; opacity:0.3;}
 #slide-nav-left .item-list .new {color:white;}
 #slide-nav-left .item-list .active {color:skyblue;}
@@ -96,7 +95,7 @@ filter:progid:DXImageTransform.Microsoft.Shadow(color=#ddd, Direction=180, Stren
 #slide-nav-right .dropdown-open .item-divider:after {display:inline-block; content:""; width: 0; height: 0; border-style: solid; border-width: 5px 5px 0 5px; border-color: black transparent transparent transparent; position:relative; top:-2px; margin-left:5px;}
 
 section {height:100%; width:100%; overflow:scroll; padding:55px 5px 90px; position:relative;}
-section .conv {display:none;}
+section .conv {display:none; height:100%; overflow:scroll;}
 section .open-conv {display:block;}
 section .line .notification {color:skyblue; font-style: italic; font-size:0.75rem; margin-bottom:10px;}
 section .line {font-size:0.875rem;}
@@ -109,7 +108,7 @@ section .line .citation:before {display: block; content: "\201C"; font-size: 60p
 
 .popover-smileys {display:none; width:98%; height:70%; overflow:scroll; background-color:#f1f1f1; border:2px solid #444; border-radius:10px; position:absolute; bottom:90px; margin:0 auto;}
 .popover-smileys .popover-title {font-size:1.25rem; text-transform:uppercase; height:40px; line-height:40px; padding:0 10px; border-bottom:1px solid #999;}
-.popover-smileys .smileys-container .list-smileys a {display:inline-block; padding:5px 10px;}
+.popover-smileys .smileys-container .list-smileys a {padding:5px 10px;}
 .popover-smileys.popover-open {display:block;}
 
 #about-user {width:100%; height:100%; position:absolute; top:100%; left:0; transition:1s; background-color:#f1f1f1; z-index:3;}

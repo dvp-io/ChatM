@@ -1,5 +1,4 @@
 var switchConv = function (id, pseudo) {
-    console.log(id);
     var parent = document.getElementById("conversations");
     var convActive = parent.getElementsByClassName("open-conv");
     convActive[0].classList.remove("open-conv");

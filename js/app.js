@@ -137,6 +137,7 @@ app.service('sharedProperties', function () {
     var data = [];
     var etat = 0;
     var channel = "";
+    var idConvActive = 0;
 
     return {
         getData: function () {
@@ -165,6 +166,12 @@ app.service('sharedProperties', function () {
         },
         setChannelActive: function (value) {
             channel = value;
+        },
+        getIdConvActive: function () {
+            return idConvActive;
+        },
+        setIdConvActive: function (value) {
+            idConvActive = value;
         }
     };
 });
@@ -273,9 +280,10 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
     return setMessage;
 });
 
-app.factory('loadData', function (sharedProperties, $timeout) {
+app.factory('loadData', function (sharedProperties, $timeout, $compile) {
     var addFunction = function () {
-        var users = document.getElementsByClassName("nomConnecte");
+        var users = document.getElementById("slide-nav-right").getElementsByClassName("nomConnecte");
+
         for (user in users) {
             if (users.item(user) !== null) {
                 users.item(user).setAttribute("onclick", "changeName(this); popover('about-user'); slideNav('right'); return false;");
@@ -296,7 +304,7 @@ app.factory('loadData', function (sharedProperties, $timeout) {
         item.setAttribute('class', 'line');
         item.innerHTML = channel;
         conv.appendChild(item);
-        conv.scrollTo = conv.offsetHeight;
+        conv.scrollTop = conv.scrollHeight;
     };
 
     var createPvsElement = function (pvs) {
@@ -357,6 +365,7 @@ app.factory('loadData', function (sharedProperties, $timeout) {
                 }
 
                 if (sharedProperties.getData().connectes !== "") {
+                    loadData.createChannelsList(sharedProperties.getData().connectes, $scope);
                     createUsersList(sharedProperties.getData().connectes);
                 }
 
@@ -394,8 +403,43 @@ app.factory('loadData', function (sharedProperties, $timeout) {
             element.classList.add("new");
             element.setAttribute("id", "chan-0");
             element.setAttribute("name", chanActive);
-            element.onclick = switchConv(0, element.innerHTML);
-            //element.setAttribute("onclick", "switchConv(0, '" + element.innerHTML + "')");
+            element.onclick = function () {
+                switchConv(0, element.innerHTML);
+                return false;
+            };
+
+            var channels = document.getElementById('slide-nav-left').getElementsByClassName('nomSalon');
+            for (var i = 0; i < channels.length; i++) {
+                if (channels[i].id === "") {
+                    channels[i].onclick = function () {return false;};
+                    var nameChannel = channels[i].innerHTML.split(" [");
+                    channels[i].setAttribute("ng-click", "switchChannel('/JOIN', '" + nameChannel[0].replace(" ", "_") + "', $event);");
+                }
+            }
+        },
+
+        createChannelsList: function (list, $scope) {
+            var regex = /<a[^>]+?ouvrirMenuSalon\("(.+?)",[^<]+?<\/a>/g;
+            var salons = {};
+            var res;
+            var i = 10;
+            while (res = regex.exec(list)) {
+                salons[i] = res[1];
+                i += 10;
+            }
+            var ul = document.getElementById("channels-list");
+            ul.innerHTML = "";
+            for(var id in salons) {
+                var li = document.createElement("li");
+                li.classList.add("item");
+                li.classList.add("item-" + id);
+                li.setAttribute("ng-click", "switchChannel('/JOIN', '" + salons[id].replace(" ", "_") + "', " + id + ", $event);");
+                li.innerHTML = salons[id];
+                ul.appendChild(li);
+            }
+            //console.log(ul.children);
+            loadData.getChannel();
+            $compile(ul.children)($scope);
         }
     };
     return loadData;
@@ -423,8 +467,6 @@ app.controller('ChatCtrl', function (sharedProperties, setMessage, loadData, $sc
     $scope.data.anoSmileys = anoSmileys;
     $scope.data.proxyURI = proxyURI;
 
-    loadData.getChannel();
-
     var interval = $interval(function () {
         if (sharedProperties.getEtat() < 1) {
             stopInterval();
@@ -451,7 +493,14 @@ app.controller('ChatCtrl', function (sharedProperties, setMessage, loadData, $sc
     };
 
     $scope.send = function () {
+        var convActive = document.getElementById('conversations').getElementsByClassName('open-conv')[0];
+        convActive = convActive.getAttribute('id');
+        var idConvActive = convActive.split("conv-")[1];
         var texte = document.getElementById("msg-input").value;
+        if (parseInt(idConvActive) !== 0) {
+            texte = "/TELL " + idConvActive + " " + texte;
+        }
+
         setMessage.getData({ q: "cmd", v: version, s: session, c: texte, a: a++ }).then(function (response) {
             document.getElementById("msg-input").value = "";
             setMessage.doStatus(response.data);
@@ -465,15 +514,16 @@ app.controller('ChatCtrl', function (sharedProperties, setMessage, loadData, $sc
         }
     };
 
-    $scope.switchChannel = function (cmd, channel, $event) {
+    $scope.switchChannel = function (cmd, channel, id, $event) {
+        sharedProperties.setChannelActive(id);
         var chanActive = document.getElementById("chan-0");
         var nameChanActive = chanActive.getAttribute("name");
-        chanActive.removeAttribute("onclick");
+        chanActive.onclick = function () {return false;};
         chanActive.removeAttribute("name");
         chanActive.removeAttribute("id");
         chanActive.classList.remove("active");
         chanActive.classList.remove("new");
-        chanActive.setAttribute("ng-click", "switchChannel('/JOIN', '" + nameChanActive + "', $event);");
+        chanActive.setAttribute("ng-click", "switchChannel('/JOIN', '" + nameChanActive + "', " + id + ", $event);");
 
         var element = $event.target;
         element.removeAttribute("ng-click");
@@ -482,7 +532,6 @@ app.controller('ChatCtrl', function (sharedProperties, setMessage, loadData, $sc
         element.setAttribute("id", "chan-0");
         element.setAttribute("name", channel);
         element.onclick = switchConv(0, element.innerHTML);
-        //element.setAttribute("onclick", "switchConv(0, '" + element.innerHTML + "');");
 
         setMessage.getData({ q: "cmd", v: version, s: session, c: cmd + " " + channel, a: a++}).then(function (response) {
             document.getElementById("msg-input").value = "";
