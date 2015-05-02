@@ -1,6 +1,6 @@
 var app = angular.module('chatApp', ['angular-gestures', 'ngRoute'], setPostHeader),
     firstConnexion = 0,
-    proxyURI = 'http://chatp.dvp.io/',
+    proxyURI = 'http://chat.dvp.io/',
     anoSmileys = {
       'smile.gif': ':)',
       'sad.gif': ':(',
