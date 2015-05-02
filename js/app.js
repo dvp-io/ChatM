@@ -1,6 +1,6 @@
 var app = angular.module('chatApp', ['angular-gestures', 'ngRoute'], setPostHeader),
     firstConnexion = 0,
-    proxyURI = 'http://chat.dvp.io/',
+    proxyURI = 'http://chatp.dvp.io/',
     anoSmileys = {
       'smile.gif': ':)',
       'sad.gif': ':(',
@@ -283,10 +283,22 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
 app.factory('loadData', function (sharedProperties, $timeout, $compile) {
     var addFunction = function () {
         var users = document.getElementById("slide-nav-right").getElementsByClassName("nomConnecte");
+        var channels = document.getElementById("slide-nav-right").getElementsByClassName("nomSalon");
 
         for (user in users) {
             if (users.item(user) !== null) {
-                users.item(user).setAttribute("onclick", "changeName(this); popover('about-user'); slideNav('right'); return false;");
+                users.item(user).onclick = function () {
+                    changeName(this);
+                    popover('about-user');
+                    slideNav('right');
+                    return false;
+                };
+            }
+        }
+
+        for (chan in channels) {
+            if (channels.item(chan) !== null) {
+                channels.item(chan).onclick = function () {return false;};
             }
         }
     };
