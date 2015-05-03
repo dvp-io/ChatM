@@ -183,26 +183,6 @@ app.service('sharedProperties', function () {
     };
 });
 
-app.service('options', function () {
-    return {
-        public: function () {
-
-        },
-        private: function () {
-
-        },
-        uploadFile: function () {
-
-        },
-        ignore: function () {
-
-        },
-        profil: function (id) {
-
-        }
-    };
-});
-
 app.factory('setMessage', function ($http, sharedProperties, $location) {
     var optionsChat = "";
 
@@ -499,7 +479,7 @@ app.factory('loadData', function (sharedProperties, UserOpt, $timeout, $compile)
     return loadData;
 });
 
-app.factory('UserOpt', function (options, $compile) {
+app.factory('UserOpt', function ($compile) {
     var userOpt = {
         aboutUser: function (id, pseudo) {
             var config = {"public": {"title":"Parler en public", "icon":"icon-bubbles3", "function":"Options.public(" + pseudo + ")"}
