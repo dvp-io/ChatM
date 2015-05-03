@@ -121,12 +121,18 @@ function setPostHeader($httpProvider) {
     }];
 }
 
-app.config(['$routeProvider', function ($routeProvider) {
+app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+    /*$locationProvider.html5Mode({
+        enabled: true,
+        requireBase: true,
+        rewriteLinks: true
+    });*/
+
     $routeProvider.when('/login', {
-        templateUrl: 'login.html',
+        templateUrl: 'templates/login.html',
         controller: 'LoginCtrl'
     }).when('/chat', {
-        templateUrl: 'chat.html',
+        templateUrl: 'templates/chat.html',
         controller: 'ChatCtrl'
     }).otherwise({
         redirectTo: '/login'
@@ -288,7 +294,7 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
 });
 
 app.factory('loadData', function (sharedProperties, UserOpt, $timeout, $compile) {
-    var addFunction = function () {
+    var addFunction = function (scope) {
         var users = document.getElementById("slide-nav-right").getElementsByClassName("nomConnecte");
         var channels = document.getElementById("slide-nav-right").getElementsByClassName("nomSalon");
         var i = 0;
@@ -297,14 +303,14 @@ app.factory('loadData', function (sharedProperties, UserOpt, $timeout, $compile)
             if (users[i] !== null) {
 
                 users[i].onclick = function () {
-                    var regex_users = /<a[^>]+?ouvrirMenuUtilisateur\((\d+),&quot;(.+?)&quot;,.+?(?: \(([^<]+?)\)(?:<\/span>)?)?<\/a>/g;
-                    var usersObj = {};
+                    var regex_users = /<a[^>]+?ouvrirMenuUtilisateur\((\d+),&quot;(.+?)&quot;,(-?\d),(-?\d),(-?\d),(-?\d),(-?\d),(-?\d),(-?\d),(-?\d)\).+?(?: \(([^<]+?)\)(?:<\/span>)?)?<\/a>/g;
                     var res = regex_users.exec(this.outerHTML);
                     var id = res[1];
                     var pseudo = res[2];
+                    var ignore = res[5];
 
                     changeName(this);
-                    UserOpt.aboutUser(id, "'" + pseudo + "'");
+                    UserOpt.aboutUser(id, "'" + pseudo + "'", ignore, scope);
                     popover('about-user');
                     slideNav('right');
                     return false;
@@ -319,11 +325,11 @@ app.factory('loadData', function (sharedProperties, UserOpt, $timeout, $compile)
         }
     };
 
-    var createUsersList = function (users) {
+    var createUsersList = function (users, scope) {
         var list = document.getElementById('users-list');
         list.innerHTML = users;
 
-        addFunction();
+        addFunction(scope);
     };
 
     var createLineChannel = function (channel) {
@@ -395,7 +401,7 @@ app.factory('loadData', function (sharedProperties, UserOpt, $timeout, $compile)
 
                 if (sharedProperties.getData().connectes !== "") {
                     loadData.createChannelsList(sharedProperties.getData().connectes, $scope);
-                    createUsersList(sharedProperties.getData().connectes);
+                    createUsersList(sharedProperties.getData().connectes, $scope);
                 }
 
                 if (sharedProperties.getData().smileys !== undefined) {
@@ -481,23 +487,50 @@ app.factory('loadData', function (sharedProperties, UserOpt, $timeout, $compile)
 
 app.factory('UserOpt', function ($compile) {
     var userOpt = {
-        aboutUser: function (id, pseudo) {
-            var config = {"public": {"title":"Parler en public", "icon":"icon-bubbles3", "function":"Options.public(" + pseudo + ")"}
-                , "private": {"title":"Dialoguer en privé", "icon":"icon-bubble2", "function":"Options.private(" + id + ", " + pseudo + ")"}
-                , "uploadFile": {"title":"Envoyer un fichier", "icon":"icon-upload2", "function":"Options.uploadFile(" + id + ")"}
-                , "ignore": {"title":"Bloquer/Ignorer", "icon":"icon-cross", "function":"Options.ignore(" + id + ")"}
-                , "profil": {"title":"Voir le profil", "icon":"icon-user", "function":"Options.profil(" + id + ")"}
+        aboutUser: function (id, pseudo, ignore, scope) {
+            var config = {"public": {"title":"Parler en public", "icon":"icon-bubbles3", "multiple":"false", "items":"Options.public(" + pseudo + ")"}
+                , "private": {"title":"Dialoguer en privé", "icon":"icon-bubble2", "multiple":"false", "items":"Options.private(" + id + ", " + pseudo + ")"}
+                , "uploadFile": {"title":"Envoyer un fichier", "icon":"icon-upload2", "multiple":"false", "items":"Options.uploadFile(" + id + ")"}
+                , "ignore": {"title":"Bloquer/Ignorer", "icon":"icon-cross", "multiple":"true"
+                    , "items":{
+                        "block": {"statut":0, "cmd":"BLOCK", "title":"Bloquer", "desc":"Cette option empêche ce correspondant de vous contacter en privé."}
+                        , "ignore": {"statut":0, "cmd":"FULL", "title":"Ignorer", "desc":"Cette option empêche ce correspondant de vous contacter en privé ; de plus, vous ne verrez plus ses messages s'afficher sur le salon."}
+                        , "deblock": {"statut":1, "cmd":"OFF", "title":"Débloquer", "desc":""}
+                        , "designore": {"statut":2, "cmd":"OFF", "title":"Désignorer", "desc":""}
+                    }}
+                , "profil": {"title":"Voir le profil", "icon":"icon-user", "multiple":"false", "items":"Options.profil(" + id + ")"}
             };
             var div = document.getElementById("popOpt");
             div.innerHTML = "";
             for (opt in config) {
+
                 var li = document.createElement("li");
                 li.classList.add("item");
                 var icon = document.createElement("i");
                 icon.classList.add("icon");
                 icon.classList.add(config[opt].icon);
                 li.innerHTML = icon.outerHTML + config[opt].title;
-                li.setAttribute("onclick", config[opt].function);
+                if (config[opt].multiple === "false") {
+                    li.setAttribute("onclick", config[opt].items);
+                } else {
+                    var items = config[opt].items;
+                    var ul = document.createElement("ul");
+                    ul.classList.add("sublist-item");
+                    ul.classList.add("is-collapsed");
+                    for (it in items) {
+                        if (items[it].statut == ignore) {
+                            var sub = document.createElement("li");
+                            sub.classList.add("item");
+                            sub.innerHTML = "<b>" + items[it].title + "</b> : " + items[it].desc;
+                            sub.setAttribute("ng-click", "ignore(" + id + ", '" + items[it].cmd + "');");
+                            ul.appendChild(sub);
+                        }
+                    }
+                    $compile(ul.children)(scope);
+                    li.classList.add("accordion");
+                    li.setAttribute("onclick", "accordion(this);");
+                    li.appendChild(ul);
+                }
                 div.appendChild(li);
             }
         }
@@ -540,8 +573,19 @@ app.controller('ChatCtrl', function (sharedProperties, setMessage, UserOpt, load
         }
     }, 3000);
 
-    var stopInterval = function() {
+    var stopInterval = function () {
         $interval.cancel(interval);
+    };
+
+    $scope.ignore = function (id, statut) {
+        var texte = "/IGNORE " + statut + " " + id;
+        setMessage.getData({q:"cmd", v:sharedProperties.getVersion(), s:sharedProperties.getSession(), c: texte, a: a++}).then(function (response) {
+            document.getElementById("msg-input").value = "";
+            document.getElementById("msg-input").focus();
+            setMessage.doStatus(response.data);
+            $scope.data = loadData.getData($scope);
+            popover('about-user');
+        });
     };
 
     $scope.toTrustedHTML = function (html) {

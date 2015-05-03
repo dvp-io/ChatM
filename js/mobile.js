@@ -66,6 +66,18 @@ var popover = function (param) {
     }
 };
 
+var accordion = function (param) {
+    var cls = "accordionIn";
+    var list = param.getElementsByClassName('sublist-item')[0];
+    if (!hasClass(list, cls)) {
+        list.classList.add(cls);
+        list.classList.remove("is-collapsed");
+    } else {
+        list.classList.remove(cls);
+        list.classList.add("is-collapsed");
+    }
+};
+
 var smileToMsg = function (param) {
     var input = document.getElementById('msg-input');
     input.value = input.value + '' + param.title;

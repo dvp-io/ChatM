@@ -30,6 +30,18 @@ var Options = Options || {};
         popover('about-user');
     };
 
+    object.ignore = function (id) {
+
+    };
+
+    object.designore = function (id) {
+
+    };
+
+    object.block = function (id) {
+
+    };
+
     object.profil = function (id) {
         console.log(id);
         window.open("http://www.developpez.net/forums/member.php?u=" + id);
