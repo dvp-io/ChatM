@@ -81,7 +81,9 @@ var accordion = function (param) {
 var smileToMsg = function (param) {
     var input = document.getElementById('msg-input');
     input.value = input.value + '' + param.title;
+    console.log(input.value);
     document.getElementById('popover-smileys').classList.remove('popover-open');
+    input.focus();
 };
 
 var changeName = function (param) {

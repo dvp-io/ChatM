@@ -60,7 +60,7 @@
     <h2 class="popover-title">Mes smileys favoris</h2>
     <div class="smileys-container">
         <div id="list-smileys-chat" class="list-smileys">
-            <a href="#" onclick="return false" ng-repeat="(key, value) in data.anoSmileys">
+            <a href="#" onclick="smileToMsg(this); return false;" ng-repeat="(key, value) in data.anoSmileys" title="{{value}}">
                 <img src="{{data.proxyURI}}images/smileys/{{key}}" alt="{{value}}" />
             </a>
         </div>

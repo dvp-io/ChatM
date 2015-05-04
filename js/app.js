@@ -1,6 +1,6 @@
 var app = angular.module('chatApp', ['angular-gestures', 'ngRoute'], setPostHeader),
     firstConnexion = 0,
-    proxyURI = 'http://chat.dvp.io/',
+    proxyURI = 'http://chatp.dvp.io/',
     anoSmileys = {
       'smile.gif': ':)',
       'sad.gif': ':(',
@@ -418,7 +418,7 @@ app.factory('loadData', function (sharedProperties, UserOpt, $timeout, $compile)
                         var div = document.getElementById('list-smileys-perso');
                         var list = div.getElementsByTagName("a");
                         for (i = 0; i < list.length; i++) {
-                            list[i].setAttribute("onclick", "return false;");
+                            list[i].setAttribute("onclick", "smileToMsg(this); return false;");
                             var link = list[i].getElementsByTagName('img')[0].getAttribute("src");
                             list[i].getElementsByTagName('img')[0].setAttribute("src", proxyURI + link);
                         }
