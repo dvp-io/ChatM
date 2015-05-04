@@ -110,3 +110,30 @@ var inArray = function (needle, haystack) {
     }
     return false;
 };
+
+var fadeIn = function (elementToFade)
+{
+    var element = document.getElementById(elementToFade);
+
+    element.style.opacity += 0.1;
+    if(element.style.opacity > 1.0) {
+        element.style.opacity = 1.0;
+    } else {
+        while(element.style.opacity > 0)
+        {
+            setTimeout("fadeIn(\"" + elementToFade + "\")", 100);
+        }
+    }
+}
+
+var fadeOut = function (elementToFade)
+{
+    var element = document.getElementById(elementToFade);
+
+    element.style.opacity -= 0.1;
+    if(element.style.opacity < 0.0) {
+        element.style.opacity = 0.0;
+    } else {
+        setTimeout("fadeOut(\"" + elementToFade + "\")", 100);
+    }
+}

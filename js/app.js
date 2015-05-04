@@ -493,11 +493,10 @@ app.factory('UserOpt', function ($compile) {
                 , "uploadFile": {"title":"Envoyer un fichier", "icon":"icon-upload2", "multiple":"false", "items":"Options.uploadFile(" + id + ")"}
                 , "ignore": {"title":"Bloquer/Ignorer", "icon":"icon-cross", "multiple":"true"
                     , "items":{
-                        "block": {"statut":0, "cmd":"BLOCK", "title":"Bloquer", "desc":"Cette option empêche ce correspondant de vous contacter en privé."}
-                        , "ignore": {"statut":0, "cmd":"FULL", "title":"Ignorer", "desc":"Cette option empêche ce correspondant de vous contacter en privé ; de plus, vous ne verrez plus ses messages s'afficher sur le salon."}
-                        , "deblock": {"statut":1, "cmd":"OFF", "title":"Débloquer", "desc":""}
-                        , "designore": {"statut":2, "cmd":"OFF", "title":"Désignorer", "desc":""}
-                    }}
+                        "block": {"title":"Bloquer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé.", 0:"BLOCK", 1:"OFF"},
+                        "ignore": {"title":"Ignorer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé ; de plus, vous ne verrez plus ses messages s'afficher sur le salon.", 0:"FULL", 1:"OFF"}
+                    }
+                }
                 , "profil": {"title":"Voir le profil", "icon":"icon-user", "multiple":"false", "items":"Options.profil(" + id + ")"}
             };
             var div = document.getElementById("popOpt");
@@ -518,15 +517,17 @@ app.factory('UserOpt', function ($compile) {
                     ul.classList.add("sublist-item");
                     ul.classList.add("is-collapsed");
                     for (it in items) {
-                        if (items[it].statut == ignore) {
-                            var sub = document.createElement("li");
-                            var switchOn = (ignore > 0) ? "switchOn" : "";
-                            var checkbox = "<input type='checkbox' name='checkboxName' class='checkbox'/><div class='switch " + switchOn + "'></div>";
-                            sub.classList.add("item");
-                            sub.innerHTML = checkbox + "<b>" + items[it].title + "</b> : " + items[it].desc;
-                            sub.setAttribute("ng-click", "ignore(" + id + ", '" + items[it].cmd + "');");
-                            ul.appendChild(sub);
+                        var sub = document.createElement("li");
+                        var switchOn = (ignore > 0) ? "switchOn" : "";
+                        var checkbox = "<input type='checkbox' name='checkboxName' class='checkbox'/><div class='switch " + switchOn + "'></div>";
+                        sub.classList.add("item");
+                        sub.innerHTML = checkbox + "<b>" + items[it].title + "</b>" + items[it].desc;
+                        sub.setAttribute("ng-click", "ignore(" + id + ", '" + items[it].cmd + "');");
+                        if (ignore == 0) {
+                        } else {
+
                         }
+                        ul.appendChild(sub);
                     }
                     $compile(ul.children)(scope);
                     li.classList.add("accordion");

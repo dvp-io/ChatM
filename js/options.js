@@ -30,17 +30,9 @@ var Options = Options || {};
         popover('about-user');
     };
 
-    object.ignore = function (id) {
+    object.uploadFile = function (id) {
 
-    };
-
-    object.designore = function (id) {
-
-    };
-
-    object.block = function (id) {
-
-    };
+    }
 
     object.profil = function (id) {
         console.log(id);
