@@ -488,53 +488,66 @@ app.factory('loadData', function (sharedProperties, UserOpt, $timeout, $compile)
 app.factory('UserOpt', function ($compile) {
     var userOpt = {
         aboutUser: function (id, pseudo, ignore, scope) {
-            var config = {"public": {"title":"Parler en public", "icon":"icon-bubbles3", "multiple":"false", "items":"Options.public(" + pseudo + ")"}
-                , "private": {"title":"Dialoguer en privé", "icon":"icon-bubble2", "multiple":"false", "items":"Options.private(" + id + ", " + pseudo + ")"}
-                , "uploadFile": {"title":"Envoyer un fichier", "icon":"icon-upload2", "multiple":"false", "items":"Options.uploadFile(" + id + ")"}
+            var config = {"public": {"title":"Parler en public", "icon":"icon-bubbles3", "multiple":"false", "function":"Options.public(" + pseudo + ")"}
+                , "private": {"title":"Dialoguer en privé", "icon":"icon-bubble2", "multiple":"false", "function":"Options.private(" + id + ", " + pseudo + ")"}
+                , "uploadFile": {"title":"Envoyer un fichier", "icon":"icon-upload2", "multiple":"false", "function":"Options.uploadFile(" + id + ")"}
                 , "ignore": {"title":"Bloquer/Ignorer", "icon":"icon-cross", "multiple":"true"
                     , "items":{
                         "block": {"title":"Bloquer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé.", 0:"BLOCK", 1:"OFF"},
                         "ignore": {"title":"Ignorer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé ; de plus, vous ne verrez plus ses messages s'afficher sur le salon.", 0:"FULL", 1:"OFF"}
                     }
                 }
-                , "profil": {"title":"Voir le profil", "icon":"icon-user", "multiple":"false", "items":"Options.profil(" + id + ")"}
+                , "profil": {"title":"Voir le profil", "icon":"icon-user", "multiple":"false", "function":"Options.profil(" + id + ")"}
             };
-            var div = document.getElementById("popOpt");
-            div.innerHTML = "";
+
+            scope.aboutUser = {};
+            scope.aboutUser.id = id;
+            scope.aboutUser.data = "";
+            scope.aboutUser.switchOn = (ignore > 0) ? true : false;
+            scope.aboutUser.checkAccordion = function (value, element) {
+                if (value) {
+                    accordion(element);
+                } else {
+
+                }
+            }
+
+            //var div = document.getElementById("popOpt");
+            //div.innerHTML = "";
             for (opt in config) {
 
-                var li = document.createElement("li");
-                li.classList.add("item");
-                var icon = document.createElement("i");
-                icon.classList.add("icon");
-                icon.classList.add(config[opt].icon);
-                li.innerHTML = icon.outerHTML + config[opt].title;
+                //var li = document.createElement("li");
+                //li.classList.add("item");
+                //var icon = document.createElement("i");
+                //icon.classList.add("icon");
+                //icon.classList.add(config[opt].icon);
+                //li.innerHTML = icon.outerHTML + config[opt].title;
                 if (config[opt].multiple === "false") {
-                    li.setAttribute("onclick", config[opt].items);
+                    //li.setAttribute("onclick", config[opt].items);
                 } else {
-                    var items = config[opt].items;
-                    var ul = document.createElement("ul");
-                    ul.classList.add("sublist-item");
-                    ul.classList.add("is-collapsed");
-                    for (it in items) {
-                        var sub = document.createElement("li");
-                        var switchOn = (ignore > 0) ? "switchOn" : "";
-                        var checkbox = "<input type='checkbox' name='checkboxName' class='checkbox'/><div class='switch " + switchOn + "'></div>";
-                        sub.classList.add("item");
-                        sub.innerHTML = checkbox + "<b>" + items[it].title + "</b>" + items[it].desc;
-                        sub.setAttribute("ng-click", "ignore(" + id + ", '" + items[it].cmd + "');");
+                    //var items = config[opt].items;
+                    //var ul = document.createElement("ul");
+                    //ul.classList.add("sublist-item");
+                    //ul.classList.add("is-collapsed");
+                    //for (it in items) {
+                        //var sub = document.createElement("li");
+                        //var switchOn = (ignore > 0) ? "switchOn" : "";
+                        //var checkbox = "<input type='checkbox' name='checkboxName' class='checkbox'/><div class='switch " + switchOn + "'></div>";
+                        //sub.classList.add("item");
+                        //sub.innerHTML = checkbox + "<b>" + items[it].title + "</b>" + items[it].desc;
+                        //sub.setAttribute("ng-click", "ignore(" + id + ", '" + items[it].cmd + "');");
                         if (ignore == 0) {
                         } else {
 
                         }
-                        ul.appendChild(sub);
-                    }
-                    $compile(ul.children)(scope);
-                    li.classList.add("accordion");
-                    li.setAttribute("onclick", "accordion(this);");
-                    li.appendChild(ul);
+                        //ul.appendChild(sub);
+                    //}
+                    //$compile(ul.children)(scope);
+                    //li.classList.add("accordion");
+                    //li.setAttribute("onclick", "accordion(this);");
+                    //li.appendChild(ul);
                 }
-                div.appendChild(li);
+                //div.appendChild(li);
             }
         }
     };

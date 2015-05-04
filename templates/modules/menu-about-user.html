@@ -1,0 +1,14 @@
+<ul id="popOpt">
+    <li class="item {{accordion: menu.multiple}}" ng-click="checkAccordion({{menu.multiple}}, this);" ng-repeat="menu in aboutUser.data">
+        <i class="icon {{menu.icon}}"></i>
+        {{menu.title}}
+        <ul ng-hide class="sublist-item is-collapsed">
+            <li class="item" ng-repeat="item in menu.items" ng-click="ignore({{aboutUser.id}}, '{{item.cmd}}');">
+                <input type="checkbox" name="checkboxName" class="checkbox" />
+                <div class="switch {{switchOn: aboutUser.switchOn}}"></div>
+                <b>{{item.title}}</b>
+                {{item.desc}}
+            </li>
+        </ul>
+    </li>
+</ul>
