@@ -520,7 +520,8 @@ app.factory('UserOpt', function ($compile) {
                     for (it in items) {
                         if (items[it].statut == ignore) {
                             var sub = document.createElement("li");
-                            var checkbox = "<input type='checkbox' name='checkboxName' class='checkbox'/><div class='switch'></div>";
+                            var switchOn = (ignore > 0) ? "switchOn" : "";
+                            var checkbox = "<input type='checkbox' name='checkboxName' class='checkbox'/><div class='switch " + switchOn + "'></div>";
                             sub.classList.add("item");
                             sub.innerHTML = checkbox + "<b>" + items[it].title + "</b> : " + items[it].desc;
                             sub.setAttribute("ng-click", "ignore(" + id + ", '" + items[it].cmd + "');");
