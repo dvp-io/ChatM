@@ -1,11 +1,13 @@
-<ul id="popOpt">
-    <li class="item {{accordion: menu.multiple}}" ng-click="checkAccordion({{menu.multiple}}, this);" ng-repeat="menu in aboutUser.data">
-        <i class="icon {{menu.icon}}"></i>
-        {{menu.title}}
+<ul id="popOpt" class="item-list">
+    <li class="item" ng-repeat="menu in aboutUser.data" ng-class="{accordion: menu.multiple==true}">
+        <a ng-disabled="checked" ng-click="checkAccordion(menu.multiple, $event, menu);">
+            <i class="icon {{menu.icon}}"></i>
+            {{menu.title}}
+        </a>
         <ul ng-hide class="sublist-item is-collapsed">
-            <li class="item" ng-repeat="item in menu.items" ng-click="ignore({{aboutUser.id}}, '{{item.cmd}}');">
+            <li class="item" ng-repeat="item in menu.items" ng-click="checkStatus(item);" ng-class="{disabled: item[aboutUser.isIgnore]==undefined}">
                 <input type="checkbox" name="checkboxName" class="checkbox" />
-                <div class="switch {{switchOn: aboutUser.switchOn}}"></div>
+                <div class="switch" ng-class="{switchOn: aboutUser.switchOn==true && item[aboutUser.isIgnore]!=undefined}"></div>
                 <b>{{item.title}}</b>
                 {{item.desc}}
             </li>

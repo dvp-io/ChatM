@@ -1,12 +1,12 @@
-<div id="login" class="popover-open" ng-controller="LoginCtrl">
+<div id="login" class="popover-open">
     <h3 class="login-title">Connectez-vous</h3>
     <form action="">
         <div id="identMessage" class="identMessage"></div>
-        <input id="login_pseudo" type="text" placeholder="Identifiant" />
-        <input id="login_password" type="password" placeholder="Mot de passe" />
+        <input id="login_pseudo" type="text" placeholder="Identifiant" value="mars" />
+        <input id="login_password" type="password" placeholder="Mot de passe" value="mdp" />
         <select name="" id="login_channel">
             <option value="-1">Choisir un salon</option>
-            <option value="10">Dev. Web</option>
+            <option value="10" selected>Dev. Web</option>
             <option value="20">Dev. App</option>
             <option value="30">Base de données</option>
             <option value="40">Taverne</option>

@@ -8,7 +8,8 @@ pre > span {display: block; background:transparent url(../img/bg-pre.jpg) repeat
 
 .icon {font-size:1.25rem;}
 
-.ng-scope {height:100%; width:100%;}
+body > .ng-scope
+    , #chat.ng-scope {height:100%; width:100%;}
 
 /** LOGIN **/
 #login {width:100%; height:100%; background-color:#f1f1f1; transition:1s; position:absolute; top:-100%; left:0; z-index:3;}
@@ -123,6 +124,7 @@ section .line .citation:before {display: block; content: "\201C"; font-size: 60p
 #about-user .item-list .item .sublist-item {height: auto; overflow: hidden; max-height: 50em; -webkit-transition: max-height 0.5s; transition: max-height 0.5s;}
 #about-user .item-list .item .sublist-item.is-collapsed {max-height:0;}
 #about-user .item-list .item .sublist-item.accordionIn {display:block;}
+#about-user .item-list .item .sublist-item .disabled {background-color:#EDEDED; color:#AFAFAF;}
 #about-user .item-list .item .sublist-item .item {line-height:1.25rem; font-size:0.65rem; padding:10px 5px; border-left:20px solid #d3d3d3;}
 #about-user .item-list .item .sublist-item .item:last-child {border-bottom:0;}
 #about-user .item-list .item .sublist-item .item b {font-size:1rem; margin-left:10px;}

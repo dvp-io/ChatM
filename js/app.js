@@ -122,18 +122,12 @@ function setPostHeader($httpProvider) {
 }
 
 app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
-    /*$locationProvider.html5Mode({
-        enabled: true,
-        requireBase: true,
-        rewriteLinks: true
-    });*/
-
     $routeProvider.when('/login', {
         templateUrl: 'templates/login.html',
-        controller: 'LoginCtrl'
+        controller: 'LoginController'
     }).when('/chat', {
         templateUrl: 'templates/chat.html',
-        controller: 'ChatCtrl'
+        controller: 'ChatController'
     }).otherwise({
         redirectTo: '/login'
     });
@@ -293,7 +287,7 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
     return setMessage;
 });
 
-app.factory('loadData', function (sharedProperties, UserOpt, $timeout, $compile) {
+app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compile) {
     var addFunction = function (scope) {
         var users = document.getElementById("slide-nav-right").getElementsByClassName("nomConnecte");
         var channels = document.getElementById("slide-nav-right").getElementsByClassName("nomSalon");
@@ -310,7 +304,7 @@ app.factory('loadData', function (sharedProperties, UserOpt, $timeout, $compile)
                     var ignore = res[5];
 
                     changeName(this);
-                    UserOpt.aboutUser(id, "'" + pseudo + "'", ignore, scope);
+                    aboutUser(id, pseudo, ignore, scope);
                     popover('about-user');
                     slideNav('right');
                     return false;
@@ -379,6 +373,49 @@ app.factory('loadData', function (sharedProperties, UserOpt, $timeout, $compile)
         conv.appendChild(item);
         //conv.scroll(0, conv.style.height);
     };
+
+    var ignore = function (id, statut, scope) {
+        var texte = "/IGNORE " + statut + " " + id;
+        setMessage.getData({q:"cmd", v:sharedProperties.getVersion(), s:sharedProperties.getSession(), c: texte, a: a++}).then(function (response) {
+            document.getElementById("msg-input").value = "";
+            document.getElementById("msg-input").focus();
+            setMessage.doStatus(response.data);
+            scope.data = loadData.getData(scope);
+            popover('about-user');
+        });
+    };
+
+    var aboutUser = function (id, pseudo, ignoreState, scope) {
+        var config = {"public": {"title":"Parler en public", "icon":"icon-bubbles3", "multiple":false, "function":"Options.public('" + pseudo + "')"}
+            , "private": {"title":"Dialoguer en privé", "icon":"icon-bubble2", "multiple":false, "function":"Options.private(" + id + ", '" + pseudo + "')"}
+            , "uploadFile": {"title":"Envoyer un fichier", "icon":"icon-upload2", "multiple":false, "function":"Options.uploadFile(" + id + ")"}
+            , "ignore": {"title":"Bloquer/Ignorer", "icon":"icon-cross", "multiple":true
+               , "items":{
+                   "block": {"title":"Bloquer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé.", 0:"BLOCK", 1:"OFF"},
+                   "ignore": {"title":"Ignorer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé ; de plus, vous ne verrez plus ses messages s'afficher sur le salon.", 0:"FULL", 2:"OFF"}
+               }
+            }
+          , "profil": {"title":"Voir le profil", "icon":"icon-user", "multiple":false, "function":"Options.profil(" + id + ")"}
+         };
+
+        scope.aboutUser = {};
+        scope.aboutUser.id = id;
+        scope.aboutUser.data = config;
+        scope.aboutUser.isIgnore = ignoreState;
+        scope.aboutUser.switchOn = (ignoreState > 0) ? true : false;
+        scope.checkAccordion = function (value, $event, menu) {
+            if (value) {
+                accordion($event.target.parentNode);
+            } else {
+                eval(menu.function);
+            }
+        };
+        scope.checkStatus = function (item) {
+            if (item[ignoreState] !== undefined) {
+                ignore(id, item[ignoreState], scope);
+            }
+        }
+    }
 
     var loadData = {
         getData: function ($scope) {
@@ -485,76 +522,17 @@ app.factory('loadData', function (sharedProperties, UserOpt, $timeout, $compile)
     return loadData;
 });
 
-app.factory('UserOpt', function ($compile) {
-    var userOpt = {
-        aboutUser: function (id, pseudo, ignore, scope) {
-            var config = {"public": {"title":"Parler en public", "icon":"icon-bubbles3", "multiple":"false", "function":"Options.public(" + pseudo + ")"}
-                , "private": {"title":"Dialoguer en privé", "icon":"icon-bubble2", "multiple":"false", "function":"Options.private(" + id + ", " + pseudo + ")"}
-                , "uploadFile": {"title":"Envoyer un fichier", "icon":"icon-upload2", "multiple":"false", "function":"Options.uploadFile(" + id + ")"}
-                , "ignore": {"title":"Bloquer/Ignorer", "icon":"icon-cross", "multiple":"true"
-                    , "items":{
-                        "block": {"title":"Bloquer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé.", 0:"BLOCK", 1:"OFF"},
-                        "ignore": {"title":"Ignorer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé ; de plus, vous ne verrez plus ses messages s'afficher sur le salon.", 0:"FULL", 1:"OFF"}
-                    }
-                }
-                , "profil": {"title":"Voir le profil", "icon":"icon-user", "multiple":"false", "function":"Options.profil(" + id + ")"}
-            };
-
-            scope.aboutUser = {};
-            scope.aboutUser.id = id;
-            scope.aboutUser.data = "";
-            scope.aboutUser.switchOn = (ignore > 0) ? true : false;
-            scope.aboutUser.checkAccordion = function (value, element) {
-                if (value) {
-                    accordion(element);
-                } else {
-
-                }
-            }
-
-            //var div = document.getElementById("popOpt");
-            //div.innerHTML = "";
-            for (opt in config) {
-
-                //var li = document.createElement("li");
-                //li.classList.add("item");
-                //var icon = document.createElement("i");
-                //icon.classList.add("icon");
-                //icon.classList.add(config[opt].icon);
-                //li.innerHTML = icon.outerHTML + config[opt].title;
-                if (config[opt].multiple === "false") {
-                    //li.setAttribute("onclick", config[opt].items);
-                } else {
-                    //var items = config[opt].items;
-                    //var ul = document.createElement("ul");
-                    //ul.classList.add("sublist-item");
-                    //ul.classList.add("is-collapsed");
-                    //for (it in items) {
-                        //var sub = document.createElement("li");
-                        //var switchOn = (ignore > 0) ? "switchOn" : "";
-                        //var checkbox = "<input type='checkbox' name='checkboxName' class='checkbox'/><div class='switch " + switchOn + "'></div>";
-                        //sub.classList.add("item");
-                        //sub.innerHTML = checkbox + "<b>" + items[it].title + "</b>" + items[it].desc;
-                        //sub.setAttribute("ng-click", "ignore(" + id + ", '" + items[it].cmd + "');");
-                        if (ignore == 0) {
-                        } else {
-
-                        }
-                        //ul.appendChild(sub);
-                    //}
-                    //$compile(ul.children)(scope);
-                    //li.classList.add("accordion");
-                    //li.setAttribute("onclick", "accordion(this);");
-                    //li.appendChild(ul);
-                }
-                //div.appendChild(li);
-            }
+app.factory('tmpAction', function () {
+    var tmpAction = {
+        passUserOpt : function (id, pseudo, ignore, scope) {
+            return UserOpt.aboutUser(id, "'" + pseudo + "'", ignore, scope);
         }
     };
-    return userOpt;
+
+    return tmpAction;
 });
 
-app.controller('LoginCtrl', function (sharedProperties, setMessage, loadData, $scope) {
+app.controller('LoginController', function (sharedProperties, setMessage, loadData, $scope) {
     $scope.ngUserConnect = function () {
         var json = setMessage.userConnect();
         if (json !== undefined) {
@@ -568,7 +546,7 @@ app.controller('LoginCtrl', function (sharedProperties, setMessage, loadData, $s
     };
 });
 
-app.controller('ChatCtrl', function (sharedProperties, setMessage, UserOpt, loadData, $scope, $sce, $interval, $location) {
+app.controller('ChatController', function (sharedProperties, setMessage, loadData, $scope, $sce, $interval, $location) {
 
     $scope.data = [];
 
@@ -591,17 +569,6 @@ app.controller('ChatCtrl', function (sharedProperties, setMessage, UserOpt, load
 
     var stopInterval = function () {
         $interval.cancel(interval);
-    };
-
-    $scope.ignore = function (id, statut) {
-        var texte = "/IGNORE " + statut + " " + id;
-        setMessage.getData({q:"cmd", v:sharedProperties.getVersion(), s:sharedProperties.getSession(), c: texte, a: a++}).then(function (response) {
-            document.getElementById("msg-input").value = "";
-            document.getElementById("msg-input").focus();
-            setMessage.doStatus(response.data);
-            $scope.data = loadData.getData($scope);
-            popover('about-user');
-        });
     };
 
     $scope.toTrustedHTML = function (html) {
