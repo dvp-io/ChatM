@@ -41,8 +41,8 @@
         </section>
         <footer>
             <input type="text" placeholder="Message.." value="" class="msg-input" id="msg-input" ng-keyup="keyEnter($event.keyCode)" />
-            <button class="msg-send" ng-click="send();">
-                <i class="icon icon-share"></i>
+            <button type="text" class="msg-clean" ng-click="clean()" ng-hide="showClean">
+                <i class="icon icon-cancel-circle"></i>
             </button>
             <nav class="footer-toolbar">
                 <button type="text" class="toolbar-btn msg-tools" onclick="popover('about-user');">
@@ -50,6 +50,9 @@
                 </button>
                 <button type="text" class="toolbar-btn msg-smiley" onclick="popover('popover-smileys');">
                     <i class="icon icon-smile"></i>
+                </button>
+                <button class="toolbar-btn msg-send" ng-click="send();">
+                    <i class="icon icon-share"></i>
                 </button>
             </nav>
         </footer>

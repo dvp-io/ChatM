@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'icomoon';
-	src:url('fonts/icomoon.eot?-9dmhqy');
-	src:url('fonts/icomoon.eot?#iefix-9dmhqy') format('embedded-opentype'),
-		url('fonts/icomoon.woff?-9dmhqy') format('woff'),
-		url('fonts/icomoon.ttf?-9dmhqy') format('truetype'),
-		url('fonts/icomoon.svg?-9dmhqy#icomoon') format('svg');
+	src:url('fonts/icomoon.eot?qc9afc');
+	src:url('fonts/icomoon.eot?#iefixqc9afc') format('embedded-opentype'),
+		url('fonts/icomoon.woff?qc9afc') format('woff'),
+		url('fonts/icomoon.ttf?qc9afc') format('truetype'),
+		url('fonts/icomoon.svg?qc9afc#icomoon') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -127,12 +127,28 @@
 	content: "\eab1";
 }
 
+.icon-droplet:before {
+	content: "\e90b";
+}
+
 .icon-pacman:before {
 	content: "\e916";
 }
 
 .icon-database:before {
 	content: "\e964";
+}
+
+.icon-quotes-left:before {
+	content: "\e977";
+}
+
+.icon-spinner9:before {
+	content: "\e982";
+}
+
+.icon-equalizer:before {
+	content: "\e992";
 }
 
 .icon-cog:before {
@@ -143,6 +159,22 @@
 	content: "\e999";
 }
 
+.icon-link:before {
+	content: "\e9cb";
+}
+
+.icon-question:before {
+	content: "\ea09";
+}
+
+.icon-cancel-circle:before {
+	content: "\ea0d";
+}
+
+.icon-blocked:before {
+	content: "\ea0e";
+}
+
 .icon-enter:before {
 	content: "\ea13";
 }
@@ -151,12 +183,28 @@
 	content: "\ea14";
 }
 
-.icon-circle-right:before {
-	content: "\ea42";
+.icon-bold:before {
+	content: "\ea62";
+}
+
+.icon-underline:before {
+	content: "\ea63";
+}
+
+.icon-italic:before {
+	content: "\ea64";
+}
+
+.icon-strikethrough:before {
+	content: "\ea65";
 }
 
 .icon-share:before {
 	content: "\ea7d";
+}
+
+.icon-embed2:before {
+	content: "\ea80";
 }
 
 .icon-terminal:before {

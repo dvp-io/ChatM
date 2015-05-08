@@ -396,7 +396,7 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
                }
             }
           , "profil": {"title":"Voir le profil", "icon":"icon-user", "multiple":false, "function":"Options.profil(" + id + ")"}
-         };
+        };
 
         scope.aboutUser = {};
         scope.aboutUser.id = id;
@@ -416,6 +416,23 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
             }
         }
     }
+
+    var aboutOptions = function (scope) {
+        var config = {"code": {"title":"Code", "icon":"icon-embed2", "multiple":false, "function":"Options.public('" + pseudo + "')"}
+            , "private": {"title":"Dialoguer en privé", "icon":"icon-bubble2", "multiple":false, "function":"Options.private(" + id + ", '" + pseudo + "')"}
+            , "uploadFile": {"title":"Envoyer un fichier", "icon":"icon-upload2", "multiple":false, "function":"Options.uploadFile(" + id + ")"}
+            , "ignore": {"title":"Bloquer/Ignorer", "icon":"icon-cross", "multiple":true
+                , "items":{
+                   "block": {"title":"Bloquer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé.", 0:"BLOCK", 1:"OFF"},
+                   "ignore": {"title":"Ignorer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé ; de plus, vous ne verrez plus ses messages s'afficher sur le salon.", 0:"FULL", 2:"OFF"}
+                }
+            }
+            , "profil": {"title":"Voir le profil", "icon":"icon-user", "multiple":false, "function":"Options.profil(" + id + ")"}
+        };
+
+        scope.aboutUser = {};
+        scope.aboutUser.data = config;
+    };
 
     var loadData = {
         getData: function ($scope) {
@@ -553,6 +570,7 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
     $scope.data = loadData.getData($scope);
     $scope.data.anoSmileys = anoSmileys;
     $scope.data.proxyURI = proxyURI;
+    $scope.showClean = true;
 
     document.getElementById("msg-input").focus();
 
@@ -600,10 +618,21 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
     };
 
     $scope.keyEnter = function (keyCode) {
+        if (document.getElementById("msg-input").value === "") {
+            $scope.showClean = true;
+        } else {
+            $scope.showClean = false;
+        }
         if (keyCode === 13) {
             $scope.send();
         }
     };
+
+    $scope.clean = function () {
+        document.getElementById("msg-input").value = "";
+        document.getElementById("msg-input").focus();
+        $scope.showClean = true;
+    }
 
     $scope.switchChannel = function (cmd, channel, id, $event) {
         sharedProperties.setChannelActive(id);
