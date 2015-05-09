@@ -183,6 +183,21 @@ app.service('sharedProperties', function () {
     };
 });
 
+app.directive('backButton', function(){
+    return {
+        restrict: 'A',
+
+        link: function(scope, element, attrs) {
+            element.bind('click', goBack);
+
+            function goBack() {
+                history.back();
+                scope.$apply();
+            }
+        }
+    }
+});
+
 app.factory('setMessage', function ($http, sharedProperties, $location) {
     var optionsChat = "";
 
@@ -386,16 +401,16 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
     };
 
     var aboutUser = function (id, pseudo, ignoreState, scope) {
-        var config = {"public": {"title":"Parler en public", "icon":"icon-bubbles3", "multiple":false, "function":"Options.public('" + pseudo + "')"}
-            , "private": {"title":"Dialoguer en privé", "icon":"icon-bubble2", "multiple":false, "function":"Options.private(" + id + ", '" + pseudo + "')"}
-            , "uploadFile": {"title":"Envoyer un fichier", "icon":"icon-upload2", "multiple":false, "function":"Options.uploadFile(" + id + ")"}
-            , "ignore": {"title":"Bloquer/Ignorer", "icon":"icon-cross", "multiple":true
+        var config = {"0": {"title":"Parler en public", "icon":"icon-bubbles3", "multiple":false, "function":"Options.public('" + pseudo + "')"}
+            , "1": {"title":"Dialoguer en privé", "icon":"icon-bubble2", "multiple":false, "function":"Options.private(" + id + ", '" + pseudo + "')"}
+            , "2": {"title":"Envoyer un fichier", "icon":"icon-upload2", "multiple":false, "function":"Options.uploadFile(" + id + ")"}
+            , "3": {"title":"Bloquer/Ignorer", "icon":"icon-blocked", "multiple":true
                , "items":{
-                   "block": {"title":"Bloquer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé.", 0:"BLOCK", 1:"OFF"},
-                   "ignore": {"title":"Ignorer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé ; de plus, vous ne verrez plus ses messages s'afficher sur le salon.", 0:"FULL", 2:"OFF"}
+                   "0": {"title":"Bloquer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé.", 0:"BLOCK", 1:"OFF"},
+                   "1": {"title":"Ignorer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé ; de plus, vous ne verrez plus ses messages s'afficher sur le salon.", 0:"FULL", 2:"OFF"}
                }
             }
-          , "profil": {"title":"Voir le profil", "icon":"icon-user", "multiple":false, "function":"Options.profil(" + id + ")"}
+          , "4": {"title":"Voir le profil", "icon":"icon-user", "multiple":false, "function":"Options.profil(" + id + ")"}
         };
 
         scope.aboutUser = {};
@@ -416,23 +431,6 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
             }
         }
     }
-
-    var aboutOptions = function (scope) {
-        var config = {"code": {"title":"Code", "icon":"icon-embed2", "multiple":false, "function":"Options.public('" + pseudo + "')"}
-            , "private": {"title":"Dialoguer en privé", "icon":"icon-bubble2", "multiple":false, "function":"Options.private(" + id + ", '" + pseudo + "')"}
-            , "uploadFile": {"title":"Envoyer un fichier", "icon":"icon-upload2", "multiple":false, "function":"Options.uploadFile(" + id + ")"}
-            , "ignore": {"title":"Bloquer/Ignorer", "icon":"icon-cross", "multiple":true
-                , "items":{
-                   "block": {"title":"Bloquer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé.", 0:"BLOCK", 1:"OFF"},
-                   "ignore": {"title":"Ignorer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé ; de plus, vous ne verrez plus ses messages s'afficher sur le salon.", 0:"FULL", 2:"OFF"}
-                }
-            }
-            , "profil": {"title":"Voir le profil", "icon":"icon-user", "multiple":false, "function":"Options.profil(" + id + ")"}
-        };
-
-        scope.aboutUser = {};
-        scope.aboutUser.data = config;
-    };
 
     var loadData = {
         getData: function ($scope) {
@@ -534,6 +532,18 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
             //console.log(ul.children);
             loadData.getChannel();
             $compile(ul.children)($scope);
+        },
+
+        aboutOptions: function (scope) {
+            var config = {"0": {"title":"Code", "icon":"icon-embed2", "multiple":false, "function":""}
+                , "1": {"title":"Citer", "icon":"icon-quotes-left", "multiple":false, "function":""}
+                , "2": {"title":"Lien", "icon":"icon-link", "multiple":false, "function":""}
+                , "3": {"title":"Image", "icon":"icon-image", "multiple":false, "function":""}
+                , "4": {"title":"Statut", "icon":"", "multiple":false, "function":""}
+            };
+
+            scope.aboutUser = {};
+            scope.aboutUser.data = config;
         }
     };
     return loadData;
@@ -565,14 +575,29 @@ app.controller('LoginController', function (sharedProperties, setMessage, loadDa
 
 app.controller('ChatController', function (sharedProperties, setMessage, loadData, $scope, $sce, $interval, $location) {
 
-    $scope.data = [];
+    window.onbeforeunload = function (event) {
+        var message = "";
+        if (typeof event == 'undefined') {
+            event = window.event;
+        }
+        if (event) {
+            event.returnValue = message;
+        }
+        return message;
+    }
 
-    $scope.data = loadData.getData($scope);
-    $scope.data.anoSmileys = anoSmileys;
-    $scope.data.proxyURI = proxyURI;
-    $scope.showClean = true;
+    if (sharedProperties.getSession() === undefined) {
+        $location.path('/login');
+    } else {
+        $scope.data = [];
 
-    document.getElementById("msg-input").focus();
+        $scope.data = loadData.getData($scope);
+        $scope.data.anoSmileys = anoSmileys;
+        $scope.data.proxyURI = proxyURI;
+        $scope.showClean = true;
+
+        document.getElementById("msg-input").focus();
+    }
 
     var interval = $interval(function () {
         if (sharedProperties.getEtat() < 1) {
@@ -598,6 +623,11 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
         setMessage.getData({ q: "cmd", v: version, s: session, c: "/QUIT", a: a++});
         $location.path("/login");
         firstConnexion = 0;
+    };
+
+    $scope.aboutOptions = function () {
+        loadData.aboutOptions($scope);
+        popover('about-user');
     };
 
     $scope.send = function () {
