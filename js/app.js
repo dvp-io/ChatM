@@ -334,7 +334,6 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
 
                     changeName(this);
                     aboutUser(id, pseudo, ignore, scope);
-                    popover('about-user');
                     slideNav('right');
                     return false;
                 };
@@ -356,9 +355,7 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
     };
 
     var createLineChannel = function (channel) {
-        // ICI REGEX POUR MODIFIER LE CHEMIN DES IMAGES
         channel = channel.replace(/src="\/?(images|smileys)\//g, 'src="' + proxyURI + "/$1/");
-        console.log(channel);
         var conv = document.getElementById('conv-0');
         var item = document.createElement('div');
         item.setAttribute('class', 'line');
@@ -420,7 +417,7 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
     var aboutUser = function (id, pseudo, ignoreState, scope) {
         var config = {"0": {"title":"Parler en public", "icon":"icon-bubbles3", "multiple":false, "function":"Options.public('" + pseudo + "')"}
             , "1": {"title":"Dialoguer en privé", "icon":"icon-bubble2", "multiple":false, "function":"Options.private(" + id + ", '" + pseudo + "')"}
-            , "2": {"title":"Envoyer un fichier", "icon":"icon-upload2", "multiple":false, "function":"Options.uploadFile(" + id + ")"}
+            /*, "2": {"title":"Envoyer un fichier", "icon":"icon-upload2", "multiple":false, "function":"Options.uploadFile(" + id + ")"}*/
             , "3": {"title":"Bloquer/Ignorer", "icon":"icon-blocked", "multiple":"list"
                , "items":{
                    "0": {"title":"Bloquer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé.", 0:"BLOCK", 1:"OFF"},
@@ -440,6 +437,8 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
                 ignore(id, item[ignoreState], scope);
             }
         }
+
+        popover('about-user');
     }
 
     var loadData = {
@@ -539,7 +538,6 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
                 li.innerHTML = salons[id];
                 ul.appendChild(li);
             }
-            //console.log(ul.children);
             loadData.getChannel();
             $compile(ul.children)($scope);
         },
@@ -563,7 +561,7 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
                 , "4": {"title":"Statut", "icon":"icon-pencil2", "multiple":"form"
                     , "items": {
                         "0": {"input":"text", "libelle":"Statut personnalisé", "id":"away", "class":"input", "maxsize":"150"},
-                        "1": {"input":"button", "libelle":"Insérer", "class":"btn", function:scope.image}
+                        "1": {"input":"button", "libelle":"Changer le statut", "class":"btn", function:scope.away}
                     }
                 }
             };
@@ -702,9 +700,9 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
         }
     };
 
-    $scope.clean = function () {
-        document.getElementById("msg-input").value = "";
-        document.getElementById("msg-input").focus();
+    $scope.clean = function (id) {
+        document.getElementById(id).value = "";
+        document.getElementById(id).focus();
         $scope.showClean = true;
     }
 
@@ -751,7 +749,16 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
     };
 
     $scope.away = function () {
+        console.log('toto');
+        var message = document.getElementById('away').value;
+        var texte = "/AWAY " + message;
+        setMessage.getData({ q: "cmd", v: version, s: session, c: texte, a: a++ }).then(function (response) {
+            document.getElementById("msg-input").focus();
+            setMessage.doStatus(response.data);
+            $scope.data = loadData.getData($scope);
+        });
 
+        popover('about-user');
     };
 
     $scope.myNavSwipeRight = function () {
