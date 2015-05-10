@@ -357,6 +357,8 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
 
     var createLineChannel = function (channel) {
         // ICI REGEX POUR MODIFIER LE CHEMIN DES IMAGES
+        channel = channel.replace(/src="\/?(images|smileys)\//g, 'src="' + proxyURI + "/$1/");
+        console.log(channel);
         var conv = document.getElementById('conv-0');
         var item = document.createElement('div');
         item.setAttribute('class', 'line');
@@ -560,7 +562,7 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
                 }
                 , "4": {"title":"Statut", "icon":"icon-pencil2", "multiple":"form"
                     , "items": {
-                        "0": {"input":"text", "libelle":"Statut personnalisé", "id":"away", "class":"input"},
+                        "0": {"input":"text", "libelle":"Statut personnalisé", "id":"away", "class":"input", "maxsize":"150"},
                         "1": {"input":"button", "libelle":"Insérer", "class":"btn", function:scope.image}
                     }
                 }
