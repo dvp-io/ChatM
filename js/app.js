@@ -1,6 +1,6 @@
 var app = angular.module('chatApp', ['angular-gestures', 'ngRoute'], setPostHeader),
     firstConnexion = 0,
-    proxyURI = 'http://chat.dvp.io/',
+    proxyURI = 'http://chatp.dvp.io/',
     anoSmileys = {
       'smile.gif': ':)',
       'sad.gif': ':(',
@@ -584,6 +584,8 @@ app.factory('tmpAction', function () {
 });
 
 app.controller('LoginController', function (sharedProperties, setMessage, loadData, $scope) {
+    onResize();
+
     $scope.ngUserConnect = function () {
         var json = setMessage.userConnect();
         if (json !== undefined) {
@@ -598,6 +600,8 @@ app.controller('LoginController', function (sharedProperties, setMessage, loadDa
 });
 
 app.controller('ChatController', function (sharedProperties, setMessage, loadData, $scope, $sce, $interval, $location) {
+
+    onResize();
 
     window.onbeforeunload = function (event) {
         var message = "";

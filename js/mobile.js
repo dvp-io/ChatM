@@ -1,11 +1,21 @@
 var onResize = function (){
-    var height = document.getElementById('conversations').offsetHeight;
-    //console.log(height);
-    if ( height < 350 ) {
-        document.getElementById('conversations').style.height = (height - 350) + 'px';
+    var els = document.querySelectorAll('input, textarea');
+    console.log(els);
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener('focus', function () {
+            document.getElementById('ng-app').classList.add("keyboard");
+
+            /*setTimeout(function() {
+                window.scrollTo(0,0);
+                document.getElementById('ng-app').classList.remove("keyboard");
+            }, 0);*/
+        });
+
+        els[i].addEventListener('blur', function () {
+            document.getElementById('ng-app').classList.remove("keyboard");
+        });
     }
-    console.log(document.getElementById('conversations').offsetHeight);
-}
+};
 
 var switchConv = function (id, pseudo) {
     var parent = document.getElementById("conversations");
