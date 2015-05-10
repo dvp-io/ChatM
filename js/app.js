@@ -543,10 +543,10 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
         },
 
         aboutOptions: function (scope) {
-            var config = {"0": {"title":"Code", "icon":"icon-embed2", "multiple":false, "function":""}
-                , "1": {"title":"Citer", "icon":"icon-quotes-left", "multiple":false, "function":"Options.quote();"}
+            var config = {/*"0": {"title":"Code", "icon":"icon-embed2", "multiple":false, "function":""}
+                , */"1": {"title":"Citer", "icon":"icon-quotes-left", "multiple":false, "function":"Options.quote();"}
                 , "2": {"title":"Lien", "icon":"icon-link", "multiple":"form"
-                    , "items":{
+                    , "items": {
                         "0": {"input":"text", "libelle":"Lien", "id":"link-url", "class":"input"},
                         "1": {"input":"text", "libelle":"Libellé (facultatif)", "id":"link-libelle", "class":"input"},
                         "2": {"input":"button", "libelle":"Insérer", "class":"btn", function:scope.link}
@@ -558,7 +558,12 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
                         "1": {"input":"button", "libelle":"Insérer", "class":"btn", function:scope.image}
                     }
                 }
-                , "4": {"title":"Statut", "icon":"", "multiple":false, "function":""}
+                , "4": {"title":"Statut", "icon":"icon-pencil2", "multiple":"form"
+                    , "items": {
+                        "0": {"input":"text", "libelle":"Statut personnalisé", "id":"away", "class":"input"},
+                        "1": {"input":"button", "libelle":"Insérer", "class":"btn", function:scope.image}
+                    }
+                }
             };
 
             scope.aboutUser = {};
@@ -741,6 +746,10 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
 
     $scope.image = function () {
         Options.image();
+    };
+
+    $scope.away = function () {
+
     };
 
     $scope.myNavSwipeRight = function () {
