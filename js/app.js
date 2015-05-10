@@ -355,7 +355,7 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
     };
 
     var createLineChannel = function (channel) {
-        channel = channel.replace(/src="\/?(images|smileys)\//g, 'src="' + proxyURI + "/$1/");
+        channel = (channel !== "") ? channel.replace(/src="\/?(images|smileys)\//g, 'src="' + proxyURI + "/$1/") : channel;
         var conv = document.getElementById('conv-0');
         var item = document.createElement('div');
         item.setAttribute('class', 'line');
