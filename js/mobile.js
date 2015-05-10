@@ -1,6 +1,5 @@
 var onResize = function (){
     var els = document.querySelectorAll('input, textarea');
-    console.log(els);
     for (var i = 0; i < els.length; i++) {
         els[i].addEventListener('focus', function () {
             document.getElementById('ng-app').classList.add("keyboard");
