@@ -1,3 +1,16 @@
+var onResize = function (){
+    var ios7 = (device.platform == 'iOS' && parseInt(device.version) >= 7);
+    if (ios7){
+        var height = $('body').height();
+        if (height < 350){ // adjust this height value conforms to your layout
+            $('.myBottomMenu').hide();
+        }
+        else {
+            $('.myBottomMenu').show();
+        }
+    }
+}
+
 var switchConv = function (id, pseudo) {
     var parent = document.getElementById("conversations");
     var convActive = parent.getElementsByClassName("open-conv");
