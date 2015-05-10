@@ -198,6 +198,20 @@ app.directive('backButton', function(){
     }
 });
 
+app.directive('formButton', function($compile) {
+    return {
+        restrict: "E",
+        replace: true,
+        scope : {
+            item: '='
+        },
+        link:  function (scope, element, attrs) {
+            element.html('<button ng-if="item.input==\'button\'" class="{{item.class}}" ng-click="item.function();">{{item.libelle}}</button>');
+            $compile(element.contents())(scope);
+        }
+    }
+});
+
 app.factory('setMessage', function ($http, sharedProperties, $location) {
     var optionsChat = "";
 
@@ -302,7 +316,7 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
     return setMessage;
 });
 
-app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compile) {
+app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compile, $sce, $templateRequest) {
     var addFunction = function (scope) {
         var users = document.getElementById("slide-nav-right").getElementsByClassName("nomConnecte");
         var channels = document.getElementById("slide-nav-right").getElementsByClassName("nomSalon");
@@ -342,6 +356,7 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
     };
 
     var createLineChannel = function (channel) {
+        // ICI REGEX POUR MODIFIER LE CHEMIN DES IMAGES
         var conv = document.getElementById('conv-0');
         var item = document.createElement('div');
         item.setAttribute('class', 'line');
@@ -404,7 +419,7 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
         var config = {"0": {"title":"Parler en public", "icon":"icon-bubbles3", "multiple":false, "function":"Options.public('" + pseudo + "')"}
             , "1": {"title":"Dialoguer en privé", "icon":"icon-bubble2", "multiple":false, "function":"Options.private(" + id + ", '" + pseudo + "')"}
             , "2": {"title":"Envoyer un fichier", "icon":"icon-upload2", "multiple":false, "function":"Options.uploadFile(" + id + ")"}
-            , "3": {"title":"Bloquer/Ignorer", "icon":"icon-blocked", "multiple":true
+            , "3": {"title":"Bloquer/Ignorer", "icon":"icon-blocked", "multiple":"list"
                , "items":{
                    "0": {"title":"Bloquer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé.", 0:"BLOCK", 1:"OFF"},
                    "1": {"title":"Ignorer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé ; de plus, vous ne verrez plus ses messages s'afficher sur le salon.", 0:"FULL", 2:"OFF"}
@@ -418,13 +433,6 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
         scope.aboutUser.data = config;
         scope.aboutUser.isIgnore = ignoreState;
         scope.aboutUser.switchOn = (ignoreState > 0) ? true : false;
-        scope.checkAccordion = function (value, $event, menu) {
-            if (value) {
-                accordion($event.target.parentNode);
-            } else {
-                eval(menu.function);
-            }
-        };
         scope.checkStatus = function (item) {
             if (item[ignoreState] !== undefined) {
                 ignore(id, item[ignoreState], scope);
@@ -536,9 +544,20 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
 
         aboutOptions: function (scope) {
             var config = {"0": {"title":"Code", "icon":"icon-embed2", "multiple":false, "function":""}
-                , "1": {"title":"Citer", "icon":"icon-quotes-left", "multiple":false, "function":""}
-                , "2": {"title":"Lien", "icon":"icon-link", "multiple":false, "function":""}
-                , "3": {"title":"Image", "icon":"icon-image", "multiple":false, "function":""}
+                , "1": {"title":"Citer", "icon":"icon-quotes-left", "multiple":false, "function":"Options.quote();"}
+                , "2": {"title":"Lien", "icon":"icon-link", "multiple":"form"
+                    , "items":{
+                        "0": {"input":"text", "libelle":"Lien", "id":"link-url", "class":"input"},
+                        "1": {"input":"text", "libelle":"Libellé (facultatif)", "id":"link-libelle", "class":"input"},
+                        "2": {"input":"button", "libelle":"Insérer", "class":"btn", function:scope.link}
+                    }
+                }
+                , "3": {"title":"Image", "icon":"icon-image", "multiple":"form"
+                    , "items": {
+                        "0": {"input":"text", "libelle":"Insérer une image", "id":"image-libelle", "class":"input"},
+                        "1": {"input":"button", "libelle":"Insérer", "class":"btn", function:scope.image}
+                    }
+                }
                 , "4": {"title":"Statut", "icon":"", "multiple":false, "function":""}
             };
 
@@ -614,6 +633,23 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
         $interval.cancel(interval);
     };
 
+    var HandleBackFunctionality = function () {
+        if(window.event) {
+            if(window.event.clientX < 40 && window.event.clientY < 0) {
+                alert("Browser back button is clicked...");
+            } else {
+                alert("Browser refresh button is clicked...");
+            }
+        } else {
+            if(event.currentTarget.performance.navigation.type == 1) {
+                alert("Browser refresh button is clicked...");
+            }
+            if(event.currentTarget.performance.navigation.type == 2) {
+                alert("Browser back button is clicked...");
+            }
+        }
+    }
+
     $scope.toTrustedHTML = function (html) {
         return $sce.trustAsHtml(html);
     };
@@ -641,6 +677,7 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
 
         setMessage.getData({ q: "cmd", v: version, s: session, c: texte, a: a++ }).then(function (response) {
             document.getElementById("msg-input").value = "";
+            $scope.showClean = true;
             document.getElementById("msg-input").focus();
             setMessage.doStatus(response.data);
             $scope.data = loadData.getData($scope);
@@ -688,6 +725,22 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
             setMessage.doStatus(response.data);
             $scope.data = loadData.getData($scope);
         });
+    };
+
+    $scope.checkAccordion = function (value, $event, menu) {
+        if (value != false) {
+            accordion($event.target.parentNode, value);
+        } else {
+            eval(menu.function);
+        }
+    };
+
+    $scope.link = function () {
+        Options.link();
+    };
+
+    $scope.image = function () {
+        Options.image();
     };
 
     $scope.myNavSwipeRight = function () {

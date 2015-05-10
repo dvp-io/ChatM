@@ -66,9 +66,9 @@ var popover = function (param) {
     }
 };
 
-var accordion = function (param) {
+var accordion = function (param, type) {
     var cls = "accordionIn";
-    var list = param.getElementsByClassName('sublist-item')[0];
+    var list = param.getElementsByClassName('option-' + type)[0];
     if (!hasClass(list, cls)) {
         list.classList.add(cls);
         list.classList.remove("is-collapsed");
@@ -81,7 +81,6 @@ var accordion = function (param) {
 var smileToMsg = function (param) {
     var input = document.getElementById('msg-input');
     input.value = input.value + '' + param.title;
-    console.log(input.value);
     document.getElementById('popover-smileys').classList.remove('popover-open');
     input.focus();
 };

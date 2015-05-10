@@ -35,7 +35,39 @@ var Options = Options || {};
     }
 
     object.profil = function (id) {
-        console.log(id);
         window.open("http://www.developpez.net/forums/member.php?u=" + id);
+    };
+
+    object.quote = function () {
+        document.getElementById("msg-input").value += "[QUOTE]";
+        document.getElementById("msg-input").focus();
+        popover('about-user');
+    };
+
+    object.link = function () {
+        var link = document.getElementById('link-url').value;
+        var libelle = document.getElementById('link-libelle').value;
+        var input = document.getElementById('msg-input');
+        if (link === "") {
+            input.value += "";
+        } else if (libelle != "") {
+            input.value += "[URL=" + link + "]" + libelle + "[/URL]";
+        } else {
+            input.value += "[URL]" + link + "[/URL]";
+        }
+        input.focus();
+        popover('about-user');
+    };
+
+    object.image = function () {
+        var image = document.getElementById('image-libelle').value;
+        var input = document.getElementById('msg-input');
+        if (image !== "") {
+            input.value += "[IMG]" + image + "[/IMG]";
+        } else {
+            input.value += "";
+        }
+        input.focus();
+        popover('about-user');
     };
 })(window, document, Options);

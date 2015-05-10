@@ -1,10 +1,10 @@
 <ul id="popOpt" class="item-list">
-    <li class="item" ng-repeat="menu in aboutUser.data" ng-class="{accordion: menu.multiple==true}">
+    <li class="item" ng-repeat="menu in aboutUser.data" ng-class="{accordion: menu.multiple!=false}">
         <a ng-disabled="checked" ng-click="checkAccordion(menu.multiple, $event, menu);">
             <i class="icon {{menu.icon}}"></i>
             {{menu.title}}
         </a>
-        <ul ng-hide class="sublist-item is-collapsed">
+        <ul ng-hide class="sublist-item option-{{menu.multiple}} is-collapsed" ng-if="menu.multiple=='list'">
             <li class="item" ng-repeat="item in menu.items" ng-click="checkStatus(item);" ng-class="{disabled: item[aboutUser.isIgnore]==undefined}">
                 <input type="checkbox" name="checkboxName" class="checkbox" />
                 <div class="switch" ng-class="{switchOn: aboutUser.switchOn==true && item[aboutUser.isIgnore]!=undefined}"></div>
@@ -12,5 +12,11 @@
                 {{item.desc}}
             </li>
         </ul>
+        <div ng-hide ng-if="menu.multiple=='form'" class="form-option option-{{menu.multiple}} is-collapsed">
+            <div ng-repeat="item in menu.items" class="item">
+                <input ng-if="item.input=='text'" type="text" id="{{item.id}}" class="{{item.class}}" placeholder="{{item.libelle}}" />
+                <form-button item="item"></form-button>
+            </div>
+        </div>
     </li>
 </ul>

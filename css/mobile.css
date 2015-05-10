@@ -122,13 +122,21 @@ section .line .alerte {color:#FF0000; font-weight:bold;}
 #about-user .item-list .item:first-child {border-top:1px solid #d3d3d3;}
 #about-user .item-list .item .icon {margin:0 10px;}
 #about-user .item-list .item.accordion {}
-#about-user .item-list .item .sublist-item {height: auto; overflow: hidden; max-height: 50em; -webkit-transition: max-height 0.5s; transition: max-height 0.5s;}
-#about-user .item-list .item .sublist-item.is-collapsed {max-height:0;}
-#about-user .item-list .item .sublist-item.accordionIn {display:block;}
+#about-user .item-list .item .sublist-item
+    , #about-user .item-list .item .form-option {height: auto; overflow: hidden; max-height: 50em; -webkit-transition: max-height 0.5s; transition: max-height 0.5s;}
+#about-user .item-list .item .is-collapsed {max-height:0;}
+#about-user .item-list .item .accordionIn {display:block;}
 #about-user .item-list .item .sublist-item .disabled {background-color:#EDEDED; color:#AFAFAF;}
 #about-user .item-list .item .sublist-item .item {line-height:1.25rem; font-size:0.65rem; padding:10px 5px; border-left:20px solid #d3d3d3;}
 #about-user .item-list .item .sublist-item .item:last-child {border-bottom:0;}
 #about-user .item-list .item .sublist-item .item b {font-size:1rem; margin-left:10px;}
+#about-user .item-list .item a {display:block; width:100%; height:40px;}
+
+#about-user .item-list .item .form-option .item {font-size:0.65rem; padding:0 5px; border-left:20px solid #d3d3d3; border-top:0; border-bottom:0;}
+#about-user .item-list .item .form-option .item:first-child {padding-top:10px;}
+#about-user .item-list .item .form-option .item:last-child {padding-bottom:10px;}
+#about-user .item-list .item .input {width:100%; height:30px; line-height:30px; border-radius:3px; border:1px solid #ddd; padding:0 5px; box-shadow:none;}
+#about-user .item-list .item .btn {width:100%; height:40px; text-align:center; background-color:#444; color:white; border:0; border-radius:3px;}
 
 .checkbox{display:none}
 .switch{display: inline-block; width: 30px; height: 21px; background: #E5E5E5; z-index: 0; margin: 0; padding: 0; appearance: none; border: none; cursor: pointer; position: relative; border-radius:10px; -moz-border-radius:10px; -webkit-border-radius:10px;}
