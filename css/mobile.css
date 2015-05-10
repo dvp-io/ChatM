@@ -27,7 +27,7 @@ body > .ng-scope
 #wrapper.open-nav.right {position:absolute; width:100%; left:-225px; transition:0.5s;}
 
 /** HEADER **/
-header {width:100%; height:50px; line-height:50px; border-bottom:1px solid #ddd; background-color:#f1f1f1; position:fixed; z-index:1;
+header {width:100%; height:50px; line-height:50px; border-bottom:1px solid #ddd; background-color:#f1f1f1; position:fixed; top:0; z-index:1;
 -moz-box-shadow: 1px 0px 5px 0px #454545;
 -webkit-box-shadow: 1px 0px 5px 0px #454545;
 -o-box-shadow: 1px 0px 5px 0px #454545;
