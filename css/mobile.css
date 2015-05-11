@@ -22,7 +22,7 @@ body > .ng-scope
 #login .identMessage.active {display:block;}
 
 /** WRAPPER **/
-#wrapper {transition: 0.5s; left: 0; width:100%; height:100%; overflow: hidden; position:relative; z-index:0;}
+#wrapper {transition: 0.5s; left: 0; width:100%; height:100%; overflow: hidden; position:absolute; z-index:0;}
 #wrapper.open-nav.left {position:absolute; width:100%; left:225px; transition:0.5s;}
 #wrapper.open-nav.right {position:absolute; width:100%; left:-225px; transition:0.5s;}
 
