@@ -621,8 +621,6 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
         $scope.data.anoSmileys = anoSmileys;
         $scope.data.proxyURI = proxyURI;
         $scope.showClean = true;
-
-        document.getElementById("msg-input").focus();
     }
 
     var interval = $interval(function () {
