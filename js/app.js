@@ -213,8 +213,6 @@ app.directive('formButton', function($compile) {
 });
 
 app.factory('setMessage', function ($http, sharedProperties, $location) {
-    var optionsChat = "";
-
     var readCookie = function (nom) {
         var deb = document.cookie.indexOf(nom + "=");
 
@@ -260,7 +258,7 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             else if (data.etat === 2) {
                 sharedProperties.setSession(data.session);
                 if (firstConnexion === 0) {
-                    popover('login');
+                    Mobile.popover('login');
                     $location.path('/chat');
                 }
             }
@@ -318,23 +316,23 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
 
 app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compile, $sce, $templateRequest) {
     var addFunction = function (scope) {
-        var users = document.getElementById("slide-nav-right").getElementsByClassName("nomConnecte");
-        var channels = document.getElementById("slide-nav-right").getElementsByClassName("nomSalon");
-        var i = 0;
+        var users = document.getElementById("slide-nav-right").getElementsByClassName("nomConnecte"),
+            channels = document.getElementById("slide-nav-right").getElementsByClassName("nomSalon"),
+            i;
 
         for (i = 0; i < users.length; i++) {
             if (users[i] !== null) {
 
                 users[i].onclick = function () {
-                    var regex_users = /<a[^>]+?ouvrirMenuUtilisateur\((\d+),&quot;(.+?)&quot;,(-?\d),(-?\d),(-?\d),(-?\d),(-?\d),(-?\d),(-?\d),(-?\d)\).+?(?: \(([^<]+?)\)(?:<\/span>)?)?<\/a>/g;
-                    var res = regex_users.exec(this.outerHTML);
-                    var id = res[1];
-                    var pseudo = res[2];
-                    var ignore = res[5];
+                    var regex_users = /<a[^>]+?ouvrirMenuUtilisateur\((\d+),&quot;(.+?)&quot;,(-?\d),(-?\d),(-?\d),(-?\d),(-?\d),(-?\d),(-?\d),(-?\d)\).+?(?: \(([^<]+?)\)(?:<\/span>)?)?<\/a>/g,
+                        res = regex_users.exec(this.outerHTML),
+                        id = res[1],
+                        pseudo = res[2],
+                        ignore = res[5];
 
-                    changeName(this);
-                    aboutUser(id, pseudo, ignore, scope);
-                    slideNav('right');
+                    Mobile.changeName(this);
+                    Mobile.aboutUser(id, pseudo, ignore, scope);
+                    Mobile.slideNav('right');
                     return false;
                 };
             }
@@ -356,8 +354,8 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
 
     var createLineChannel = function (channel) {
         channel = (channel !== "") ? channel.replace(/src="\/?(images|smileys)\//g, 'src="' + proxyURI + "/$1/") : channel;
-        var conv = document.getElementById('conv-0');
-        var item = document.createElement('div');
+        var conv = document.getElementById('conv-0'),
+            item = document.createElement('div');
         item.setAttribute('class', 'line');
         item.innerHTML = channel;
         conv.appendChild(item);
@@ -365,12 +363,14 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
     };
 
     var createPvsElement = function (pvs) {
-        var mpList = document.getElementById('msg-private-list');
-        var listChild = mpList.children;
+        var mpList = document.getElementById('msg-private-list'),
+            listChild = mpList.children;
         //console.log(listChild);
         angular.forEach(pvs, function (key, value) {
             if (!inArray("pvs-" + key.id, listChild)) {
-                var item = document.createElement("li");
+                var item = document.createElement("li"),
+                    parent = document.getElementById('conversations'),
+                    conv = document.createElement("div");
                 // ici on crée l'onglet de la conv dans le menu de gauche
                 item.setAttribute("class", "item new");
                 item.setAttribute("id", "pvs-" + key.id);
@@ -379,13 +379,11 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
                 mpList.appendChild(item);
 
                 // ici on crée la div qui va accueillir la conv pvs
-                var parent = document.getElementById('conversations');
-                var conv = document.createElement("div");
                 conv.setAttribute("id", "conv-" + key.id);
                 conv.setAttribute("class", "conv");
                 parent.appendChild(conv);
             } else {
-                if (!hasClass(document.getElementById("conv-" + key.id), "open-conv")) {
+                if (!Mobile.hasClass(document.getElementById("conv-" + key.id), "open-conv")) {
                     document.getElementById("pvs-" + key.id).setAttribute("class", "item new");
                 }
             }
@@ -395,12 +393,11 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
     };
 
     var addMsgPvs = function (id, html) {
-        var conv = document.getElementById('conv-' + id);
-        var item = document.createElement('div');
+        var conv = document.getElementById('conv-' + id),
+            item = document.createElement('div');
         item.setAttribute('class', 'line');
         item.innerHTML = html;
         conv.appendChild(item);
-        //conv.scroll(0, conv.style.height);
     };
 
     var ignore = function (id, statut, scope) {
@@ -410,7 +407,7 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
             document.getElementById("msg-input").focus();
             setMessage.doStatus(response.data);
             scope.data = loadData.getData(scope);
-            popover('about-user');
+            Mobile.popover('about-user');
         });
     };
 
@@ -438,7 +435,7 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
             }
         }
 
-        popover('about-user');
+        Mobile.popover('about-user');
     }
 
     var loadData = {
@@ -476,62 +473,66 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
                     }
 
                     if (sharedProperties.getData().smileys !== undefined) {
-                        var div = document.getElementById('list-smileys-perso');
-                        var list = div.getElementsByTagName("a");
+                        var div = document.getElementById('list-smileys-perso'),
+                            list = div.getElementsByTagName("a"),
+                            link;
                         for (i = 0; i < list.length; i++) {
                             list[i].setAttribute("onclick", "smileToMsg(this); return false;");
-                            var link = list[i].getElementsByTagName('img')[0].getAttribute("src");
+                            link = list[i].getElementsByTagName('img')[0].getAttribute("src");
                             list[i].getElementsByTagName('img')[0].setAttribute("src", proxyURI + link);
                         }
                     }
 
-                    checkNewPvs();
+                    Mobile.checkNewPvs();
                 });
             }
             return $scope.data;
         },
 
         getChannel: function () {
-            var chanActive = "";
+            var chanActive = "",
+                element = document.getElementById('slide-nav-left').getElementsByClassName('item-' + sharedProperties.getChannelActive())[0],
+                channels = document.getElementById('slide-nav-left').getElementsByClassName('nomSalon'),
+                nameChannel;
             if (sharedProperties.getData().nomSalon === undefined) {
                 chanActive = sharedProperties.getChannelConnexion().replace(" ", "_");
             } else {
                 chanActive = sharedProperties.getData().nomSalon.replace(" ", "_");
             }
-            var element = document.getElementById('slide-nav-left').getElementsByClassName('item-' + sharedProperties.getChannelActive())[0];
             element.removeAttribute("ng-click");
             element.classList.add("active");
             element.classList.add("new");
             element.setAttribute("id", "chan-0");
             element.setAttribute("name", chanActive);
             element.onclick = function () {
-                switchConv(0, element.innerHTML);
+                Mobile.switchConv(0, element.innerHTML);
                 return false;
-            };
+            }
 
-            var channels = document.getElementById('slide-nav-left').getElementsByClassName('nomSalon');
             for (var i = 0; i < channels.length; i++) {
                 if (channels[i].id === "") {
                     channels[i].onclick = function () {return false;};
-                    var nameChannel = channels[i].innerHTML.split(" [");
+                    nameChannel = channels[i].innerHTML.split(" [");
                     channels[i].setAttribute("ng-click", "switchChannel('/JOIN', '" + nameChannel[0].replace(" ", "_") + "', $event);");
                 }
             }
         },
 
         createChannelsList: function (list, $scope) {
-            var regex = /<a[^>]+?ouvrirMenuSalon\("(.+?)",[^<]+?<\/a>/g;
-            var salons = {};
-            var res;
-            var i = 10;
+            var regex = /<a[^>]+?ouvrirMenuSalon\("(.+?)",[^<]+?<\/a>/g,
+                salons = {},
+                res,
+                i = 10,
+                ul = document.getElementById("channels-list"),
+                id,
+                li;
             while (res = regex.exec(list)) {
                 salons[i] = res[1];
                 i += 10;
             }
-            var ul = document.getElementById("channels-list");
             ul.innerHTML = "";
-            for(var id in salons) {
-                var li = document.createElement("li");
+            for(id in salons) {
+                li = document.createElement("li");
                 li.classList.add("item");
                 li.classList.add("item-" + id);
                 li.setAttribute("ng-click", "switchChannel('/JOIN', '" + salons[id].replace(" ", "_") + "', " + id + ", $event);");
@@ -599,7 +600,7 @@ app.controller('LoginController', function (sharedProperties, setMessage, loadDa
 
 app.controller('ChatController', function (sharedProperties, setMessage, loadData, $scope, $sce, $interval, $location) {
 
-    onResize();
+    Mobile.onResize();
 
     window.onbeforeunload = function (event) {
         var message = "";
@@ -668,14 +669,13 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
 
     $scope.aboutOptions = function () {
         loadData.aboutOptions($scope);
-        popover('about-user');
+        Mobile.popover('about-user');
     };
 
     $scope.send = function () {
-        var convActive = document.getElementById('conversations').getElementsByClassName('open-conv')[0];
-        convActive = convActive.getAttribute('id');
-        var idConvActive = convActive.split("conv-")[1];
-        var texte = document.getElementById("msg-input").value;
+        var convActive = document.getElementById('conversations').getElementsByClassName('open-conv')[0].getAttribute('id'),
+            idConvActive = convActive.split("conv-")[1],
+            texte = document.getElementById("msg-input").value;
         if (parseInt(idConvActive) !== 0) {
             texte = "/TELL " + idConvActive + " " + texte;
         }
@@ -708,8 +708,11 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
 
     $scope.switchChannel = function (cmd, channel, id, $event) {
         sharedProperties.setChannelActive(id);
-        var chanActive = document.getElementById("chan-0");
-        var nameChanActive = chanActive.getAttribute("name");
+
+        var chanActive = document.getElementById("chan-0"),
+            nameChanActive = chanActive.getAttribute("name"),
+            element = $event.target;
+
         chanActive.onclick = function () {return false;};
         chanActive.removeAttribute("name");
         chanActive.removeAttribute("id");
@@ -717,13 +720,12 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
         chanActive.classList.remove("new");
         chanActive.setAttribute("ng-click", "switchChannel('/JOIN', '" + nameChanActive + "', " + id + ", $event);");
 
-        var element = $event.target;
         element.removeAttribute("ng-click");
         element.classList.add("active");
         element.classList.add("new");
         element.setAttribute("id", "chan-0");
         element.setAttribute("name", channel);
-        element.onclick = switchConv(0, element.innerHTML);
+        element.onclick = Mobile.switchConv(0, element.innerHTML);
 
         setMessage.getData({ q: "cmd", v: version, s: session, c: cmd + " " + channel, a: a++}).then(function (response) {
             document.getElementById("msg-input").value = "";
@@ -734,7 +736,7 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
 
     $scope.checkAccordion = function (value, $event, menu) {
         if (value != false) {
-            accordion($event.target.parentNode, value);
+            Mobile.accordion($event.target.parentNode, value);
         } else {
             eval(menu.function);
         }
@@ -749,7 +751,6 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
     };
 
     $scope.away = function () {
-        console.log('toto');
         var message = document.getElementById('away').value;
         var texte = "/AWAY " + message;
         setMessage.getData({ q: "cmd", v: version, s: session, c: texte, a: a++ }).then(function (response) {
@@ -758,26 +759,26 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
             $scope.data = loadData.getData($scope);
         });
 
-        popover('about-user');
+        Mobile.popover('about-user');
     };
 
     $scope.myNavSwipeRight = function () {
-        if (!hasClass(document.getElementById('slide-nav-left'), 'open-nav') && !hasClass(document.getElementById('slide-nav-right'), 'open-nav')) {
-            slideNav('left');
-        } else if (!hasClass(document.getElementById('slide-nav-left'), 'open-nav') && hasClass(document.getElementById('slide-nav-right'), 'open-nav')) {
-            slideNav('right');
+        if (!Mobile.hasClass(document.getElementById('slide-nav-left'), 'open-nav') && !Mobile.hasClass(document.getElementById('slide-nav-right'), 'open-nav')) {
+            Mobile.slideNav('left');
+        } else if (!Mobile.hasClass(document.getElementById('slide-nav-left'), 'open-nav') && Mobile.hasClass(document.getElementById('slide-nav-right'), 'open-nav')) {
+            Mobile.slideNav('right');
         }
     };
 
     $scope.myNavSwipeLeft = function () {
-        if (hasClass(document.getElementById('slide-nav-left'), 'open-nav') && !hasClass(document.getElementById('slide-nav-right'), 'open-nav')) {
-            slideNav('left');
-        } else if (!hasClass(document.getElementById('slide-nav-left'), 'open-nav') && !hasClass(document.getElementById('slide-nav-right'), 'open-nav')) {
-            slideNav('right');
+        if (Mobile.hasClass(document.getElementById('slide-nav-left'), 'open-nav') && !Mobile.hasClass(document.getElementById('slide-nav-right'), 'open-nav')) {
+            Mobile.slideNav('left');
+        } else if (!Mobile.hasClass(document.getElementById('slide-nav-left'), 'open-nav') && !Mobile.hasClass(document.getElementById('slide-nav-right'), 'open-nav')) {
+            Mobile.slideNav('right');
         }
     };
 
     $scope.myPopoverSwipeDown = function () {
-        popover('about-user');
+        Mobile.popover('about-user');
     };
 });

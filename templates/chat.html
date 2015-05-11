@@ -22,12 +22,12 @@
     </nav>
     <div id="content">
         <header>
-            <button class="header-nav" onclick="slideNav('left')">
+            <button class="header-nav" onclick="Mobile.slideNav('left')">
                 <span id="pellet-pvs" class="pellet-pvs"></span>
                 <i class="icon icon-dvp-logo"></i>
             </button>
             <h1 id="header-title" class="header-title" ng-bind-html="toTrustedHTML(data.nomSalon)"></h1>
-            <button class="header-group" onclick="slideNav('right')">
+            <button class="header-group" onclick="Mobile.slideNav('right')">
                 <i class="icon icon-users"></i>
             </button>
         </header>
@@ -43,7 +43,7 @@
                 <button type="text" class="toolbar-btn msg-tools" ng-click="aboutOptions();">
                     <i class="icon icon-cog"></i>
                 </button>
-                <button type="text" class="toolbar-btn msg-smiley" onclick="popover('popover-smileys');">
+                <button type="text" class="toolbar-btn msg-smiley" onclick="Mobile.popover('popover-smileys');">
                     <i class="icon icon-smile"></i>
                 </button>
                 <button class="toolbar-btn msg-send" ng-click="send();">
@@ -68,7 +68,7 @@
 
 <div id="about-user" hm-Swipe-Down="myPopoverSwipeDown();">
     <h3 class="user-name">
-        <button class="user-close-btn" onclick="removeClass('about-user', 'popover-open')">Fermer</button>
+        <button class="user-close-btn" onclick="Mobile.removeClass('about-user', 'popover-open')">Fermer</button>
         <span id="user-pseudo"></span>
     </h3>
     <div ng-include src="'templates/modules/menu-about-user.html'"></div>
