@@ -1,6 +1,16 @@
 var onResize = function (){
-    var page = document.getElementById('wrapper');
-    page.style.height = window.innerHeight;
+    var selector = document.querySelectorAll('input, textarea');
+    for(var i = 0; i < selector.length; i++) {
+        selector[i].addEventListener('focus', function () {
+            var page = document.getElementById('wrapper');
+            page.style.height = window.innerHeight;
+        }
+
+        selector[i].addEventListener('blur', function () {
+            var page = document.getElementById('wrapper');
+            page.style.height = window.innerHeight;
+        }
+    }
 };
 
 var switchConv = function (id, pseudo) {
