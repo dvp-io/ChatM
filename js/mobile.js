@@ -42,12 +42,12 @@ var slideNav = function (direction) {
     var element = document.getElementById("slide-nav-" + direction);
     if (!hasClass(element, cls)) {
         element.classList.add(cls);
-        document.getElementById("wrapper").classList.add(cls);
-        document.getElementById("wrapper").classList.add(direction);
+        document.getElementById("content").classList.add(cls);
+        document.getElementById("content").classList.add(direction);
     } else {
         element.classList.remove(cls);
-        document.getElementById("wrapper").classList.remove(cls);
-        document.getElementById("wrapper").classList.remove(direction);
+        document.getElementById("content").classList.remove(cls);
+        document.getElementById("content").classList.remove(direction);
     }
 };
 

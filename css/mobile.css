@@ -23,7 +23,7 @@ body > .ng-scope
 
 /** WRAPPER **/
 #wrapper {width:100%; height:100%; overflow: hidden; position:absolute;}
-#content {ransition: 0.5s; left: 0; width:100%; height:100%; overflow: hidden; position:absolute; z-index:0;}
+#content {transition: 0.5s; left: 0; width:100%; height:100%; overflow: hidden; position:absolute; z-index:0;}
 #content.open-nav.left {position:absolute; width:100%; left:225px; transition:0.5s;}
 #content.open-nav.right {position:absolute; width:100%; left:-225px; transition:0.5s;}
 
