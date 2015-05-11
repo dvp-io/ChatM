@@ -584,8 +584,6 @@ app.factory('tmpAction', function () {
 });
 
 app.controller('LoginController', function (sharedProperties, setMessage, loadData, $scope) {
-    onResize();
-
     $scope.ngUserConnect = function () {
         var json = setMessage.userConnect();
         if (json !== undefined) {

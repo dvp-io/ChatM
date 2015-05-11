@@ -6,9 +6,9 @@ var onResize = function () {
             page.style.height = (window.innerHeight - 240) + 'px';
         });
 
-        selector[i].addEventListener('focusout', function () {
+        selector[i].addEventListener('blur', function () {
             var page = document.getElementById('wrapper');
-            page.style.height = window.innerHeight;
+            page.style.height = window.innerHeight + 'px';
         });
     }
 };
