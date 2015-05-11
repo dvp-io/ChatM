@@ -1,15 +1,16 @@
-var onResize = function (){
+var onResize = function () {
     var selector = document.querySelectorAll('input, textarea');
     for(var i = 0; i < selector.length; i++) {
+        console.log(window.innerHeight);
         selector[i].addEventListener('focus', function () {
             var page = document.getElementById('wrapper');
-            page.style.height = window.innerHeight;
-        }
+            page.style.height = window.innerHeight + 'px';
+        });
 
         selector[i].addEventListener('blur', function () {
             var page = document.getElementById('wrapper');
             page.style.height = window.innerHeight;
-        }
+        });
     }
 };
 
