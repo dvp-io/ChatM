@@ -1,7 +1,7 @@
 html, body {width:100%; height:100%; overflow:hidden; position:relative; font-size:1rem; font-family:Arial,Verdana,sans-serif; -webkit-text-size-adjust: 100%}
 body {position:fixed; top:0; bottom:0; overflow:hidden;}
 .keyboard body {bottom:240px;}
-* {margin:0; padding:0; box-sizing: border-box; outline:0;}
+* {margin:0; padding:0; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; outline:0;}
 ul {list-style:none;}
 
 pre {white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; width:99%;overflow:auto;margin: 5px 0; padding: 5px 5px 5px 10px; color: #3f3b36; border: 1px solid #f5d995; border-left: 1rem solid #f5d995; font: lighter 12px Monaco,'MonacoRegular',monospace;}
@@ -84,7 +84,7 @@ filter:progid:DXImageTransform.Microsoft.Shadow(color=#ddd, Direction=180, Stren
 #slide-nav-right .item-list .item-divider:after {display:inline-block; content:""; width: 0; height: 0; border-style: solid; border-width: 5px 0 5px 5px; border-color: transparent transparent transparent black; position:relative; top:0px; margin-left:5px;}
 #slide-nav-right .dropdown-open .item-divider:after {display:inline-block; content:""; width: 0; height: 0; border-style: solid; border-width: 5px 5px 0 5px; border-color: black transparent transparent transparent; position:relative; top:-2px; margin-left:5px;}
 
-section {width:100%; overflow:scroll; padding:55px 5px 90px; position:relative;}
+section {width:100%; height:100%; overflow:scroll; padding:55px 5px 90px; position:absolute;}
 section .conv {display:none; height:100%; overflow:scroll;}
 section .open-conv {display:block;}
 section .line .notification {color:skyblue; font-style: italic; font-size:0.75rem; margin-bottom:10px;}
