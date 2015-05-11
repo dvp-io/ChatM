@@ -6,7 +6,7 @@ var onResize = function () {
             page.style.height = (window.innerHeight - 240) + 'px';
         });
 
-        selector[i].addEventListener('blur', function () {
+        selector[i].addEventListener('focusout', function () {
             var page = document.getElementById('wrapper');
             page.style.height = window.innerHeight;
         });
