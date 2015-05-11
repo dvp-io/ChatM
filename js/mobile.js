@@ -1,6 +1,6 @@
 var onResize = function (){
     var page = document.getElementById('wrapper');
-    page.height = window.innerHeight;
+    page.style.height = window.innerHeight;
 };
 
 var switchConv = function (id, pseudo) {
