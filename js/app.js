@@ -1,6 +1,6 @@
 var app = angular.module('chatApp', ['angular-gestures', 'ngRoute'], setPostHeader),
     firstConnexion = 0,
-    proxyURI = 'http://chat.dvp.io/',
+    proxyURI = 'http://chatp.dvp.io/',
     anoSmileys = {
       'smile.gif': ':)',
       'sad.gif': ':(',
@@ -247,13 +247,13 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             sharedProperties.setEtat(data.etat);
             if (data.etat === -1) {
                 $location.path('/login');
-                $.id('login_send').removeAttribute("disabled");
+                $.id('login_send').removeAttr("disabled");
             }
             else if (data.etat === 0) {
                 $location.path('/login');
-                $.id("identMessage").classList.add("active");
-                $.id("identMessage").innerHTML = data.message;
-                $.id('login_send').removeAttribute("disabled");
+                $.id("identMessage").addClass("active");
+                $.id("identMessage").html = data.message;
+                $.id('login_send').removeAttr("disabled");
             }
             else if (data.etat === 2) {
                 sharedProperties.setSession(data.session);
@@ -269,43 +269,46 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             var password = readCookie('anochat_motdepasse');
             var mode = 1;
 
+
             if (pseudo == null) {
                 mode = 0;
 
-                pseudo = $.id("login_pseudo").value;
-                password = $.id("login_password").value;
-
+                pseudo = $.id("login_pseudo").val();
+                password = $.id("login_password").val();
+                console.log($.id("login_pseudo"));
+                console.log(document.getElementById('login_pseudo'));
+                //console.log(pseudo);
                 if (pseudo == "") {
-                    $.id('identMessage').classList.add("active");
-                    $.id('identMessage').innerHTML = "Vous devez entrer votre identifiant.";
+                    $.id('identMessage').addClass("active");
+                    $.id('identMessage').html = "Vous devez entrer votre identifiant.";
                     return;
                 }
 
                 if (password == "") {
-                    $.id('identMessage').classList.add("active");
-                    $.id('identMessage').innerHTML = "Vous devez entrer votre mot de passe.";
+                    $.id('identMessage').addClass("active");
+                    $.id('identMessage').html = "Vous devez entrer votre mot de passe.";
                     return;
                 }
             }
 
-            var channel = $.id("login_channel").value;
+            var channel = $.id("login_channel").val();
 
             if (channel == -1) {
-                $.id('identMessage').classList.add("active");
-                $.id('identMessage').innerHTML = "Vous devez choisir un salon.";
+                $.id('identMessage').addClass("active");
+                $.id('identMessage').html = "Vous devez choisir un salon.";
                 return;
             }
 
             sharedProperties.setChannelActive(channel);
 
             if (mode == 0) {
-                $.id("login_pseudo").value = "";
-                $.id("login_password").value = "";
+                $.id("login_pseudo").val("");
+                $.id("login_password").val("");
             }
 
-            $.id('identMessage').classList.add("active");
-            $.id('identMessage').innerHTML = "Connexion en cours...";
-            $.id('login_send').setAttribute("disabled", true);
+            $.id('identMessage').addClass("active");
+            $.id('identMessage').html = "Connexion en cours...";
+            $.id('login_send').attr("disabled", true);
 
             return { q: "conn", v: sharedProperties.getVersion(), identifiant: pseudo, motdepasse: password, mode: mode,
                 decalageHoraire: new Date().getTimezoneOffset(), options: optionsChat, salon: channel };
@@ -347,7 +350,7 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
 
     var createUsersList = function (users, scope) {
         var list = $.id('users-list');
-        list.innerHTML = users;
+        list.html = users;
 
         addFunction(scope);
     };
@@ -356,8 +359,8 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
         channel = (channel !== "") ? channel.replace(/src="\/?(images|smileys)\//g, 'src="' + proxyURI + "/$1/") : channel;
         var conv = $.id('conv-0'),
             item = $.create('div');
-        item.setAttribute('class', 'line');
-        item.innerHTML = channel;
+        item.attr('class', 'line');
+        item.html = channel;
         conv.appendChild(item);
         conv.scrollTop = conv.scrollHeight;
     };
@@ -372,19 +375,19 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
                     parent = $.id('conversations'),
                     conv = $.create("div");
                 // ici on crée l'onglet de la conv dans le menu de gauche
-                item.setAttribute("class", "item new");
-                item.setAttribute("id", "pvs-" + key.id);
-                item.setAttribute("onclick", "switchConv(" + key.id + ", '" + key.pseudo + "');");
+                item.attr("class", "item new");
+                item.attr("id", "pvs-" + key.id);
+                item.attr("onclick", "switchConv(" + key.id + ", '" + key.pseudo + "');");
                 item.appendChild($.text(key.pseudo));
                 mpList.appendChild(item);
 
                 // ici on crée la div qui va accueillir la conv pvs
-                conv.setAttribute("id", "conv-" + key.id);
-                conv.setAttribute("class", "conv");
+                conv.attr("id", "conv-" + key.id);
+                conv.attr("class", "conv");
                 parent.appendChild(conv);
             } else {
                 if (!Mobile.hasClass($.id("conv-" + key.id), "open-conv")) {
-                    $.id("pvs-" + key.id).setAttribute("class", "item new");
+                    $.id("pvs-" + key.id).attr("class", "item new");
                 }
             }
 
@@ -395,15 +398,15 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
     var addMsgPvs = function (id, html) {
         var conv = $.id('conv-' + id),
             item = $.create('div');
-        item.setAttribute('class', 'line');
-        item.innerHTML = html;
+        item.attr('class', 'line');
+        item.html = html;
         conv.appendChild(item);
     };
 
     var ignore = function (id, statut, scope) {
         var texte = "/IGNORE " + statut + " " + id;
         setMessage.getData({q:"cmd", v:sharedProperties.getVersion(), s:sharedProperties.getSession(), c: texte, a: a++}).then(function (response) {
-            $.id("msg-input").value = "";
+            $.id("msg-input").val("");
             $.id("msg-input").focus();
             setMessage.doStatus(response.data);
             scope.data = loadData.getData(scope);
@@ -477,9 +480,9 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
                             list = div.getElementsByTagName("a"),
                             link;
                         for (i = 0; i < list.length; i++) {
-                            list[i].setAttribute("onclick", "smileToMsg(this); return false;");
-                            link = list[i].getElementsByTagName('img')[0].getAttribute("src");
-                            list[i].getElementsByTagName('img')[0].setAttribute("src", proxyURI + link);
+                            list[i].attr("onclick", "smileToMsg(this); return false;");
+                            link = list[i].getElementsByTagName('img')[0].attr("src");
+                            list[i].getElementsByTagName('img')[0].attr("src", proxyURI + link);
                         }
                     }
 
@@ -499,21 +502,21 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
             } else {
                 chanActive = sharedProperties.getData().nomSalon.replace(" ", "_");
             }
-            element.removeAttribute("ng-click");
-            element.classList.add("active");
-            element.classList.add("new");
-            element.setAttribute("id", "chan-0");
-            element.setAttribute("name", chanActive);
+            element.removeAttr("ng-click");
+            element.addClass("active");
+            element.addClass("new");
+            element.attr("id", "chan-0");
+            element.attr("name", chanActive);
             element.onclick = function () {
-                Mobile.switchConv(0, element.innerHTML);
+                Mobile.switchConv(0, element.html);
                 return false;
             }
 
             for (var i = 0; i < channels.length; i++) {
                 if (channels[i].id === "") {
                     channels[i].onclick = function () {return false;};
-                    nameChannel = channels[i].innerHTML.split(" [");
-                    channels[i].setAttribute("ng-click", "switchChannel('/JOIN', '" + nameChannel[0].replace(" ", "_") + "', $event);");
+                    nameChannel = channels[i].html.split(" [");
+                    channels[i].attr("ng-click", "switchChannel('/JOIN', '" + nameChannel[0].replace(" ", "_") + "', $event);");
                 }
             }
         },
@@ -530,13 +533,13 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
                 salons[i] = res[1];
                 i += 10;
             }
-            ul.innerHTML = "";
+            ul.html = "";
             for(id in salons) {
                 li = $.create("li");
-                li.classList.add("item");
-                li.classList.add("item-" + id);
-                li.setAttribute("ng-click", "switchChannel('/JOIN', '" + salons[id].replace(" ", "_") + "', " + id + ", $event);");
-                li.innerHTML = salons[id];
+                li.addClass("item");
+                li.addClass("item-" + id);
+                li.attr("ng-click", "switchChannel('/JOIN', '" + salons[id].replace(" ", "_") + "', " + id + ", $event);");
+                li.html = salons[id];
                 ul.appendChild(li);
             }
             loadData.getChannel();
@@ -673,15 +676,15 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
     };
 
     $scope.send = function () {
-        var convActive = $.id('conversations').getElementsByClassName('open-conv')[0].getAttribute('id'),
+        var convActive = $.id('conversations').getElementsByClassName('open-conv')[0].attr('id'),
             idConvActive = convActive.split("conv-")[1],
-            texte = $.id("msg-input").value;
+            texte = $.id("msg-input").val();
         if (parseInt(idConvActive) !== 0) {
             texte = "/TELL " + idConvActive + " " + texte;
         }
 
         setMessage.getData({ q: "cmd", v: version, s: session, c: texte, a: a++ }).then(function (response) {
-            $.id("msg-input").value = "";
+            $.id("msg-input").val("");
             $scope.showClean = true;
             $.id("msg-input").focus();
             setMessage.doStatus(response.data);
@@ -690,7 +693,7 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
     };
 
     $scope.keyEnter = function (keyCode) {
-        if ($.id("msg-input").value === "") {
+        if ($.id("msg-input").val() === "") {
             $scope.showClean = true;
         } else {
             $scope.showClean = false;
@@ -701,7 +704,7 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
     };
 
     $scope.clean = function (id) {
-        $.id(id).value = "";
+        $.id(id).val("");
         $.id(id).focus();
         $scope.showClean = true;
     }
@@ -710,25 +713,25 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
         sharedProperties.setChannelActive(id);
 
         var chanActive = $.id("chan-0"),
-            nameChanActive = chanActive.getAttribute("name"),
+            nameChanActive = chanActive.attr("name"),
             element = $event.target;
 
         chanActive.onclick = function () {return false;};
-        chanActive.removeAttribute("name");
-        chanActive.removeAttribute("id");
-        chanActive.classList.remove("active");
-        chanActive.classList.remove("new");
-        chanActive.setAttribute("ng-click", "switchChannel('/JOIN', '" + nameChanActive + "', " + id + ", $event);");
+        chanActive.removeAttr("name");
+        chanActive.removeAttr("id");
+        chanActive.removeClass("active");
+        chanActive.removeClass("new");
+        chanActive.attr("ng-click", "switchChannel('/JOIN', '" + nameChanActive + "', " + id + ", $event);");
 
-        element.removeAttribute("ng-click");
-        element.classList.add("active");
-        element.classList.add("new");
-        element.setAttribute("id", "chan-0");
-        element.setAttribute("name", channel);
-        element.onclick = Mobile.switchConv(0, element.innerHTML);
+        element.removeAttr("ng-click");
+        element.addClass("active");
+        element.addClass("new");
+        element.attr("id", "chan-0");
+        element.attr("name", channel);
+        element.onclick = Mobile.switchConv(0, element.html);
 
         setMessage.getData({ q: "cmd", v: version, s: session, c: cmd + " " + channel, a: a++}).then(function (response) {
-            $.id("msg-input").value = "";
+            $.id("msg-input").val("");
             setMessage.doStatus(response.data);
             $scope.data = loadData.getData($scope);
         });
@@ -751,7 +754,7 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
     };
 
     $scope.away = function () {
-        var message = $.id('away').value;
+        var message = $.id('away').val();
         var texte = "/AWAY " + message;
         setMessage.getData({ q: "cmd", v: version, s: session, c: texte, a: a++ }).then(function (response) {
             $.id("msg-input").focus();

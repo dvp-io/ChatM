@@ -35,13 +35,13 @@ var Mobile = Mobile || {};
     };
 
     object.switchConv = function (id, pseudo) {
-        $.id("conversations").getElementsByClassName("open-conv").classList.remove("open-conv");
-        $.id("conv-" + id).classList.add("open-conv");
+        $.id("conversations").getElementsByClassName("open-conv").removeClass("open-conv");
+        $.id("conv-" + id).addClass("open-conv");
         $.id('header-title').innerHTML = pseudo;
         if (id !== 0) {
-            $.id("pvs-" + id).classList.remove("new");
+            $.id("pvs-" + id).removeClass("new");
         } else {
-            $.id("chan-0").classList.remove("new");
+            $.id("chan-0").removeClass("new");
         }
         this.checkNewPvs();
         this.slideNav('left');
@@ -52,10 +52,10 @@ var Mobile = Mobile || {};
         pellet = $.id('pellet-pvs');
 
         if (list.length > 0) {
-            pellet.classList.add("new-pvs");
+            pellet.addClass("new-pvs");
             pellet.textContent = list.length;
         } else {
-            pellet.classList.remove("new-pvs");
+            pellet.removeClass("new-pvs");
         }
     };
 
@@ -63,13 +63,13 @@ var Mobile = Mobile || {};
         cls = "open-nav";
         element = $.id("slide-nav-" + direction);
         if (!this.hasClass(element, cls)) {
-            element.classList.add(cls);
-            $.id("content").classList.add(cls);
-            $.id("content").classList.add(direction);
+            element.addClass(cls);
+            $.id("content").addClass(cls);
+            $.id("content").addClass(direction);
         } else {
-            element.classList.remove(cls);
-            $.id("content").classList.remove(cls);
-            $.id("content").classList.remove(direction);
+            element.removeClass(cls);
+            $.id("content").removeClass(cls);
+            $.id("content").removeClass(direction);
         }
     };
 
@@ -77,9 +77,9 @@ var Mobile = Mobile || {};
         cls = "dropdown-open";
         element = param.parentNode;
         if ( !this.hasClass(element, cls) ) {
-            element.classList.add(cls);
+            element.addClass(cls);
         } else {
-            element.classList.remove(cls);
+            element.removeClass(cls);
         }
     };
 
@@ -87,9 +87,9 @@ var Mobile = Mobile || {};
         cls = "popover-open";
         element = $.id(param);
         if (!this.hasClass(element, cls)) {
-            element.classList.add(cls);
+            element.addClass(cls);
         } else {
-            element.classList.remove(cls);
+            element.removeClass(cls);
         }
     };
 
@@ -97,18 +97,18 @@ var Mobile = Mobile || {};
         cls = "accordionIn";
         list = $.class('option-' + type)[0];
         if (!this.hasClass(list, cls)) {
-            list.classList.add(cls);
-            list.classList.remove("is-collapsed");
+            list.addClass(cls);
+            list.removeClass("is-collapsed");
         } else {
-            list.classList.remove(cls);
-            list.classList.add("is-collapsed");
+            list.removeClass(cls);
+            list.addClass("is-collapsed");
         }
     };
 
     object.smileToMsg = function (param) {
         element = $.id('msg-input');
         element.value += '' + param.title;
-        $.id('popover-smileys').classList.remove('popover-open');
+        $.id('popover-smileys').removeClass('popover-open');
         element.focus();
     };
 
@@ -123,7 +123,7 @@ var Mobile = Mobile || {};
     };
 
     object.removeClass = function (param, cls) {
-        $.id(param).classList.remove(cls);
+        $.id(param).removeClass(cls);
     };
 
     object.hasClass = function (element, cls) {

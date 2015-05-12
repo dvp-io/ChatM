@@ -15,15 +15,15 @@ var Options = Options || {};
                 parent = $.id('conversations'),
                 li = $.create("li"),
                 div = $.create("div");
-            li.classList.add("item");
-            li.classList.add("new");
+            li.addClass("item");
+            li.addClass("new");
             li.setAttribute("id", "pvs-" + id);
             li.setAttribute("onclick", "switchConv(" + id + ", '" + pseudo + "');");
             li.appendChild($.text(pseudo));
             div.appendChild(li);
 
             div.id = "conv-" + id;
-            div.classList.add("conv");
+            div.addClass("conv");
             parent.appendChild(div);
         }
 
