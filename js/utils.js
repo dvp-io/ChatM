@@ -1,11 +1,11 @@
 var £ = £ || {}:;
 
-(function () {
-    var $id = function (elmt) {
+(function (global, doc, object, undefined) {
+    object.id = function (elmt) {
         return document.getElementById(elmt);
     };
 
-    var $cls = function (elmt) {
+    object.cls = function (elmt) {
         return document.getElementsByClassName(elmt);
     };
-});
+})(window, document, £);
