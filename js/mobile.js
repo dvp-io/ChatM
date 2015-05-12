@@ -19,10 +19,10 @@ var Mobile = Mobile || {};
 
 
     object.onResize = function () {
-        elements = document.querySelectorAll('input, textarea');
-        page = document.getElementById('wrapper');
+        elements = $.findAll('input, textarea');
+        page = $.id('wrapper');
         _wHeight = window.innerHeight;
-        _length =elements.length;
+        _length = elements.length;
         for(i = 0; i < _length; i++) {
             elements[i].addEventListener('focus', function () {
                 page.style.height = (_wHeight - 240) + 'px';
@@ -35,21 +35,21 @@ var Mobile = Mobile || {};
     };
 
     object.switchConv = function (id, pseudo) {
-        document.getElementById("conversations").getElementsByClassName("open-conv").classList.remove("open-conv");
-        document.getElementById("conv-" + id).classList.add("open-conv");
-        document.getElementById('header-title').innerHTML = pseudo;
+        $.id("conversations").getElementsByClassName("open-conv").classList.remove("open-conv");
+        $.id("conv-" + id).classList.add("open-conv");
+        $.id('header-title').innerHTML = pseudo;
         if (id !== 0) {
-            document.getElementById("pvs-" + id).classList.remove("new");
+            $.id("pvs-" + id).classList.remove("new");
         } else {
-            document.getElementById("chan-0").classList.remove("new");
+            $.id("chan-0").classList.remove("new");
         }
-        checkNewPvs();
-        slideNav('left');
+        this.checkNewPvs();
+        this.slideNav('left');
     };
 
     object.checkNewPvs = function () {
-        list = document.getElementById('msg-private-list').getElementsByClassName('new');
-        pellet = document.getElementById('pellet-pvs');
+        list = $.id('msg-private-list').getElementsByClassName('new');
+        pellet = $.id('pellet-pvs');
 
         if (list.length > 0) {
             pellet.classList.add("new-pvs");
@@ -61,15 +61,15 @@ var Mobile = Mobile || {};
 
     object.slideNav = function (direction) {
         cls = "open-nav";
-        element = document.getElementById("slide-nav-" + direction);
+        element = $.id("slide-nav-" + direction);
         if (!this.hasClass(element, cls)) {
             element.classList.add(cls);
-            document.getElementById("content").classList.add(cls);
-            document.getElementById("content").classList.add(direction);
+            $.id("content").classList.add(cls);
+            $.id("content").classList.add(direction);
         } else {
             element.classList.remove(cls);
-            document.getElementById("content").classList.remove(cls);
-            document.getElementById("content").classList.remove(direction);
+            $.id("content").classList.remove(cls);
+            $.id("content").classList.remove(direction);
         }
     };
 
@@ -85,7 +85,7 @@ var Mobile = Mobile || {};
 
     object.popover = function (param) {
         cls = "popover-open";
-        element = document.getElementById(param);
+        element = $.id(param);
         if (!this.hasClass(element, cls)) {
             element.classList.add(cls);
         } else {
@@ -95,7 +95,7 @@ var Mobile = Mobile || {};
 
     object.accordion = function (param, type) {
         cls = "accordionIn";
-        list = param.getElementsByClassName('option-' + type)[0];
+        list = $.class('option-' + type)[0];
         if (!this.hasClass(list, cls)) {
             list.classList.add(cls);
             list.classList.remove("is-collapsed");
@@ -106,9 +106,9 @@ var Mobile = Mobile || {};
     };
 
     object.smileToMsg = function (param) {
-        element = document.getElementById('msg-input');
+        element = $.id('msg-input');
         element.value += '' + param.title;
-        document.getElementById('popover-smileys').classList.remove('popover-open');
+        $.id('popover-smileys').classList.remove('popover-open');
         element.focus();
     };
 
@@ -119,11 +119,11 @@ var Mobile = Mobile || {};
         if (element.innerHTML.indexOf("(") != -1) {
             pseudo = element.innerHTML.substring(0, element.innerHTML.indexOf("("));
         }
-        document.getElementById('user-pseudo').innerHTML = pseudo;
+        $.id('user-pseudo').innerHTML = pseudo;
     };
 
     object.removeClass = function (param, cls) {
-        document.getElementById(param).classList.remove(cls);
+        $.id(param).classList.remove(cls);
     };
 
     object.hasClass = function (element, cls) {

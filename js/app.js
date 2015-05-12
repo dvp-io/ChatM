@@ -1,6 +1,6 @@
 var app = angular.module('chatApp', ['angular-gestures', 'ngRoute'], setPostHeader),
     firstConnexion = 0,
-    proxyURI = 'http://chatp.dvp.io/',
+    proxyURI = 'http://chat.dvp.io/',
     anoSmileys = {
       'smile.gif': ':)',
       'sad.gif': ':(',
@@ -247,13 +247,13 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             sharedProperties.setEtat(data.etat);
             if (data.etat === -1) {
                 $location.path('/login');
-                document.getElementById('login_send').removeAttribute("disabled");
+                $.id('login_send').removeAttribute("disabled");
             }
             else if (data.etat === 0) {
                 $location.path('/login');
-                document.getElementById("identMessage").classList.add("active");
-                document.getElementById("identMessage").innerHTML = data.message;
-                document.getElementById('login_send').removeAttribute("disabled");
+                $.id("identMessage").classList.add("active");
+                $.id("identMessage").innerHTML = data.message;
+                $.id('login_send').removeAttribute("disabled");
             }
             else if (data.etat === 2) {
                 sharedProperties.setSession(data.session);
@@ -272,40 +272,40 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             if (pseudo == null) {
                 mode = 0;
 
-                pseudo = document.getElementById("login_pseudo").value;
-                password = document.getElementById("login_password").value;
+                pseudo = $.id("login_pseudo").value;
+                password = $.id("login_password").value;
 
                 if (pseudo == "") {
-                    document.getElementById('identMessage').classList.add("active");
-                    document.getElementById('identMessage').innerHTML = "Vous devez entrer votre identifiant.";
+                    $.id('identMessage').classList.add("active");
+                    $.id('identMessage').innerHTML = "Vous devez entrer votre identifiant.";
                     return;
                 }
 
                 if (password == "") {
-                    document.getElementById('identMessage').classList.add("active");
-                    document.getElementById('identMessage').innerHTML = "Vous devez entrer votre mot de passe.";
+                    $.id('identMessage').classList.add("active");
+                    $.id('identMessage').innerHTML = "Vous devez entrer votre mot de passe.";
                     return;
                 }
             }
 
-            var channel = document.getElementById("login_channel").value;
+            var channel = $.id("login_channel").value;
 
             if (channel == -1) {
-                document.getElementById('identMessage').classList.add("active");
-                document.getElementById('identMessage').innerHTML = "Vous devez choisir un salon.";
+                $.id('identMessage').classList.add("active");
+                $.id('identMessage').innerHTML = "Vous devez choisir un salon.";
                 return;
             }
 
             sharedProperties.setChannelActive(channel);
 
             if (mode == 0) {
-                document.getElementById("login_pseudo").value = "";
-                document.getElementById("login_password").value = "";
+                $.id("login_pseudo").value = "";
+                $.id("login_password").value = "";
             }
 
-            document.getElementById('identMessage').classList.add("active");
-            document.getElementById('identMessage').innerHTML = "Connexion en cours...";
-            document.getElementById('login_send').setAttribute("disabled", true);
+            $.id('identMessage').classList.add("active");
+            $.id('identMessage').innerHTML = "Connexion en cours...";
+            $.id('login_send').setAttribute("disabled", true);
 
             return { q: "conn", v: sharedProperties.getVersion(), identifiant: pseudo, motdepasse: password, mode: mode,
                 decalageHoraire: new Date().getTimezoneOffset(), options: optionsChat, salon: channel };
@@ -316,8 +316,8 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
 
 app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compile, $sce, $templateRequest) {
     var addFunction = function (scope) {
-        var users = document.getElementById("slide-nav-right").getElementsByClassName("nomConnecte"),
-            channels = document.getElementById("slide-nav-right").getElementsByClassName("nomSalon"),
+        var users = $.id("slide-nav-right").getElementsByClassName("nomConnecte"),
+            channels = $.id("slide-nav-right").getElementsByClassName("nomSalon"),
             i;
 
         for (i = 0; i < users.length; i++) {
@@ -346,7 +346,7 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
     };
 
     var createUsersList = function (users, scope) {
-        var list = document.getElementById('users-list');
+        var list = $.id('users-list');
         list.innerHTML = users;
 
         addFunction(scope);
@@ -354,8 +354,8 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
 
     var createLineChannel = function (channel) {
         channel = (channel !== "") ? channel.replace(/src="\/?(images|smileys)\//g, 'src="' + proxyURI + "/$1/") : channel;
-        var conv = document.getElementById('conv-0'),
-            item = document.createElement('div');
+        var conv = $.id('conv-0'),
+            item = $.create('div');
         item.setAttribute('class', 'line');
         item.innerHTML = channel;
         conv.appendChild(item);
@@ -363,19 +363,19 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
     };
 
     var createPvsElement = function (pvs) {
-        var mpList = document.getElementById('msg-private-list'),
+        var mpList = $.id('msg-private-list'),
             listChild = mpList.children;
         //console.log(listChild);
         angular.forEach(pvs, function (key, value) {
             if (!inArray("pvs-" + key.id, listChild)) {
-                var item = document.createElement("li"),
-                    parent = document.getElementById('conversations'),
-                    conv = document.createElement("div");
+                var item = $.create("li"),
+                    parent = $.id('conversations'),
+                    conv = $.create("div");
                 // ici on crée l'onglet de la conv dans le menu de gauche
                 item.setAttribute("class", "item new");
                 item.setAttribute("id", "pvs-" + key.id);
                 item.setAttribute("onclick", "switchConv(" + key.id + ", '" + key.pseudo + "');");
-                item.appendChild(document.createTextNode(key.pseudo));
+                item.appendChild($.text(key.pseudo));
                 mpList.appendChild(item);
 
                 // ici on crée la div qui va accueillir la conv pvs
@@ -383,8 +383,8 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
                 conv.setAttribute("class", "conv");
                 parent.appendChild(conv);
             } else {
-                if (!Mobile.hasClass(document.getElementById("conv-" + key.id), "open-conv")) {
-                    document.getElementById("pvs-" + key.id).setAttribute("class", "item new");
+                if (!Mobile.hasClass($.id("conv-" + key.id), "open-conv")) {
+                    $.id("pvs-" + key.id).setAttribute("class", "item new");
                 }
             }
 
@@ -393,8 +393,8 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
     };
 
     var addMsgPvs = function (id, html) {
-        var conv = document.getElementById('conv-' + id),
-            item = document.createElement('div');
+        var conv = $.id('conv-' + id),
+            item = $.create('div');
         item.setAttribute('class', 'line');
         item.innerHTML = html;
         conv.appendChild(item);
@@ -403,8 +403,8 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
     var ignore = function (id, statut, scope) {
         var texte = "/IGNORE " + statut + " " + id;
         setMessage.getData({q:"cmd", v:sharedProperties.getVersion(), s:sharedProperties.getSession(), c: texte, a: a++}).then(function (response) {
-            document.getElementById("msg-input").value = "";
-            document.getElementById("msg-input").focus();
+            $.id("msg-input").value = "";
+            $.id("msg-input").focus();
             setMessage.doStatus(response.data);
             scope.data = loadData.getData(scope);
             Mobile.popover('about-user');
@@ -473,7 +473,7 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
                     }
 
                     if (sharedProperties.getData().smileys !== undefined) {
-                        var div = document.getElementById('list-smileys-perso'),
+                        var div = $.id('list-smileys-perso'),
                             list = div.getElementsByTagName("a"),
                             link;
                         for (i = 0; i < list.length; i++) {
@@ -491,8 +491,8 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
 
         getChannel: function () {
             var chanActive = "",
-                element = document.getElementById('slide-nav-left').getElementsByClassName('item-' + sharedProperties.getChannelActive())[0],
-                channels = document.getElementById('slide-nav-left').getElementsByClassName('nomSalon'),
+                element = $.id('slide-nav-left').getElementsByClassName('item-' + sharedProperties.getChannelActive())[0],
+                channels = $.id('slide-nav-left').getElementsByClassName('nomSalon'),
                 nameChannel;
             if (sharedProperties.getData().nomSalon === undefined) {
                 chanActive = sharedProperties.getChannelConnexion().replace(" ", "_");
@@ -523,7 +523,7 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
                 salons = {},
                 res,
                 i = 10,
-                ul = document.getElementById("channels-list"),
+                ul = $.id("channels-list"),
                 id,
                 li;
             while (res = regex.exec(list)) {
@@ -532,7 +532,7 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
             }
             ul.innerHTML = "";
             for(id in salons) {
-                li = document.createElement("li");
+                li = $.create("li");
                 li.classList.add("item");
                 li.classList.add("item-" + id);
                 li.setAttribute("ng-click", "switchChannel('/JOIN', '" + salons[id].replace(" ", "_") + "', " + id + ", $event);");
@@ -673,24 +673,24 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
     };
 
     $scope.send = function () {
-        var convActive = document.getElementById('conversations').getElementsByClassName('open-conv')[0].getAttribute('id'),
+        var convActive = $.id('conversations').getElementsByClassName('open-conv')[0].getAttribute('id'),
             idConvActive = convActive.split("conv-")[1],
-            texte = document.getElementById("msg-input").value;
+            texte = $.id("msg-input").value;
         if (parseInt(idConvActive) !== 0) {
             texte = "/TELL " + idConvActive + " " + texte;
         }
 
         setMessage.getData({ q: "cmd", v: version, s: session, c: texte, a: a++ }).then(function (response) {
-            document.getElementById("msg-input").value = "";
+            $.id("msg-input").value = "";
             $scope.showClean = true;
-            document.getElementById("msg-input").focus();
+            $.id("msg-input").focus();
             setMessage.doStatus(response.data);
             $scope.data = loadData.getData($scope);
         });
     };
 
     $scope.keyEnter = function (keyCode) {
-        if (document.getElementById("msg-input").value === "") {
+        if ($.id("msg-input").value === "") {
             $scope.showClean = true;
         } else {
             $scope.showClean = false;
@@ -701,15 +701,15 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
     };
 
     $scope.clean = function (id) {
-        document.getElementById(id).value = "";
-        document.getElementById(id).focus();
+        $.id(id).value = "";
+        $.id(id).focus();
         $scope.showClean = true;
     }
 
     $scope.switchChannel = function (cmd, channel, id, $event) {
         sharedProperties.setChannelActive(id);
 
-        var chanActive = document.getElementById("chan-0"),
+        var chanActive = $.id("chan-0"),
             nameChanActive = chanActive.getAttribute("name"),
             element = $event.target;
 
@@ -728,7 +728,7 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
         element.onclick = Mobile.switchConv(0, element.innerHTML);
 
         setMessage.getData({ q: "cmd", v: version, s: session, c: cmd + " " + channel, a: a++}).then(function (response) {
-            document.getElementById("msg-input").value = "";
+            $.id("msg-input").value = "";
             setMessage.doStatus(response.data);
             $scope.data = loadData.getData($scope);
         });
@@ -751,10 +751,10 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
     };
 
     $scope.away = function () {
-        var message = document.getElementById('away').value;
+        var message = $.id('away').value;
         var texte = "/AWAY " + message;
         setMessage.getData({ q: "cmd", v: version, s: session, c: texte, a: a++ }).then(function (response) {
-            document.getElementById("msg-input").focus();
+            $.id("msg-input").focus();
             setMessage.doStatus(response.data);
             $scope.data = loadData.getData($scope);
         });
@@ -763,17 +763,17 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
     };
 
     $scope.myNavSwipeRight = function () {
-        if (!Mobile.hasClass(document.getElementById('slide-nav-left'), 'open-nav') && !Mobile.hasClass(document.getElementById('slide-nav-right'), 'open-nav')) {
+        if (!Mobile.hasClass($.id('slide-nav-left'), 'open-nav') && !Mobile.hasClass($.id('slide-nav-right'), 'open-nav')) {
             Mobile.slideNav('left');
-        } else if (!Mobile.hasClass(document.getElementById('slide-nav-left'), 'open-nav') && Mobile.hasClass(document.getElementById('slide-nav-right'), 'open-nav')) {
+        } else if (!Mobile.hasClass($.id('slide-nav-left'), 'open-nav') && Mobile.hasClass($.id('slide-nav-right'), 'open-nav')) {
             Mobile.slideNav('right');
         }
     };
 
     $scope.myNavSwipeLeft = function () {
-        if (Mobile.hasClass(document.getElementById('slide-nav-left'), 'open-nav') && !Mobile.hasClass(document.getElementById('slide-nav-right'), 'open-nav')) {
+        if (Mobile.hasClass($.id('slide-nav-left'), 'open-nav') && !Mobile.hasClass($.id('slide-nav-right'), 'open-nav')) {
             Mobile.slideNav('left');
-        } else if (!Mobile.hasClass(document.getElementById('slide-nav-left'), 'open-nav') && !Mobile.hasClass(document.getElementById('slide-nav-right'), 'open-nav')) {
+        } else if (!Mobile.hasClass($.id('slide-nav-left'), 'open-nav') && !Mobile.hasClass($.id('slide-nav-right'), 'open-nav')) {
             Mobile.slideNav('right');
         }
     };

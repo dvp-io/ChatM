@@ -1,53 +1,51 @@
 var Options = Options || {};
 
 (function (global, doc, object, undefined) {
+    'use strict';
+
     object.public = function (pseudo) {
-        document.getElementById("msg-input").value = pseudo + "> ";
-        document.getElementById("msg-input").focus();
-        popover('about-user');
+        $.id("msg-input").value = pseudo + "> ";
+        $.id("msg-input").focus();
+        Mobile.popover('about-user');
     };
 
     object.private = function (id, pseudo) {
-        if (document.getElementById('pvs-' + id) === null) {
-            var div = document.getElementById('msg-private-list');
-            var element = document.createElement("li");
-            element.classList.add("item");
-            element.classList.add("new");
-            element.setAttribute("id", "pvs-" + id);
-            element.setAttribute("onclick", "switchConv(" + id + ", '" + pseudo + "');");
-            element.appendChild(document.createTextNode(pseudo));
-            div.appendChild(element);
+        if ($.id('pvs-' + id) === null) {
+            var div = $.id('msg-private-list'),
+                parent = $.id('conversations'),
+                li = $.create("li"),
+                div = $.create("div");
+            li.classList.add("item");
+            li.classList.add("new");
+            li.setAttribute("id", "pvs-" + id);
+            li.setAttribute("onclick", "switchConv(" + id + ", '" + pseudo + "');");
+            li.appendChild($.text(pseudo));
+            div.appendChild(li);
 
-            var parent = document.getElementById('conversations');
-            var conv = document.createElement("div");
-            conv.id = "conv-" + id;
-            conv.classList.add("conv");
-            parent.appendChild(conv);
+            div.id = "conv-" + id;
+            div.classList.add("conv");
+            parent.appendChild(div);
         }
 
-        switchConv(id, pseudo);
-        slideNav('left');
-        popover('about-user');
+        Mobile.switchConv(id, pseudo);
+        Mobile.slideNav('left');
+        Mobile.popover('about-user');
     };
-
-    object.uploadFile = function (id) {
-
-    }
 
     object.profil = function (id) {
         window.open("http://www.developpez.net/forums/member.php?u=" + id);
     };
 
     object.quote = function () {
-        document.getElementById("msg-input").value += "[QUOTE]";
-        document.getElementById("msg-input").focus();
-        popover('about-user');
+        $.id("msg-input").value += "[QUOTE]";
+        $.id("msg-input").focus();
+        Mobile.popover('about-user');
     };
 
     object.link = function () {
-        var link = document.getElementById('link-url').value;
-        var libelle = document.getElementById('link-libelle').value;
-        var input = document.getElementById('msg-input');
+        var link = $.id('link-url').value,
+            libelle = $.id('link-libelle').value,
+            input = $.id('msg-input');
         if (link === "") {
             input.value += "";
         } else if (libelle != "") {
@@ -56,18 +54,18 @@ var Options = Options || {};
             input.value += "[URL]" + link + "[/URL]";
         }
         input.focus();
-        popover('about-user');
+        Mobile.popover('about-user');
     };
 
     object.image = function () {
-        var image = document.getElementById('image-libelle').value;
-        var input = document.getElementById('msg-input');
+        var image = $.id('image-libelle').value,
+            input = $.id('msg-input');
         if (image !== "") {
             input.value += "[IMG]" + image + "[/IMG]";
         } else {
             input.value += "";
         }
         input.focus();
-        popover('about-user');
+        Mobile.popover('about-user');
     };
 })(window, document, Options);
