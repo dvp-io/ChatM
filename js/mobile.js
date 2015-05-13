@@ -19,37 +19,39 @@ var Mobile = Mobile || {};
 
 
     object.onResize = function () {
-        elements = $.findAll('input, textarea');
-        page = $.id('wrapper');
+        elements = $('input, textarea');
+        page = $('#wrapper');
         _wHeight = window.innerHeight;
         _length = elements.length;
         for(i = 0; i < _length; i++) {
             elements[i].addEventListener('focus', function () {
-                page.style.height = (_wHeight - 240) + 'px';
+                page.set("$height", (_wHeight - 240) + 'px');
+                //page.style.height = (_wHeight - 240) + 'px';
             });
 
             elements[i].addEventListener('blur', function () {
-                page.style.height = _wHeight + 'px';
+                page.set("$height", _wHeight + 'px');
+                //page.style.height = _wHeight + 'px';
             });
         }
     };
 
     object.switchConv = function (id, pseudo) {
-        $.id("conversations").getElementsByClassName("open-conv").removeClass("open-conv");
-        $.id("conv-" + id).addClass("open-conv");
-        $.id('header-title').innerHTML = pseudo;
+        $("#conversations").set("$", "open-conv");
+        $("#conv-" + id).addClass("open-conv");
+        $('#header-title').innerHTML = pseudo;
         if (id !== 0) {
-            $.id("pvs-" + id).removeClass("new");
+            $("#pvs-" + id).removeClass("new");
         } else {
-            $.id("chan-0").removeClass("new");
+            $("#chan-0").removeClass("new");
         }
         this.checkNewPvs();
         this.slideNav('left');
     };
 
     object.checkNewPvs = function () {
-        list = $.id('msg-private-list').getElementsByClassName('new');
-        pellet = $.id('pellet-pvs');
+        list = $('#msg-private-list').getElementsByClassName('new');
+        pellet = $('#pellet-pvs');
 
         if (list.length > 0) {
             pellet.addClass("new-pvs");
@@ -61,15 +63,15 @@ var Mobile = Mobile || {};
 
     object.slideNav = function (direction) {
         cls = "open-nav";
-        element = $.id("slide-nav-" + direction);
+        element = $("#slide-nav-" + direction);
         if (!this.hasClass(element, cls)) {
             element.addClass(cls);
-            $.id("content").addClass(cls);
-            $.id("content").addClass(direction);
+            $("#content").addClass(cls);
+            $("#content").addClass(direction);
         } else {
             element.removeClass(cls);
-            $.id("content").removeClass(cls);
-            $.id("content").removeClass(direction);
+            $("#content").removeClass(cls);
+            $("#content").removeClass(direction);
         }
     };
 
@@ -106,9 +108,9 @@ var Mobile = Mobile || {};
     };
 
     object.smileToMsg = function (param) {
-        element = $.id('msg-input');
+        element = $('#msg-input');
         element.value += '' + param.title;
-        $.id('popover-smileys').removeClass('popover-open');
+        $('#popover-smileys').removeClass('popover-open');
         element.focus();
     };
 
@@ -119,7 +121,7 @@ var Mobile = Mobile || {};
         if (element.innerHTML.indexOf("(") != -1) {
             pseudo = element.innerHTML.substring(0, element.innerHTML.indexOf("("));
         }
-        $.id('user-pseudo').innerHTML = pseudo;
+        $('#user-pseudo').innerHTML = pseudo;
     };
 
     object.removeClass = function (param, cls) {

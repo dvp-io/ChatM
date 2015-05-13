@@ -4,15 +4,15 @@ var Options = Options || {};
     'use strict';
 
     object.public = function (pseudo) {
-        $.id("msg-input").value = pseudo + "> ";
-        $.id("msg-input").focus();
+        $("#msg-input").value = pseudo + "> ";
+        $("#msg-input").focus();
         Mobile.popover('about-user');
     };
 
     object.private = function (id, pseudo) {
-        if ($.id('pvs-' + id) === null) {
-            var div = $.id('msg-private-list'),
-                parent = $.id('conversations'),
+        if ($('#pvs-' + id) === null) {
+            var div = $('#msg-private-list'),
+                parent = $('#conversations'),
                 li = $.create("li"),
                 div = $.create("div");
             li.addClass("item");
@@ -37,15 +37,15 @@ var Options = Options || {};
     };
 
     object.quote = function () {
-        $.id("msg-input").value += "[QUOTE]";
-        $.id("msg-input").focus();
+        $("#msg-input").value += "[QUOTE]";
+        $("#msg-input").focus();
         Mobile.popover('about-user');
     };
 
     object.link = function () {
-        var link = $.id('link-url').value,
-            libelle = $.id('link-libelle').value,
-            input = $.id('msg-input');
+        var link = $('#link-url').value,
+            libelle = $('#link-libelle').value,
+            input = $('#msg-input');
         if (link === "") {
             input.value += "";
         } else if (libelle != "") {
@@ -58,8 +58,8 @@ var Options = Options || {};
     };
 
     object.image = function () {
-        var image = $.id('image-libelle').value,
-            input = $.id('msg-input');
+        var image = $('#image-libelle').value,
+            input = $('#msg-input');
         if (image !== "") {
             input.value += "[IMG]" + image + "[/IMG]";
         } else {
