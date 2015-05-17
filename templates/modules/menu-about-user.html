@@ -14,11 +14,13 @@
         </ul>
         <div ng-hide ng-if="menu.multiple=='form'" class="form-option option-{{menu.multiple}} is-collapsed">
             <div ng-repeat="item in menu.items" class="item">
-                <input ng-if="item.input=='text'" type="text" id="{{item.id}}" class="{{item.class}}" placeholder="{{item.libelle}}" />
-                <button ng-if="item.input=='text'" type="text" class="msg-clean" ng-click="clean('item.id')" ng-hide="showClean">
-                    <i class="icon icon-cancel-circle"></i>
-                </button>
-                <form-button item="item"></form-button>
+               <form action="" id="option_form" onSubmit="return false;">
+                   <input ng-if="item.input=='text'" type="text" id="{{item.id}}" class="{{item.class}}" placeholder="{{item.libelle}}" />
+                   <button ng-if="item.input=='text'" type="text" class="msg-clean" ng-click="clean('item.id')" ng-hide="showClean">
+                       <i class="icon icon-cancel-circle"></i>
+                   </button>
+                   <form-button item="item"></form-button>
+               </form>
             </div>
         </div>
     </li>

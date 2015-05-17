@@ -18,7 +18,7 @@ var Mobile = Mobile || {};
         pseudo;
 
 
-    object.onResize = function () {
+    /*object.onResize = function () {
         elements = $('input, textarea');
         page = $('#wrapper');
         _wHeight = window.innerHeight;
@@ -34,12 +34,12 @@ var Mobile = Mobile || {};
                 //page.style.height = _wHeight + 'px';
             });
         }
-    };
+    };*/
 
     object.switchConv = function (id, pseudo) {
-        $("#conversations").set("$", "open-conv");
+        $("#conversations").find('.open-conv').removeClass("open-conv");
         $("#conv-" + id).addClass("open-conv");
-        $('#header-title').innerHTML = pseudo;
+        $('#header-title').html(pseudo);
         if (id !== 0) {
             $("#pvs-" + id).removeClass("new");
         } else {
@@ -50,12 +50,12 @@ var Mobile = Mobile || {};
     };
 
     object.checkNewPvs = function () {
-        list = $('#msg-private-list').getElementsByClassName('new');
+        list = $('#msg-private-list .new');
         pellet = $('#pellet-pvs');
 
         if (list.length > 0) {
             pellet.addClass("new-pvs");
-            pellet.textContent = list.length;
+            pellet.text(list.length);
         } else {
             pellet.removeClass("new-pvs");
         }
@@ -64,21 +64,19 @@ var Mobile = Mobile || {};
     object.slideNav = function (direction) {
         cls = "open-nav";
         element = $("#slide-nav-" + direction);
-        if (!this.hasClass(element, cls)) {
+        if (!element.hasClass(cls)) {
             element.addClass(cls);
-            $("#content").addClass(cls);
-            $("#content").addClass(direction);
+            $("#content").addClass(cls + " " + direction);
         } else {
             element.removeClass(cls);
-            $("#content").removeClass(cls);
-            $("#content").removeClass(direction);
+            $("#content").removeClass(cls + " " + direction);
         }
     };
 
     object.slideDown = function (param) {
         cls = "dropdown-open";
-        element = param.parentNode;
-        if ( !this.hasClass(element, cls) ) {
+        element = param.parent();
+        if ( !element.hasClass(cls) ) {
             element.addClass(cls);
         } else {
             element.removeClass(cls);
@@ -87,8 +85,8 @@ var Mobile = Mobile || {};
 
     object.popover = function (param) {
         cls = "popover-open";
-        element = $.id(param);
-        if (!this.hasClass(element, cls)) {
+        element = $("#" + param);
+        if (!element.hasClass(cls)) {
             element.addClass(cls);
         } else {
             element.removeClass(cls);
@@ -97,42 +95,39 @@ var Mobile = Mobile || {};
 
     object.accordion = function (param, type) {
         cls = "accordionIn";
-        list = $.class('option-' + type)[0];
-        if (!this.hasClass(list, cls)) {
-            list.addClass(cls);
-            list.removeClass("is-collapsed");
+        list = $(param).find('.option-' + type);
+        if (!list.hasClass(cls)) {
+            list.addClass(cls).removeClass("is-collapsed");
         } else {
-            list.removeClass(cls);
-            list.addClass("is-collapsed");
+            list.removeClass(cls).addClass("is-collapsed");
         }
     };
 
     object.smileToMsg = function (param) {
-        element = $('#msg-input');
-        element.value += '' + param.title;
+        $("#msg_input").val($("#msg_input").val() + param.title);
         $('#popover-smileys').removeClass('popover-open');
-        element.focus();
+        $("#msg_input").focus();
     };
 
     object.changeName = function (param) {
-        children = param.getElementsByTagName('span');
-        element = children[children.length-1];
-        pseudo = element.innerHTML;
-        if (element.innerHTML.indexOf("(") != -1) {
-            pseudo = element.innerHTML.substring(0, element.innerHTML.indexOf("("));
+        element = $(param).last('span');
+        pseudo = $(element).html();
+        if ($(element).html().indexOf("(") != -1) {
+            pseudo = $(element).html().substring(0, $(element).html().indexOf("("));
         }
-        $('#user-pseudo').innerHTML = pseudo;
+        $('#user-pseudo').html(pseudo);
     };
 
     object.removeClass = function (param, cls) {
-        $.id(param).removeClass(cls);
+        $("#" + param).removeClass(cls);
     };
 
-    object.hasClass = function (element, cls) {
-        return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
-    };
+    /*object.hasClass = function (element, cls) {
+        return (' ' + $(element).get("@class") + ' ').indexOf(' ' + cls + ' ') > -1;
+    };*/
 
     object.inArray = function (needle, haystack) {
+        console.log(haystack);
         _length = haystack.length, i;
         for (i = 0; i < _length; i++) {
             if(haystack[i].getAttribute('id') == needle) return true;

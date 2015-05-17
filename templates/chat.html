@@ -35,21 +35,23 @@
             <div id="conv-0" class="conv open-conv"></div>
         </section>
         <footer>
-            <input type="text" placeholder="Message.." value="" class="msg-input" id="msg-input" ng-keyup="keyEnter($event.keyCode)" />
-            <button type="text" class="msg-clean" ng-click="clean('msg-input')" ng-hide="showClean">
-                <i class="icon icon-cancel-circle"></i>
-            </button>
-            <nav class="footer-toolbar">
-                <button type="text" class="toolbar-btn msg-tools" ng-click="aboutOptions();">
-                    <i class="icon icon-cog"></i>
-                </button>
-                <button type="text" class="toolbar-btn msg-smiley" onclick="Mobile.popover('popover-smileys');">
-                    <i class="icon icon-smile"></i>
-                </button>
-                <button class="toolbar-btn msg-send" ng-click="send();">
-                    <i class="icon icon-share"></i>
-                </button>
-            </nav>
+           <form id="send_form">
+               <input type="text" placeholder="Message.." value="" class="msg-input" id="msg_input" ng-model="msg" ng-keyup="keyEnter($event.keyCode)" />
+               <button type="text" class="msg-clean" ng-hide="showClean">
+                   <i class="icon icon-cancel-circle"></i>
+               </button>
+               <nav class="footer-toolbar">
+                   <button type="text" class="toolbar-btn msg-tools" ng-click="aboutOptions();">
+                       <i class="icon icon-cog"></i>
+                   </button>
+                   <button type="text" class="toolbar-btn msg-smiley" onclick="Mobile.popover('popover-smileys');">
+                       <i class="icon icon-smile"></i>
+                   </button>
+                   <button class="toolbar-btn msg-send" ng-click="send();">
+                       <i class="icon icon-share"></i>
+                   </button>
+               </nav>
+           </form>
         </footer>
     </div>
 </div>
@@ -58,7 +60,7 @@
     <h2 class="popover-title">Mes smileys favoris</h2>
     <div class="smileys-container">
         <div id="list-smileys-chat" class="list-smileys">
-            <a href="#" onclick="smileToMsg(this); return false;" ng-repeat="(key, value) in data.anoSmileys" title="{{value}}">
+            <a href="#" onclick="Mobile.smileToMsg(this); return false;" ng-repeat="(key, value) in data.anoSmileys" title="{{value}}">
                 <img src="{{data.proxyURI}}images/smileys/{{key}}" alt="{{value}}" />
             </a>
         </div>

@@ -1,6 +1,6 @@
 var app = angular.module('chatApp', ['angular-gestures', 'ngRoute'], setPostHeader),
     firstConnexion = 0,
-    proxyURI = 'http://chatp.dvp.io/',
+    proxyURI = 'http://chat.dvp.io/',
     anoSmileys = {
       'smile.gif': ':)',
       'sad.gif': ':(',
@@ -247,13 +247,13 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
             sharedProperties.setEtat(data.etat);
             if (data.etat === -1) {
                 $location.path('/login');
-                $.id('login_send').removeAttr("disabled");
+                $('#login_send').disabled = false;
             }
             else if (data.etat === 0) {
                 $location.path('/login');
-                $.id("identMessage").addClass("active");
-                $.id("identMessage").html = data.message;
-                $.id('login_send').removeAttr("disabled");
+                $("#identMessage").addClass("active");
+                $("#identMessage").html(data.message);
+                $('#login_send').disabled = false;
             }
             else if (data.etat === 2) {
                 sharedProperties.setSession(data.session);
@@ -265,50 +265,48 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
         },
 
         userConnect : function () {
-            var pseudo = readCookie("anochat_pseudo");
-            var password = readCookie('anochat_motdepasse');
-            var mode = 1;
+            var pseudo = readCookie("anochat_pseudo"),
+                password = readCookie('anochat_motdepasse'),
+                form,
+                mode = 1;
 
 
             if (pseudo == null) {
                 mode = 0;
 
-                pseudo = $.id("login_pseudo").val();
-                password = $.id("login_password").val();
-                console.log($.id("login_pseudo"));
-                console.log(document.getElementById('login_pseudo'));
-                //console.log(pseudo);
+                pseudo = $("#login_pseudo").val();
+                password = $("#login_password").val();
                 if (pseudo == "") {
-                    $.id('identMessage').addClass("active");
-                    $.id('identMessage').html = "Vous devez entrer votre identifiant.";
+                    $('#identMessage').addClass("active");
+                    $('#identMessage').html("Vous devez entrer votre identifiant.");
                     return;
                 }
 
                 if (password == "") {
-                    $.id('identMessage').addClass("active");
-                    $.id('identMessage').html = "Vous devez entrer votre mot de passe.";
+                    $('#identMessage').addClass("active");
+                    $('#identMessage').html("Vous devez entrer votre mot de passe.");
                     return;
                 }
             }
 
-            var channel = $.id("login_channel").val();
+            var channel = $("#login_channel").val();
 
             if (channel == -1) {
-                $.id('identMessage').addClass("active");
-                $.id('identMessage').html = "Vous devez choisir un salon.";
+                $('#identMessage').addClass("active");
+                $('#identMessage').html("Vous devez choisir un salon.");
                 return;
             }
 
             sharedProperties.setChannelActive(channel);
 
             if (mode == 0) {
-                $.id("login_pseudo").val("");
-                $.id("login_password").val("");
+                $("#login_pseudo").val("");
+                $("#login_password").val("");
             }
 
-            $.id('identMessage').addClass("active");
-            $.id('identMessage').html = "Connexion en cours...";
-            $.id('login_send').attr("disabled", true);
+            $('#identMessage').val("active");
+            $('#identMessage').html("Connexion en cours...");
+            $('#login_send').disabled = true;
 
             return { q: "conn", v: sharedProperties.getVersion(), identifiant: pseudo, motdepasse: password, mode: mode,
                 decalageHoraire: new Date().getTimezoneOffset(), options: optionsChat, salon: channel };
@@ -318,76 +316,55 @@ app.factory('setMessage', function ($http, sharedProperties, $location) {
 });
 
 app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compile, $sce, $templateRequest) {
-    var addFunction = function (scope) {
-        var users = $.id("slide-nav-right").getElementsByClassName("nomConnecte"),
-            channels = $.id("slide-nav-right").getElementsByClassName("nomSalon"),
+    var createUsersList = function (users, scope) {
+        var list = $('#users-list').html(users),
+
+            users = $("#slide-nav-right .nomConnecte"),
+            channels = $("#slide-nav-right .nomSalon"),
             i;
 
-        for (i = 0; i < users.length; i++) {
-            if (users[i] !== null) {
+        console.log(users);
+        users.each(function (index, user) {
+            if (user !== null) {
+                var regex_users = /<a[^>]+?ouvrirMenuUtilisateur\((\d+),&quot;(.+?)&quot;,(-?\d),(-?\d),(-?\d),(-?\d),(-?\d),(-?\d),(-?\d),(-?\d)\).+?(?: \(([^<]+?)\)(?:<\/span>)?)?<\/a>/g,
+                    res = regex_users.exec($(user).outerHTML()),
+                    id = res[1],
+                    pseudo = res[2],
+                    ignore = res[5];
 
-                users[i].onclick = function () {
-                    var regex_users = /<a[^>]+?ouvrirMenuUtilisateur\((\d+),&quot;(.+?)&quot;,(-?\d),(-?\d),(-?\d),(-?\d),(-?\d),(-?\d),(-?\d),(-?\d)\).+?(?: \(([^<]+?)\)(?:<\/span>)?)?<\/a>/g,
-                        res = regex_users.exec(this.outerHTML),
-                        id = res[1],
-                        pseudo = res[2],
-                        ignore = res[5];
-
-                    Mobile.changeName(this);
-                    Mobile.aboutUser(id, pseudo, ignore, scope);
-                    Mobile.slideNav('right');
-                    return false;
-                };
+                $(user).removeAttr("onclick");
+                $(user).attr("onclick", "Mobile.changeName(this); Mobile.slideNav('right'); return false;");
+                $(user).attr("ng-click", "aboutUser(" + id + ", '" + pseudo + "', " + ignore + ");");
             }
-        }
+        });
+        $compile(users)(scope);
 
-        for (chan in channels) {
-            if (channels.item(chan) !== null) {
-                channels.item(chan).onclick = function () {return false;};
-            }
-        }
-    };
-
-    var createUsersList = function (users, scope) {
-        var list = $.id('users-list');
-        list.html = users;
-
-        addFunction(scope);
+        channels.each(function (item, index) {
+            $(item).attr("onclick", "return false;");
+        });
     };
 
     var createLineChannel = function (channel) {
         channel = (channel !== "") ? channel.replace(/src="\/?(images|smileys)\//g, 'src="' + proxyURI + "/$1/") : channel;
-        var conv = $.id('conv-0'),
-            item = $.create('div');
-        item.attr('class', 'line');
-        item.html = channel;
-        conv.appendChild(item);
+        var conv = $('#conv-0');
+        $("<div></div>").appendTo(conv).addClass("line").html(channel);
         conv.scrollTop = conv.scrollHeight;
     };
 
     var createPvsElement = function (pvs) {
-        var mpList = $.id('msg-private-list'),
-            listChild = mpList.children;
-        //console.log(listChild);
+        var mpList = $('#msg-private-list'),
+            listChild = $('#msg-private-list li'),
+            conv = $('#conversations');
         angular.forEach(pvs, function (key, value) {
-            if (!inArray("pvs-" + key.id, listChild)) {
-                var item = $.create("li"),
-                    parent = $.id('conversations'),
-                    conv = $.create("div");
-                // ici on crée l'onglet de la conv dans le menu de gauche
-                item.attr("class", "item new");
-                item.attr("id", "pvs-" + key.id);
-                item.attr("onclick", "switchConv(" + key.id + ", '" + key.pseudo + "');");
-                item.appendChild($.text(key.pseudo));
-                mpList.appendChild(item);
+            if (!Mobile.inArray("pvs-" + key.id, listChild)) {
+                $("<li>" + key.pseudo + "</li>").appendTo(mpList).attr({id: "pvs-" + key.id,
+                    onclick: "Mobile.switchConv(" + key.id + ", '" + key.pseudo + "');"}).addClass("item new");
 
                 // ici on crée la div qui va accueillir la conv pvs
-                conv.attr("id", "conv-" + key.id);
-                conv.attr("class", "conv");
-                parent.appendChild(conv);
+                $("<div></div>").appendTo(conv).attr({id: "conv-" + key.id}).addClass("conv");
             } else {
-                if (!Mobile.hasClass($.id("conv-" + key.id), "open-conv")) {
-                    $.id("pvs-" + key.id).attr("class", "item new");
+                if (!$("#conv-" + key.id).hasClass("open-conv")) {
+                    $("#pvs-" + key.id).addClass("item new");
                 }
             }
 
@@ -396,50 +373,19 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
     };
 
     var addMsgPvs = function (id, html) {
-        var conv = $.id('conv-' + id),
-            item = $.create('div');
-        item.attr('class', 'line');
-        item.html = html;
-        conv.appendChild(item);
+        $("<div>" + html + "</div>").appendTo("#conv-" + id).addClass("line");
     };
 
     var ignore = function (id, statut, scope) {
         var texte = "/IGNORE " + statut + " " + id;
         setMessage.getData({q:"cmd", v:sharedProperties.getVersion(), s:sharedProperties.getSession(), c: texte, a: a++}).then(function (response) {
-            $.id("msg-input").val("");
-            $.id("msg-input").focus();
+            $("#msg-input").val("");
+            $("#msg_input").focus();
             setMessage.doStatus(response.data);
             scope.data = loadData.getData(scope);
             Mobile.popover('about-user');
         });
     };
-
-    var aboutUser = function (id, pseudo, ignoreState, scope) {
-        var config = {"0": {"title":"Parler en public", "icon":"icon-bubbles3", "multiple":false, "function":"Options.public('" + pseudo + "')"}
-            , "1": {"title":"Dialoguer en privé", "icon":"icon-bubble2", "multiple":false, "function":"Options.private(" + id + ", '" + pseudo + "')"}
-            /*, "2": {"title":"Envoyer un fichier", "icon":"icon-upload2", "multiple":false, "function":"Options.uploadFile(" + id + ")"}*/
-            , "3": {"title":"Bloquer/Ignorer", "icon":"icon-blocked", "multiple":"list"
-               , "items":{
-                   "0": {"title":"Bloquer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé.", 0:"BLOCK", 1:"OFF"},
-                   "1": {"title":"Ignorer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé ; de plus, vous ne verrez plus ses messages s'afficher sur le salon.", 0:"FULL", 2:"OFF"}
-               }
-            }
-          , "4": {"title":"Voir le profil", "icon":"icon-user", "multiple":false, "function":"Options.profil(" + id + ")"}
-        };
-
-        scope.aboutUser = {};
-        scope.aboutUser.id = id;
-        scope.aboutUser.data = config;
-        scope.aboutUser.isIgnore = ignoreState;
-        scope.aboutUser.switchOn = (ignoreState > 0) ? true : false;
-        scope.checkStatus = function (item) {
-            if (item[ignoreState] !== undefined) {
-                ignore(id, item[ignoreState], scope);
-            }
-        }
-
-        Mobile.popover('about-user');
-    }
 
     var loadData = {
         getData: function ($scope) {
@@ -476,13 +422,12 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
                     }
 
                     if (sharedProperties.getData().smileys !== undefined) {
-                        var div = $.id('list-smileys-perso'),
-                            list = div.getElementsByTagName("a"),
+                        var list = $('#list-smileys-perso a'),
                             link;
                         for (i = 0; i < list.length; i++) {
-                            list[i].attr("onclick", "smileToMsg(this); return false;");
-                            link = list[i].getElementsByTagName('img')[0].attr("src");
-                            list[i].getElementsByTagName('img')[0].attr("src", proxyURI + link);
+                            list[i].attr("onclick", "Mobile.smileToMsg(this); return false;");
+                            link = $('#list-smileys-perso a img').attr("src");
+                            $(list[i] + " img").attr("src", proxyURI + link);
                         }
                     }
 
@@ -494,31 +439,26 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
 
         getChannel: function () {
             var chanActive = "",
-                element = $.id('slide-nav-left').getElementsByClassName('item-' + sharedProperties.getChannelActive())[0],
-                channels = $.id('slide-nav-left').getElementsByClassName('nomSalon'),
+                element = $('#slide-nav-left .item-' + sharedProperties.getChannelActive()),
+                channels = $('#slide-nav-left').find('.item'),
                 nameChannel;
+
             if (sharedProperties.getData().nomSalon === undefined) {
                 chanActive = sharedProperties.getChannelConnexion().replace(" ", "_");
             } else {
                 chanActive = sharedProperties.getData().nomSalon.replace(" ", "_");
             }
-            element.removeAttr("ng-click");
-            element.addClass("active");
-            element.addClass("new");
-            element.attr("id", "chan-0");
-            element.attr("name", chanActive);
-            element.onclick = function () {
-                Mobile.switchConv(0, element.html);
-                return false;
-            }
 
             for (var i = 0; i < channels.length; i++) {
-                if (channels[i].id === "") {
-                    channels[i].onclick = function () {return false;};
-                    nameChannel = channels[i].html.split(" [");
-                    channels[i].attr("ng-click", "switchChannel('/JOIN', '" + nameChannel[0].replace(" ", "_") + "', $event);");
+                if ($(channels[i]).attr("id") === "") {
+                    nameChannel = channels[i].html().split(" [");
+                    $(channels[i]).removeAttr("onclick").attr({"ng-click": "switchChannel('/JOIN', '" + nameChannel[0].replace(" ", "_") + "', $event);"});
                 }
             }
+
+            element.removeAttr("ng-click").attr({id: "chan-0",
+                name: chanActive,
+                onclick: "Mobile.switchConv(0, '" + element.html() + "'); return false;"}).addClass("active new");
         },
 
         createChannelsList: function (list, $scope) {
@@ -526,24 +466,47 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
                 salons = {},
                 res,
                 i = 10,
-                ul = $.id("channels-list"),
-                id,
-                li;
+                ul = $("#channels-list"),
+                id;
             while (res = regex.exec(list)) {
                 salons[i] = res[1];
                 i += 10;
             }
-            ul.html = "";
+            ul.html("");
             for(id in salons) {
-                li = $.create("li");
-                li.addClass("item");
-                li.addClass("item-" + id);
-                li.attr("ng-click", "switchChannel('/JOIN', '" + salons[id].replace(" ", "_") + "', " + id + ", $event);");
-                li.html = salons[id];
-                ul.appendChild(li);
+                $("<li>" + salons[id] + "</li>").appendTo(ul)
+                    .addClass("item item-" + id)
+                    .attr("ng-click", "switchChannel('/JOIN', '" + salons[id].replace(" ", "_") + "', " + id + ", $event);");
             }
             loadData.getChannel();
-            $compile(ul.children)($scope);
+            $compile(ul.contents())($scope);
+        },
+
+        aboutUser: function (id, pseudo, ignoreState, scope) {
+            var config = {"0": {"title":"Parler en public", "icon":"icon-bubbles3", "multiple":false, "function":"Options.public('" + pseudo + "')"}
+                , "1": {"title":"Dialoguer en privé", "icon":"icon-bubble2", "multiple":false, "function":"Options.private(" + id + ", '" + pseudo + "')"}
+                /*, "2": {"title":"Envoyer un fichier", "icon":"icon-upload2", "multiple":false, "function":"Options.uploadFile(" + id + ")"}*/
+                , "3": {"title":"Bloquer/Ignorer", "icon":"icon-blocked", "multiple":"list"
+                    , "items":{
+                        "0": {"title":"Bloquer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé.", 0:"BLOCK", 1:"OFF"},
+                            "1": {"title":"Ignorer", "desc":" : Cette option empêche ce correspondant de vous contacter en privé ; de plus, vous ne verrez plus ses messages s'afficher sur le salon.", 0:"FULL", 2:"OFF"}
+                    }
+                       }
+                , "4": {"title":"Voir le profil", "icon":"icon-user", "multiple":false, "function":"Options.profil(" + id + ")"}
+            };
+
+            scope.aboutUser = {};
+            scope.aboutUser.id = id;
+            scope.aboutUser.data = config;
+            scope.aboutUser.isIgnore = ignoreState;
+            scope.aboutUser.switchOn = (ignoreState > 0) ? true : false;
+            scope.checkStatus = function (item) {
+                if (item[ignoreState] !== undefined) {
+                    ignore(id, item[ignoreState], scope);
+                }
+            }
+
+            Mobile.popover('about-user');
         },
 
         aboutOptions: function (scope) {
@@ -551,14 +514,14 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
                 , */"1": {"title":"Citer", "icon":"icon-quotes-left", "multiple":false, "function":"Options.quote();"}
                 , "2": {"title":"Lien", "icon":"icon-link", "multiple":"form"
                     , "items": {
-                        "0": {"input":"text", "libelle":"Lien", "id":"link-url", "class":"input"},
-                        "1": {"input":"text", "libelle":"Libellé (facultatif)", "id":"link-libelle", "class":"input"},
+                        "0": {"input":"text", "libelle":"Lien", "id":"link_url", "class":"input"},
+                        "1": {"input":"text", "libelle":"Libellé (facultatif)", "id":"link_libelle", "class":"input"},
                         "2": {"input":"button", "libelle":"Insérer", "class":"btn", function:scope.link}
                     }
                 }
                 , "3": {"title":"Image", "icon":"icon-image", "multiple":"form"
                     , "items": {
-                        "0": {"input":"text", "libelle":"Insérer une image", "id":"image-libelle", "class":"input"},
+                        "0": {"input":"text", "libelle":"Insérer une image", "id":"image_libelle", "class":"input"},
                         "1": {"input":"button", "libelle":"Insérer", "class":"btn", function:scope.image}
                     }
                 }
@@ -577,16 +540,6 @@ app.factory('loadData', function (sharedProperties, setMessage, $timeout, $compi
     return loadData;
 });
 
-app.factory('tmpAction', function () {
-    var tmpAction = {
-        passUserOpt : function (id, pseudo, ignore, scope) {
-            return UserOpt.aboutUser(id, "'" + pseudo + "'", ignore, scope);
-        }
-    };
-
-    return tmpAction;
-});
-
 app.controller('LoginController', function (sharedProperties, setMessage, loadData, $scope) {
     $scope.ngUserConnect = function () {
         var json = setMessage.userConnect();
@@ -603,7 +556,7 @@ app.controller('LoginController', function (sharedProperties, setMessage, loadDa
 
 app.controller('ChatController', function (sharedProperties, setMessage, loadData, $scope, $sce, $interval, $location) {
 
-    Mobile.onResize();
+    //Mobile.onResize();
 
     window.onbeforeunload = function (event) {
         var message = "";
@@ -675,25 +628,29 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
         Mobile.popover('about-user');
     };
 
-    $scope.send = function () {
-        var convActive = $.id('conversations').getElementsByClassName('open-conv')[0].attr('id'),
+    $scope.aboutUser = function (id, pseudo, ignore) {
+        loadData.aboutUser(id, pseudo, ignore, $scope);
+    }
+
+    $scope.send =  function () {
+        var convActive = $('#conversations .open-conv').attr('id'),
             idConvActive = convActive.split("conv-")[1],
-            texte = $.id("msg-input").val();
+            texte = $("#msg_input").val();
         if (parseInt(idConvActive) !== 0) {
             texte = "/TELL " + idConvActive + " " + texte;
         }
-
         setMessage.getData({ q: "cmd", v: version, s: session, c: texte, a: a++ }).then(function (response) {
-            $.id("msg-input").val("");
+            $scope.msg = "";
+            $("#msg_input").val("").focus();
+
             $scope.showClean = true;
-            $.id("msg-input").focus();
             setMessage.doStatus(response.data);
             $scope.data = loadData.getData($scope);
         });
     };
 
     $scope.keyEnter = function (keyCode) {
-        if ($.id("msg-input").val() === "") {
+        if ($scope.msg === "") {
             $scope.showClean = true;
         } else {
             $scope.showClean = false;
@@ -704,34 +661,30 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
     };
 
     $scope.clean = function (id) {
-        $.id(id).val("");
-        $.id(id).focus();
+        console.log("clean : " + $scope.msg);
+        $scope.msg = "";
+        $("#" + id).val("").focus();
         $scope.showClean = true;
     }
 
     $scope.switchChannel = function (cmd, channel, id, $event) {
         sharedProperties.setChannelActive(id);
 
-        var chanActive = $.id("chan-0"),
+        var chanActive = $("#chan-0"),
             nameChanActive = chanActive.attr("name"),
             element = $event.target;
 
-        chanActive.onclick = function () {return false;};
-        chanActive.removeAttr("name");
-        chanActive.removeAttr("id");
-        chanActive.removeClass("active");
-        chanActive.removeClass("new");
-        chanActive.attr("ng-click", "switchChannel('/JOIN', '" + nameChanActive + "', " + id + ", $event);");
+        chanActive.on("click",function () {return false;});
+        chanActive.removeAttr("name id").attr({ngClick: "switchChannel('/JOIN', '" + nameChanActive + "', " + id + ", $event);"}).removeClass("active new");
 
-        element.removeAttr("ng-click");
-        element.addClass("active");
-        element.addClass("new");
-        element.attr("id", "chan-0");
-        element.attr("name", channel);
-        element.onclick = Mobile.switchConv(0, element.html);
+        $(element).removeAttr("ng-click").attr({id: "chan-0",
+            name: channel}).addClass("active new");
+        $(element).on("click", function() {
+            Mobile.switchConv(0, $(element).html())
+        });
 
         setMessage.getData({ q: "cmd", v: version, s: session, c: cmd + " " + channel, a: a++}).then(function (response) {
-            $.id("msg-input").val("");
+            $("#msg-input").val("");
             setMessage.doStatus(response.data);
             $scope.data = loadData.getData($scope);
         });
@@ -746,18 +699,40 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
     };
 
     $scope.link = function () {
-        Options.link();
+        var link = $("#link_url").val(),
+            libelle = $("#link_libelle").val(),
+            input = $scope.msg;
+        if (link === "") {
+            $("#msg_input").val(input);
+        } else if (libelle != "") {
+            $("#msg_input").val(input + "[URL=" + link + "]" + libelle + "[/URL]");
+        } else {
+            $("#msg_input").val(input + "[URL]" + link + "[/URL]");
+        }
+        $("#msg_input").focus();
+        $("#link_url").val("");
+        $("#link_libelle").val("");
+        Mobile.popover('about-user');
     };
 
     $scope.image = function () {
-        Options.image();
+        var image = $('#image_libelle').val(),
+            input = $scope.msg;
+        if (image !== "") {
+            $("#msg_input").val(input + "[IMG]" + image + "[/IMG]");
+        } else {
+            $("#msg_input").val(input);
+        }
+        $("#msg_input").focus();
+        $('#image_libelle').val("");
+        Mobile.popover('about-user');
     };
 
     $scope.away = function () {
-        var message = $.id('away').val();
+        var message = $('#away').val();
         var texte = "/AWAY " + message;
         setMessage.getData({ q: "cmd", v: version, s: session, c: texte, a: a++ }).then(function (response) {
-            $.id("msg-input").focus();
+            $("#msg_input").focus();
             setMessage.doStatus(response.data);
             $scope.data = loadData.getData($scope);
         });
@@ -766,17 +741,17 @@ app.controller('ChatController', function (sharedProperties, setMessage, loadDat
     };
 
     $scope.myNavSwipeRight = function () {
-        if (!Mobile.hasClass($.id('slide-nav-left'), 'open-nav') && !Mobile.hasClass($.id('slide-nav-right'), 'open-nav')) {
+        if (!$('#slide-nav-left').hasClass('open-nav') && !$('#slide-nav-right').hasClass('open-nav')) {
             Mobile.slideNav('left');
-        } else if (!Mobile.hasClass($.id('slide-nav-left'), 'open-nav') && Mobile.hasClass($.id('slide-nav-right'), 'open-nav')) {
+        } else if (!$('#slide-nav-right').hasClass('open-nav') && $('#slide-nav-right').hasClass('open-nav')) {
             Mobile.slideNav('right');
         }
     };
 
     $scope.myNavSwipeLeft = function () {
-        if (Mobile.hasClass($.id('slide-nav-left'), 'open-nav') && !Mobile.hasClass($.id('slide-nav-right'), 'open-nav')) {
+        if ($('#slide-nav-left').hasClass('open-nav') && !$('#slide-nav-right').hasClass('open-nav')) {
             Mobile.slideNav('left');
-        } else if (!Mobile.hasClass($.id('slide-nav-left'), 'open-nav') && !Mobile.hasClass($.id('slide-nav-right'), 'open-nav')) {
+        } else if (!$('#slide-nav-left').hasClass('open-nav') && !$('#slide-nav-right').hasClass('open-nav')) {
             Mobile.slideNav('right');
         }
     };
