@@ -36,7 +36,7 @@
         </section>
         <footer>
            <form id="send_form">
-               <input type="text" placeholder="Message.." value="" class="msg-input" id="msg_input" ng-model="msg" ng-keyup="keyEnter($event.keyCode)" />
+               <input type="text" placeholder="Message.." value="" autocomplete="off" class="msg-input" id="msg_input" ng-model="msg" ng-keyup="keyEnter($event.keyCode)" />
                <button type="text" class="msg-clean" ng-hide="showClean">
                    <i class="icon icon-cancel-circle"></i>
                </button>
